@@ -1,0 +1,56 @@
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
+import { Atmosphere } from '@/components/shared/Atmosphere';
+
+/**
+ * Portafolio Rx en la Home: video vertical 9:16 + entrada a la página completa.
+ *
+ * NO vuelve a listar las seis áreas: ya están arriba, en la sección Áreas.
+ * Si se quieren repetir aquí, es una línea: <AreaRows variant="compact" />.
+ */
+export function Portfolio() {
+  const t = useTranslations('home.portafolio');
+
+  return (
+    <section id="portafolio" className="section surface-black">
+      <Atmosphere tone="dark" />
+
+      <div className="container pf-grid">
+        <div className="pf-frame">
+          <video
+            src="/media/portafoliorx.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+          />
+        </div>
+
+        <div>
+          <p className="eyebrow" style={{ color: 'var(--blue)' }}>
+            {t('kicker')}
+          </p>
+          <h2 style={{ marginTop: 12 }}>{t('title')}</h2>
+          <p className="lead" style={{ marginTop: 18 }}>
+            {t('subtitle')}
+          </p>
+
+          <p className="note" style={{ marginTop: 32 }}>
+            {t('note')}
+          </p>
+
+          <div className="btn-row" style={{ marginTop: 32 }}>
+            <Link href="/portafolio" className="btn btn-blue">
+              {t('ctaPrimary')}
+            </Link>
+            <Link href="/contacto" className="btn btn-outline-white">
+              {t('ctaSecondary')}
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#FFFFFF; font-family:'Roboto Condensed', 'Helvetica Neue Condensed', Helvetica, sans-serif; color:#000000; -webkit-font-smoothing:antialiased; }
+  * { box-sizing:border-box; }
+  a { color:#000000; text-decoration:none; }
+  a:hover { color:#000; }
+  :focus-visible { outline:3px solid #000000; outline-offset:3px; }
+  @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+  @media (max-width:1180px) {
+    header > div { flex-wrap:wrap !important; gap:14px !important; padding:12px 24px !important; }
+    header nav { width:100% !important; margin-left:0 !important; order:3; flex-wrap:wrap; gap:18px !important; }
+    section, footer { padding-left:24px !important; padding-right:24px !important; }
+    [style*="repeat(4, 1fr)"], [style*="repeat(3, 1fr)"], [style*="1.4fr 1fr 1fr 1fr"] { grid-template-columns:repeat(2,1fr) !important; }
+    [style*="260px 1fr"], [style*="260px 1fr"] { grid-template-columns:1fr !important; }
+    [style*="top:100px"] { position:static !important; }
+  }
+  @media (max-width:900px) { [data-r="areasplit"] { grid-template-columns:1fr !important; } }
+  @media (max-width:760px) {
+    [style*="grid-template-columns"] { grid-template-columns:1fr !important; }
+    [style*="span 2"] { grid-column:auto !important; }
+    header > div { padding:12px 18px !important; }
+    header nav { gap:14px !important; font-size:16px !important; }
+    section, footer { padding-left:18px !important; padding-right:18px !important; }
+  }
+</style>
+</helmet>
+
+<header style="position:sticky; top:0; z-index:60; background:#FFFFFF; border-bottom:3px solid #3D89FD;">
+  <div style="background:#000000;">
+    <div style="max-width:1600px; margin:0 auto; padding:7px 40px; display:flex; align-items:center; gap:26px; flex-wrap:wrap; font-size:15px; color:rgba(255,255,255,.86);">
+      <span>55 5548 7579</span>
+      <span>contacto@gabame.com</span>
+      <span style="color:rgba(255,255,255,.6);">{{ t.cHoursVal }}</span>
+      <a href="#" onClick="{{ goPV }}" style="margin-left:auto; color:#3D89FD; font-weight:700; font-size:15px; text-transform:uppercase; letter-spacing:.08em;">{{ t.pvTitle }}</a>
+      <button onClick="{{ toggleLang }}" style="border:1px solid rgba(255,255,255,.45); background:transparent; color:#FFF; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:14px; letter-spacing:.12em; padding:4px 10px; cursor:pointer;">{{ langLabel }}</button>
+    </div>
+  </div>
+  <div style="max-width:1600px; margin:0 auto; padding:12px 40px; display:flex; align-items:center; gap:32px;">
+    <a href="#" onClick="{{ goHome }}" style="display:flex; align-items:center;"><img src="assets/gabame-logo.png" alt="GABAME Human Health" style="height:60px; width:auto; display:block;"></a>
+    <nav style="display:flex; align-items:stretch; gap:4px; margin-left:auto; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:18px; text-transform:uppercase; letter-spacing:.06em;">
+      <a href="#" onClick="{{ goHome }}" style="{{ navHome }}">{{ t.navHome }}</a>
+      <a href="#" onClick="{{ goAreas }}" style="{{ navPlain }}">{{ t.navAreas }}</a>
+      <a href="#" onClick="{{ goPortfolio }}" style="{{ navPortfolio }}">{{ t.navPortfolio }}</a>
+      <a href="#" onClick="{{ goAbout }}" style="{{ navAbout }}">{{ t.navAbout }}</a>
+      <a href="#" onClick="{{ goEco }}" style="{{ navPlain }}">{{ t.navEco }}</a>
+      <a href="#" onClick="{{ goPartners }}" style="{{ navPlain }}">{{ t.navPartners }}</a>
+      <a href="#" onClick="{{ goContact }}" style="{{ navContact }}">{{ t.navContact }}</a>
+    </nav>
+    <a href="#" onClick="{{ goContact }}" style="background:#3D89FD; color:#000; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:17px; text-transform:uppercase; letter-spacing:.06em; padding:13px 26px;">{{ t.ctaContact }}</a>
+  </div>
+</header>
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<main>
+  <section style="padding:0;">
+    <div style="position:relative; height:clamp(320px,42vw,560px); background:#000000;">
+      <div style="position:absolute; inset:0; background:repeating-linear-gradient(115deg, rgba(255,255,255,.05) 0 14px, rgba(255,255,255,0) 14px 28px);"></div>
+      <span style="position:absolute; right:24px; top:20px; font-family:ui-monospace, Menlo, monospace; font-size:12px; color:#FFF; border:1px solid rgba(255,255,255,.4); padding:6px 10px;">{{ t.mediaVideo }}</span>
+    </div>
+    <div style="max-width:1600px; margin:-140px auto 0; padding:0 40px; position:relative; z-index:2;">
+      <div style="background:#3D89FD; padding:44px 48px; max-width:1000px;">
+        <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.18em; color:#000; margin-bottom:16px;">{{ t.heroTag }}</div>
+        <h1 style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(40px,6vw,88px); line-height:.94; text-transform:uppercase; color:#000; margin:0 0 18px; max-width:18ch;">{{ t.heroTitle }}</h1>
+        <p style="font-size:19px; line-height:1.55; color:#000; max-width:56ch; margin:0 0 28px;">{{ t.heroSub }}</p>
+        <div style="display:flex; gap:14px; flex-wrap:wrap;">
+          <a href="#" onClick="{{ goPortfolio }}" style="background:#000; color:#FFF; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:18px; text-transform:uppercase; letter-spacing:.06em; padding:14px 28px;">{{ t.heroCta1 }}</a>
+          <a href="#" onClick="{{ goContact }}" style="border:2px solid #000; color:#000; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:18px; text-transform:uppercase; letter-spacing:.06em; padding:12px 28px;">{{ t.ctaContact }}</a>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:1600px; margin:0 auto; padding:36px 40px 0; display:flex; flex-wrap:wrap; gap:20px 48px; border-bottom:2px solid #000;">
+      <sc-for list="{{ figures }}" as="f" hint-placeholder-count="3">
+        <div style="display:flex; align-items:baseline; gap:14px; padding-bottom:20px;">
+          <div style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(28px,3vw,44px); line-height:1; color:#3D89FD;">{{ f.n }}</div>
+          <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:17px; text-transform:uppercase; letter-spacing:.12em; color:#000;">{{ f.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+  <section id="areas" style="padding:96px 40px; background:#FFFFFF;">
+    <div style="max-width:1440px; margin:0 auto;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:end; margin-bottom:48px;">
+        <div>
+          <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.16em; color:#000; margin-bottom:16px;">{{ t.areasTag }}</div>
+          <h2 style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(34px,5vw,64px); line-height:.98; text-transform:uppercase; color:#3D89FD; margin:0;">{{ t.areasTitle }}</h2>
+        </div>
+        <div>
+          <p style="font-size:20px; line-height:1.55; color:rgba(0,0,0,.78); margin:0 0 22px; max-width:52ch;">{{ t.areasSub }}</p>
+          <div style="display:flex; gap:14px;">
+            <a href="#" onClick="{{ goPortfolio }}" style="background:#3D89FD; color:#000; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:17px; text-transform:uppercase; letter-spacing:.06em; padding:12px 24px;">{{ t.areasCta1 }}</a>
+            <a href="#" onClick="{{ goAbout }}" style="border:2px solid #000; color:#000; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:17px; text-transform:uppercase; letter-spacing:.06em; padding:10px 24px;">{{ t.areasCta2 }}</a>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:2px solid #000;">
+        <sc-for list="{{ areas }}" as="a" hint-placeholder-count="6">
+          <div style="border-bottom:1px solid rgba(0,0,0,.2); padding:20px 0; display:grid; grid-template-columns:70px 1fr 1.2fr auto; gap:24px; align-items:baseline;">
+            <div style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:17px; letter-spacing:.14em; color:#000;">{{ a.num }}</div>
+            <h3 style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(22px,2.4vw,32px); line-height:1; text-transform:uppercase; color:#000; margin:0;">{{ a.name }}</h3>
+            <p style="font-size:18px; line-height:1.5; color:rgba(0,0,0,.82); margin:0;">{{ a.desc }}</p>
+            <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:14px; letter-spacing:.1em; text-transform:uppercase; background:#3D89FD; color:#000; padding:6px 12px; white-space:nowrap;">{{ t.portState }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#000; color:#FFF; padding:96px 40px;">
+    <div style="max-width:1440px; margin:0 auto; display:grid; grid-template-columns:minmax(260px,.62fr) 1.38fr; gap:56px; align-items:start;">
+      <div style="position:relative; aspect-ratio:9/16; background:#000; border:1px solid rgba(255,255,255,.28); display:flex; align-items:center; justify-content:center;">
+        <div style="position:absolute; inset:0; background:repeating-linear-gradient(115deg, rgba(255,255,255,.05) 0 14px, rgba(255,255,255,0) 14px 28px);"></div>
+        <div style="position:relative; width:74px; height:74px; border-radius:999px; background:#3D89FD; display:flex; align-items:center; justify-content:center; font-size:24px; color:#000;">&#9654;</div>
+        <span style="position:absolute; left:16px; bottom:16px; font-family:ui-monospace, Menlo, monospace; font-size:12px; color:#FFF; border:1px solid rgba(255,255,255,.4); padding:6px 10px;">{{ t.mediaVideoRx }}</span>
+      </div>
+      <div>
+        <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.16em; color:#3D89FD; margin-bottom:16px;">{{ t.portTag }}</div>
+        <h2 style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(34px,5vw,64px); line-height:.98; text-transform:uppercase; color:#FFF; margin:0 0 18px; max-width:20ch;">{{ t.portTitle }}</h2>
+        <p style="font-size:20px; line-height:1.55; color:rgba(255,255,255,.86); max-width:60ch; margin:0 0 32px;">{{ t.portSub }}</p>
+        <div style="display:flex; flex-direction:column; margin-bottom:28px;">
+          <sc-for list="{{ areas }}" as="a" hint-placeholder-count="6">
+            <div style="border-top:1px solid rgba(255,255,255,.24); padding:16px 0; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+              <h3 style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:clamp(20px,2.2vw,26px); line-height:1; text-transform:uppercase; color:#FFF; margin:0;">{{ a.name }}</h3>
+              <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:15px; letter-spacing:.1em; text-transform:uppercase; background:#3D89FD; color:#000; padding:6px 12px; white-space:nowrap;">{{ t.portState }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <p style="font-size:17px; line-height:1.55; color:rgba(255,255,255,.86); max-width:70ch; border-left:3px solid #3D89FD; padding-left:18px; margin:0 0 32px;">{{ t.portNote }}</p>
+        <div style="display:flex; gap:14px; flex-wrap:wrap;">
+          <a href="#" onClick="{{ goPortfolio }}" style="background:#3D89FD; color:#000; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:18px; text-transform:uppercase; letter-spacing:.06em; padding:14px 28px;">{{ t.portCta1 }}</a>
+          <a href="#" onClick="{{ goContact }}" style="border:2px solid #FFF; color:#FFF; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:18px; text-transform:uppercase; letter-spacing:.06em; padding:12px 28px;">{{ t.portCta2 }}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="position:relative; background:#3D89FD; padding:96px 40px; overflow:hidden;">
+    <img src="assets/gabame-mark.png" alt="" style="position:absolute; right:-60px; top:50%; transform:translateY(-50%); width:460px; opacity:.16; pointer-events:none;">
+    <div style="position:relative; max-width:1440px; margin:0 auto;">
+      <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.18em; color:#000; margin-bottom:18px;">{{ t.navAbout }}</div>
+      <h2 style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(36px,5.4vw,72px); line-height:.96; text-transform:uppercase; color:#000; margin:0 0 26px; max-width:20ch;">{{ t.aboutTitle }}</h2>
+      <p style="font-size:clamp(19px,2vw,26px); line-height:1.5; color:#000; margin:0 0 34px; max-width:60ch;">{{ t.aboutBody }}</p>
+      <div style="display:flex; gap:14px; flex-wrap:wrap; margin-bottom:44px;">
+        <a href="#" onClick="{{ goContact }}" style="background:#000; color:#FFF; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:18px; text-transform:uppercase; letter-spacing:.06em; padding:14px 28px;">{{ t.ctaContact }}</a>
+        <a href="#" onClick="{{ goEco }}" style="border:2px solid #000; color:#000; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:18px; text-transform:uppercase; letter-spacing:.06em; padding:12px 28px;">{{ t.aboutCta2 }}</a>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:0 64px; border-top:2px solid #000; padding-top:24px;">
+        <sc-for list="{{ figures }}" as="f" hint-placeholder-count="3">
+          <div style="display:flex; align-items:baseline; gap:16px;">
+            <div style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(38px,4.6vw,64px); line-height:1; color:#000;">{{ f.n }}</div>
+            <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:18px; text-transform:uppercase; letter-spacing:.12em; color:#000;">{{ f.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="ecosistema" style="background:#FFFFFF; padding:96px 40px;">
+    <div style="max-width:1440px; margin:0 auto;">
+      <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:40px; flex-wrap:wrap; margin-bottom:44px;">
+        <div>
+          <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.18em; color:#000; margin-bottom:14px;">{{ t.ecoTag }}</div>
+          <h2 style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(34px,5vw,64px); line-height:.98; text-transform:uppercase; color:#000; margin:0; max-width:18ch;">{{ t.ecoTitle }}</h2>
+        </div>
+        <p style="font-size:20px; line-height:1.55; color:rgba(0,0,0,.82); max-width:48ch; margin:0;">{{ t.ecoSub }}</p>
+      </div>
+      <div>
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px;">
+          <sc-for list="{{ brands }}" as="b" hint-placeholder-count="4">
+            <div style="{{ b.tileStyle }}">
+              <div style="{{ b.dotStyle }}"></div>
+              <h3 style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(26px,3.4vw,40px); line-height:1; text-transform:uppercase; margin:0 0 auto;">{{ b.name }}</h3>
+              <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:15px; letter-spacing:.1em; text-transform:uppercase; color:{{ b.chipColor }}; background:{{ b.chipBg }}; padding:6px 12px; align-self:flex-start; margin-top:22px;">{{ b.state }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:36px;">
+        <a href="#" onClick="{{ goAbout }}" style="background:#3D89FD; color:#000; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:18px; text-transform:uppercase; letter-spacing:.06em; padding:14px 28px;">{{ t.ecoCta1 }}</a>
+        <a href="#" onClick="{{ goContact }}" style="border:2px solid #000; color:#000; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:18px; text-transform:uppercase; letter-spacing:.06em; padding:12px 28px;">{{ t.ecoCta2 }}</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="socios" style="padding:0 0 96px; background:#FFFFFF;">
+    <div style="max-width:1440px; margin:0 auto; padding:0 40px;">
+      <div style="display:grid; grid-template-columns:1.6fr 1fr; gap:0; align-items:stretch;">
+        <div style="background:#000; color:#FFF; padding:56px 48px;">
+          <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.18em; color:#3D89FD; margin-bottom:14px;">{{ t.partTag }}</div>
+          <h2 style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(34px,5vw,64px); line-height:.96; text-transform:uppercase; margin:0 0 18px; max-width:16ch;">{{ t.partTitle }}</h2>
+          <p style="font-size:20px; line-height:1.55; color:rgba(255,255,255,.86); max-width:56ch; margin:0 0 32px;">{{ t.partSub }}</p>
+          <div style="border-top:1px solid rgba(255,255,255,.3); padding-top:26px;">
+            <h3 style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:clamp(24px,2.8vw,32px); text-transform:uppercase; letter-spacing:.04em; margin:0 0 12px; color:#3D89FD;">{{ t.pvTitle }}</h3>
+            <p style="font-size:18px; line-height:1.55; color:rgba(255,255,255,.86); max-width:56ch; margin:0 0 22px;">{{ t.pvIntro }}</p>
+            <a href="#" onClick="{{ goPV }}" style="background:#3D89FD; color:#000; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:17px; text-transform:uppercase; letter-spacing:.06em; padding:12px 24px; display:inline-block;">{{ t.pvCta }}</a>
+          </div>
+        </div>
+        <div style="background:#3D89FD; padding:56px 40px; display:flex; flex-direction:column; justify-content:center;">
+          <h3 style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(28px,3.6vw,44px); line-height:1; text-transform:uppercase; margin:0 0 16px; color:#000;">{{ t.partnerTitle }}</h3>
+          <p style="font-size:19px; line-height:1.55; color:#000; margin:0 0 26px;">{{ t.partnerBody }}</p>
+          <a href="#" onClick="{{ goContact }}" style="background:#000; color:#FFF; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:17px; text-transform:uppercase; letter-spacing:.06em; padding:12px 24px; align-self:flex-start;">{{ t.partnerCta }}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<sc-if value="{{ isPortfolio }}" hint-placeholder-val="{{ false }}">
+<main style="padding:0 0 96px;">
+  <section style="background:#3D89FD; padding:72px 40px;">
+    <div style="max-width:1440px; margin:0 auto;">
+      <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.16em; color:#000; margin-bottom:14px;">{{ t.portTag }}</div>
+      <h1 style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(38px,6vw,80px); line-height:.96; text-transform:uppercase; color:#000; margin:0 0 18px; max-width:20ch;">{{ t.portTitle }}</h1>
+      <p style="font-size:21px; line-height:1.55; color:rgba(0,0,0,.78); max-width:60ch; margin:0;">{{ t.portSub }}</p>
+    </div>
+  </section>
+  <div style="max-width:1440px; margin:0 auto; padding:56px 40px 0; display:grid; grid-template-columns:260px 1fr; gap:56px; align-items:start;">
+    <nav style="position:sticky; top:100px; display:flex; flex-direction:column; gap:2px; border-top:2px solid #000;">
+      <sc-for list="{{ areas }}" as="a" hint-placeholder-count="6">
+        <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:19px; text-transform:uppercase; letter-spacing:.06em; padding:12px 0; border-bottom:1px solid rgba(0,0,0,.16); color:#000;">{{ a.name }}</div>
+      </sc-for>
+    </nav>
+    <div>
+      <div style="display:flex; flex-direction:column; gap:20px; margin-bottom:36px;">
+        <sc-for list="{{ areas }}" as="a" hint-placeholder-count="6">
+          <div style="border:1px solid rgba(0,0,0,.16); padding:30px; display:grid; grid-template-columns:1fr auto; gap:24px; align-items:center;">
+            <div>
+              <h2 style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(26px,3.2vw,36px); line-height:1; text-transform:uppercase; color:#000; margin:0 0 10px;">{{ a.name }}</h2>
+              <p style="font-size:18px; line-height:1.55; color:rgba(0,0,0,.78); margin:0; max-width:60ch;">{{ a.desc }}</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:10px; align-items:flex-end;">
+              <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:15px; letter-spacing:.1em; text-transform:uppercase; background:#3D89FD; color:#000; padding:6px 12px;">{{ t.portState }}</div>
+              <a href="#" onClick="{{ goContact }}" style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:16px; text-transform:uppercase; letter-spacing:.06em; border-bottom:2px solid #3D89FD; color:#000;">{{ t.portCta2 }}</a>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <p style="font-size:17px; line-height:1.55; color:#000; border-left:3px solid #3D89FD; padding-left:18px; margin:0;">{{ t.portNote }}</p>
+    </div>
+  </div>
+</main>
+</sc-if>
+
+<sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
+<main>
+  <section style="background:#3D89FD; padding:72px 40px;">
+    <div style="max-width:1440px; margin:0 auto;">
+      <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.16em; color:#000; margin-bottom:14px;">{{ t.navAbout }}</div>
+      <h1 style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(38px,6vw,80px); line-height:.96; text-transform:uppercase; color:#000; margin:0; max-width:18ch;">{{ t.aboutTitle }}</h1>
+    </div>
+  </section>
+  <section style="padding:72px 40px;">
+    <div style="max-width:1440px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+      <div style="border:2px solid #000; padding:36px;">
+        <h2 style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:clamp(22px,2.6vw,30px); text-transform:uppercase; letter-spacing:.04em; margin:0 0 14px;">{{ t.purposeTitle }}</h2>
+        <p style="font-size:19px; line-height:1.555; color:rgba(0,0,0,.82); margin:0;">{{ t.purpose }}</p>
+      </div>
+      <div style="background:#000; color:#FFF; padding:36px;">
+        <h2 style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:clamp(22px,2.6vw,30px); text-transform:uppercase; letter-spacing:.04em; margin:0 0 14px; color:#3D89FD;">{{ t.visionTitle }}</h2>
+        <p style="font-size:19px; line-height:1.555; color:rgba(255,255,255,.82); margin:0;">{{ t.vision }}</p>
+      </div>
+      <div style="grid-column:span 2; background:#3D89FD; padding:44px;">
+        <h2 style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:clamp(22px,2.6vw,30px); text-transform:uppercase; letter-spacing:.04em; margin:0 0 14px; color:#000;">{{ t.doTitle }}</h2>
+        <p style="font-size:21px; line-height:1.55; color:rgba(0,0,0,.82); margin:0; max-width:80ch;">{{ t.aboutBody }}</p>
+      </div>
+    </div>
+  </section>
+  <section style="padding:0 40px 72px;">
+    <div style="max-width:1440px; margin:0 auto;">
+      <h2 style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:clamp(22px,2.6vw,30px); text-transform:uppercase; letter-spacing:.04em; margin:0 0 20px;">{{ t.figuresTitle }}</h2>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:rgba(0,0,0,.12); margin-bottom:56px;">
+        <sc-for list="{{ figures }}" as="f" hint-placeholder-count="3">
+          <div style="background:#3D89FD; padding:36px 30px;">
+            <div style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(46px,6.5vw,88px); line-height:1; color:#000;">{{ f.n }}</div>
+            <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:19px; text-transform:uppercase; letter-spacing:.1em; color:#000; margin-top:8px;">{{ f.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <h2 style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:clamp(22px,2.6vw,30px); text-transform:uppercase; letter-spacing:.04em; margin:0 0 8px;">{{ t.ecoTag }}</h2>
+      <p style="font-size:19px; line-height:1.55; color:rgba(0,0,0,.78); max-width:70ch; margin:0 0 24px;">{{ t.ecoSub }}</p>
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:2px; background:rgba(0,0,0,.12); margin-bottom:20px;">
+        <sc-for list="{{ brands }}" as="b" hint-placeholder-count="4">
+          <div style="background:#3D89FD; padding:28px; min-height:150px; display:flex; flex-direction:column; justify-content:space-between;">
+            <h3 style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(24px,3vw,34px); line-height:1; text-transform:uppercase; color:#000; margin:0;">{{ b.name }}</h3>
+            <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:14px; letter-spacing:.1em; text-transform:uppercase; color:{{ b.stateColor }}; background:{{ b.stateBg }}; padding:6px 10px; align-self:flex-start;">{{ b.state }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <p style="font-size:17px; line-height:1.55; color:#000; border-left:3px solid #3D89FD; padding-left:18px; margin:0 0 56px;">{{ t.ecoNote }}</p>
+      <div style="background:#000; color:#FFF; padding:56px 44px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap;">
+        <h2 style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(32px,4.6vw,56px); line-height:1; text-transform:uppercase; margin:0;">{{ t.closeTitle }}</h2>
+        <a href="#" onClick="{{ goContact }}" style="background:#3D89FD; color:#000; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:18px; text-transform:uppercase; letter-spacing:.06em; padding:14px 28px;">{{ t.ctaContact }}</a>
+      </div>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<sc-if value="{{ isPV }}" hint-placeholder-val="{{ false }}">
+<main>
+  <section style="background:#000; color:#FFF; padding:72px 40px;">
+    <div style="max-width:1000px; margin:0 auto;">
+      <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.16em; color:#3D89FD; margin-bottom:14px;">{{ t.partTag }}</div>
+      <h1 style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(38px,6vw,76px); line-height:.96; text-transform:uppercase; margin:0 0 18px;">{{ t.pvTitle }}</h1>
+      <p style="font-size:21px; line-height:1.55; color:rgba(255,255,255,.82); max-width:62ch; margin:0;">{{ t.pvIntro }}</p>
+    </div>
+  </section>
+  <section style="padding:56px 40px 96px;">
+    <div style="max-width:1000px; margin:0 auto;">
+      <div style="background:#3D89FD; padding:26px 30px; margin-bottom:40px;">
+        <div style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:22px; text-transform:uppercase; letter-spacing:.06em; color:#000; margin-bottom:8px;">{{ t.pvWarnTitle }}</div>
+        <p style="font-size:19px; line-height:1.55; color:#000; margin:0;">{{ t.pvWarn }}</p>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+        <label style="display:block;">
+          <span style="display:block; font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">{{ t.formName }}</span>
+          <input style="width:100%; border:2px solid #000; padding:13px 14px; font:inherit; font-size:16px;">
+        </label>
+        <label style="display:block;">
+          <span style="display:block; font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">{{ t.formEmail }}</span>
+          <input style="width:100%; border:2px solid #000; padding:13px 14px; font:inherit; font-size:16px;">
+        </label>
+        <label style="display:block;">
+          <span style="display:block; font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">{{ t.formPhone }}</span>
+          <input style="width:100%; border:2px solid #000; padding:13px 14px; font:inherit; font-size:16px;">
+        </label>
+        <label style="display:block;">
+          <span style="display:block; font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">{{ t.formNotifier }}</span>
+          <select style="width:100%; border:2px solid #000; padding:13px 14px; font:inherit; font-size:16px; background:#FFF;">
+            <option>{{ t.notifier1 }}</option>
+            <option>{{ t.notifier2 }}</option>
+            <option>{{ t.notifier3 }}</option>
+          </select>
+        </label>
+        <label style="display:block; grid-column:span 2;">
+          <span style="display:block; font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">{{ t.formProduct }}</span>
+          <input style="width:100%; border:2px solid #000; padding:13px 14px; font:inherit; font-size:16px;">
+        </label>
+        <label style="display:block; grid-column:span 2;">
+          <span style="display:block; font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">{{ t.formDesc }}</span>
+          <textarea rows="5" style="width:100%; border:2px solid #000; padding:13px 14px; font:inherit; font-size:16px; resize:vertical;"></textarea>
+        </label>
+        <p style="grid-column:span 2; font-size:17px; line-height:1.55; color:#000; margin:0;">{{ t.pvConfidential }}</p>
+        <button onClick="{{ submit }}" style="grid-column:span 2; justify-self:start; background:#3D89FD; border:none; color:#000; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:19px; text-transform:uppercase; letter-spacing:.06em; padding:15px 34px; cursor:pointer;">{{ submitPV }}</button>
+      </div>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
+<main>
+  <section style="background:#3D89FD; padding:72px 40px;">
+    <div style="max-width:1200px; margin:0 auto;">
+      <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.16em; color:#000; margin-bottom:14px;">{{ t.navContact }}</div>
+      <h1 style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(38px,6vw,80px); line-height:.96; text-transform:uppercase; color:#000; margin:0 0 16px;">{{ t.contactTitle }}</h1>
+      <p style="font-size:21px; line-height:1.55; color:rgba(0,0,0,.78); max-width:56ch; margin:0;">{{ t.contactSub }}</p>
+    </div>
+  </section>
+  <section style="padding:64px 40px 96px;">
+    <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1fr 1.1fr; gap:64px;">
+      <div style="display:flex; flex-direction:column; gap:26px;">
+        <div>
+          <div style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:20px; text-transform:uppercase; letter-spacing:.1em; margin-bottom:6px;">{{ t.cPhone }}</div>
+          <div style="font-size:18px;">55 5548 7579</div>
+        </div>
+        <div>
+          <div style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:20px; text-transform:uppercase; letter-spacing:.1em; margin-bottom:6px;">{{ t.cMail }}</div>
+          <div style="font-size:18px;">contacto@gabame.com</div>
+        </div>
+        <div>
+          <div style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:20px; text-transform:uppercase; letter-spacing:.1em; margin-bottom:6px;">{{ t.cHours }}</div>
+          <div style="font-size:18px;">{{ t.cHoursVal }}</div>
+        </div>
+        <div>
+          <div style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:20px; text-transform:uppercase; letter-spacing:.1em; margin-bottom:6px;">{{ t.cAddr }}</div>
+          <div style="font-size:18px; line-height:1.5; max-width:34ch;">Av. de la Palma 8, primer piso, Villa de las Palmas, CP 52787, Huixquilucan, Estado de México</div>
+        </div>
+        <div style="background:#000; color:#FFF; padding:22px 24px;">
+          <p style="font-size:17px; line-height:1.55; margin:0 0 12px; color:rgba(255,255,255,.82);">{{ t.contactPVNote }}</p>
+          <a href="#" onClick="{{ goPV }}" style="color:#3D89FD; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:17px; text-transform:uppercase; letter-spacing:.06em;">{{ t.pvCta }}</a>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-content:start;">
+        <label style="display:block;">
+          <span style="display:block; font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">{{ t.formName }}</span>
+          <input style="width:100%; border:2px solid #000; padding:13px 14px; font:inherit; font-size:16px;">
+        </label>
+        <label style="display:block;">
+          <span style="display:block; font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">{{ t.formEmail }}</span>
+          <input style="width:100%; border:2px solid #000; padding:13px 14px; font:inherit; font-size:16px;">
+        </label>
+        <label style="display:block;">
+          <span style="display:block; font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">{{ t.formOrg }}</span>
+          <input style="width:100%; border:2px solid #000; padding:13px 14px; font:inherit; font-size:16px;">
+        </label>
+        <label style="display:block;">
+          <span style="display:block; font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">{{ t.formProfile }}</span>
+          <select style="width:100%; border:2px solid #000; padding:13px 14px; font:inherit; font-size:16px; background:#FFF;">
+            <option>{{ t.prof1 }}</option>
+            <option>{{ t.prof2 }}</option>
+            <option>{{ t.prof3 }}</option>
+            <option>{{ t.prof4 }}</option>
+          </select>
+        </label>
+        <label style="display:block; grid-column:span 2;">
+          <span style="display:block; font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px;">{{ t.formMsg }}</span>
+          <textarea rows="6" style="width:100%; border:2px solid #000; padding:13px 14px; font:inherit; font-size:16px; resize:vertical;"></textarea>
+        </label>
+        <button onClick="{{ submit }}" style="grid-column:span 2; justify-self:start; background:#3D89FD; border:none; color:#000; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:19px; text-transform:uppercase; letter-spacing:.06em; padding:15px 34px; cursor:pointer;">{{ submitContact }}</button>
+      </div>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<footer style="background:#000; color:#FFF; padding:64px 40px 28px;">
+  <div style="max-width:1440px; margin:0 auto; display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:44px;">
+    <div>
+      <img src="assets/gabame-mark.png" alt="" style="height:54px; width:auto; display:block; margin-bottom:12px;">
+      <div style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(28px,3.6vw,40px); line-height:1; letter-spacing:.04em; color:#FFF;">GABAME</div>
+      <div style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:16px; letter-spacing:.24em; color:#3D89FD; margin-bottom:18px;">HUMAN HEALTH</div>
+      <p style="font-size:17px; line-height:1.55; color:rgba(255,255,255,.72); margin:0; max-width:32ch;">{{ t.footerTag }}</p>
+    </div>
+    <div>
+      <div style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:18px; text-transform:uppercase; letter-spacing:.12em; color:#3D89FD; margin-bottom:16px;">{{ t.navContact }}</div>
+      <div style="display:flex; flex-direction:column; gap:10px; font-size:15px; color:rgba(255,255,255,.78);">
+        <span>55 5548 7579</span>
+        <span>contacto@gabame.com</span>
+        <span>{{ t.cHoursVal }}</span>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:18px; text-transform:uppercase; letter-spacing:.12em; color:#3D89FD; margin-bottom:16px;">{{ t.footerSite }}</div>
+      <div style="display:flex; flex-direction:column; gap:10px; font-size:15px;">
+        <a href="#" onClick="{{ goHome }}" style="color:rgba(255,255,255,.78);">{{ t.navHome }}</a>
+        <a href="#" onClick="{{ goPortfolio }}" style="color:rgba(255,255,255,.78);">{{ t.navPortfolio }}</a>
+        <a href="#" onClick="{{ goAbout }}" style="color:rgba(255,255,255,.78);">{{ t.navAbout }}</a>
+        <a href="#" onClick="{{ goContact }}" style="color:rgba(255,255,255,.78);">{{ t.navContact }}</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:18px; text-transform:uppercase; letter-spacing:.12em; color:#3D89FD; margin-bottom:16px;">{{ t.footerLegal }}</div>
+      <div style="display:flex; flex-direction:column; gap:10px; font-size:15px;">
+        <a href="#" onClick="{{ openPrivacy }}" style="color:rgba(255,255,255,.78);">{{ t.privacyTitle }}</a>
+        <a href="#" onClick="{{ goPV }}" style="color:rgba(255,255,255,.78);">{{ t.pvTitle }}</a>
+        <span style="color:rgba(255,255,255,.72);">{{ t.portalSoon }}</span>
+      </div>
+      <div style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:18px; text-transform:uppercase; letter-spacing:.12em; color:#3D89FD; margin:26px 0 14px;">{{ t.footerSocial }}</div>
+      <div style="display:flex; gap:10px; align-items:center; margin-bottom:12px;">
+        <a href="#" style="width:46px; height:46px; background:#3D89FD; color:#000; display:flex; align-items:center; justify-content:center; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:22px; letter-spacing:.02em;" title="LinkedIn · GABAME Human Health">in</a>
+        <span style="width:46px; height:46px; border:1px solid rgba(255,255,255,.4); color:rgba(255,255,255,.72); display:flex; align-items:center; justify-content:center; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:16px;" title="{{ t.socialSoon }}">WA</span>
+      </div>
+      <span style="font-size:14px; color:rgba(255,255,255,.72);">{{ t.socialSoon }}</span>
+    </div>
+  </div>
+  <div style="max-width:1440px; margin:36px auto 0; padding-top:20px; border-top:1px solid rgba(255,255,255,.2); font-size:14px; color:rgba(255,255,255,.6);">© 2026 GABAME Human Health.</div>
+</footer>
+
+<div title="{{ t.botTitle }}" style="position:fixed; right:20px; bottom:20px; z-index:70; width:60px; height:60px; border-radius:999px; background:#000000; border:2px solid #3D89FD; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1;">
+  <span style="font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:20px; letter-spacing:.04em; color:#3D89FD;">IA</span>
+  <span style="font-family:'Roboto Condensed', sans-serif; font-weight:600; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:#FFFFFF;">Beta</span>
+</div>
+
+<sc-if value="{{ privacyOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed; inset:0; z-index:90; background:rgba(0,0,0,.72); display:flex; align-items:center; justify-content:center; padding:40px;">
+  <div style="background:#FFF; max-width:720px; width:100%; max-height:80vh; overflow:auto; padding:40px;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:24px; margin-bottom:18px;">
+      <h2 style="font-family:'Roboto Condensed', Impact, sans-serif; font-weight:700; font-size:clamp(30px,4vw,44px); line-height:1; text-transform:uppercase; margin:0;">{{ t.privacyTitle }}</h2>
+      <button onClick="{{ closePrivacy }}" style="border:2px solid #000; background:transparent; font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:16px; text-transform:uppercase; letter-spacing:.08em; padding:8px 14px; cursor:pointer;">{{ t.close }}</button>
+    </div>
+    <div style="background:#3D89FD; padding:14px 18px; font-size:15px; color:#000; margin-bottom:22px;">{{ t.privacyPending }}</div>
+    <p style="font-size:16px; line-height:1.7; color:rgba(0,0,0,.82); margin:0;">{{ t.privacyBody }}</p>
+  </div>
+</div>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+const ES = {
+  navHome:"Inicio", navAreas:"Áreas", navPortfolio:"Portafolio", navAbout:"Nosotros", navEco:"Ecosistema", navPartners:"Socios", navContact:"Contacto",
+  ctaContact:"Contáctanos",
+  heroTag:"Grupo mexicano de salud · Desde 2013",
+  heroTitle:"Salud que impacta de verdad",
+  heroSub:"Desarrollamos productos de alto valor y los transformamos en marcas sólidas y relevantes para todo México.",
+  heroCta1:"Ver portafolio Rx",
+  mediaVideo:"reservado · video institucional 16:9", mediaVideoRx:"reservado · video portafolio Rx 9:16",
+  areasTag:"Portafolio · Áreas terapéuticas", areasTitle:"Seis áreas, una misión",
+  areasSub:"Cubrimos las necesidades del sistema de salud mexicano con un portafolio Rx especializado.",
+  areasCta1:"Ver portafolio", areasCta2:"Conócenos",
+  portTag:"Portafolio Rx destacado", portTitle:"Un portafolio Rx especializado",
+  portSub:"Cada marca con su posicionamiento; la ficha completa se desarrolla en su propia página.",
+  portState:"Fichas en preparación",
+  portNote:"Datos clínicos, molécula y posología se incorporan a cada ficha tras validación regulatoria (COFEPRIS).",
+  portCta1:"Fichas de producto", portCta2:"Solicitar información",
+  aboutTitle:"Un referente mexicano en salud",
+  aboutBody:"Somos un grupo especializado en salud, enfocado en desarrollar productos de alto valor y transformarlos en marcas sólidas y relevantes. A través de nuestras capacidades incorporadas en construcción de marca y distribución, garantizamos operaciones eficientes y un crecimiento escalable en todo el mercado mexicano.",
+  aboutCta2:"Nuestro ecosistema",
+  purposeTitle:"Propósito", purpose:"Impactamos de forma real y positiva en las personas, fortaleciendo su salud y bienestar integral a través de productos y servicios responsables.",
+  visionTitle:"Visión", vision:"Ser un referente mexicano que inspire orgullo, empodere a las personas, y demuestre que el esfuerzo y la pasión convierten cualquier sueño en realidad.",
+  doTitle:"Qué hacemos", figuresTitle:"En cifras", closeTitle:"¿Trabajamos juntos?",
+  ecoTag:"Ecosistema del grupo", ecoTitle:"Cuatro marcas, un estándar",
+  ecoSub:"GABAME es la puerta de entrada a un ecosistema que se conectará con Medinter, Ordan y A7.",
+  ecoNote:"Medinter, Ordan y A7 se habilitan en fases posteriores.",
+  ecoCta1:"Explorar ecosistema", ecoCta2:"Ser socio",
+  partTag:"Compromiso · Colaboración", partTitle:"Contigo en cada etapa",
+  partSub:"Reporta una sospecha de reacción adversa o únete a nuestra red de distribución y socios estratégicos en todo México.",
+  pvTitle:"Farmacovigilancia",
+  pvIntro:"Tu reporte nos ayuda a vigilar la seguridad de nuestros productos. Notifica cualquier sospecha de reacción adversa relacionada con un producto de GABAME.",
+  pvWarnTitle:"Aviso importante",
+  pvWarn:"Este no es un canal de urgencias. Si tú o alguien más presenta una emergencia médica, acude de inmediato a servicios de salud o llama a emergencias.",
+  pvCta:"Reportar", pvConfidential:"La información se trata de forma confidencial y se utiliza únicamente con fines de seguridad del producto.",
+  partnerTitle:"Quiero ser socio", partnerBody:"Súmate a nuestra red de distribución y socios estratégicos en todo México.", partnerCta:"Quiero ser socio",
+  contactTitle:"Hablemos", contactSub:"Escríbenos y te responderemos dentro de nuestro horario de atención.",
+  contactPVNote:"¿Vas a notificar una sospecha de reacción adversa? Usa el canal de farmacovigilancia.",
+  cPhone:"Teléfono", cMail:"Correo", cHours:"Horario", cHoursVal:"Lunes a viernes, 8:00–18:00 h", cAddr:"Dirección",
+  formName:"Nombre", formEmail:"Correo", formPhone:"Teléfono (opcional)", formOrg:"Institución u organización",
+  formProfile:"Perfil", formMsg:"Mensaje", formNotifier:"Tipo de notificador", formProduct:"Producto sospechoso", formDesc:"Descripción",
+  prof1:"Profesional de la salud", prof2:"Distribuidor", prof3:"Socio estratégico", prof4:"Institución",
+  notifier1:"Paciente o cuidador", notifier2:"Profesional de la salud", notifier3:"Otro",
+  send:"Enviar", sent:"Enviado", sendReport:"Enviar reporte",
+  footerTag:"Grupo mexicano de salud desde 2013.", footerSite:"Sitio", footerLegal:"Legal", footerSocial:"Síguenos",
+  portalSoon:"Portal de clientes · próximamente", socialSoon:"WhatsApp y otras redes · próximamente",
+  privacyTitle:"Aviso de privacidad",
+  privacyPending:"Texto preliminar. La versión definitiva está pendiente de validación legal.",
+  privacyBody:"GABAME Human Health trata los datos personales que nos proporcionas con la finalidad de atender tu solicitud de contacto, gestionar relaciones comerciales y, en su caso, dar seguimiento a notificaciones de farmacovigilancia. No se comparten con terceros salvo obligación legal o requerimiento de la autoridad sanitaria. Puedes ejercer tus derechos de acceso, rectificación, cancelación y oposición escribiendo a contacto@gabame.com.",
+  close:"Cerrar",
+  botTitle:"Asistente GABAME", botBody:"Resolverá dudas sobre áreas, portafolio y contacto.", botBadge:"Beta · Próximamente",
+  areas:[["Cardiometabólico","Soluciones para el manejo de enfermedades cardiovasculares y metabólicas."],["Oncología","Terapias de apoyo al tratamiento oncológico."],["Hospitalario","Productos para el entorno hospitalario y de cuidado agudo."],["Urología","Tratamientos para la salud urológica."],["Sistema Nervioso Central","Terapias para trastornos del sistema nervioso central."],["Oftalmología","Productos para el cuidado de la salud visual."]],
+  figures:[["2013","Fundación"],["~250","Colaboradores"],["6","Áreas terapéuticas"]],
+  brands:[["GABAME","Activo"],["Medinter","Fase posterior"],["Ordan","Fase posterior"],["A7","Fase posterior"]]
+};
+const EN = {
+  navHome:"Home", navAreas:"Areas", navPortfolio:"Portfolio", navAbout:"About", navEco:"Ecosystem", navPartners:"Partners", navContact:"Contact",
+  ctaContact:"Contact us",
+  heroTag:"Mexican health group · Since 2013",
+  heroTitle:"Health with real impact",
+  heroSub:"We develop high-value products and turn them into strong, relevant brands across Mexico.",
+  heroCta1:"View Rx portfolio",
+  mediaVideo:"reserved · institutional video 16:9", mediaVideoRx:"reserved · Rx portfolio video 9:16",
+  areasTag:"Portfolio · Therapeutic areas", areasTitle:"Six areas, one mission",
+  areasSub:"We cover the needs of the Mexican health system with a specialised Rx portfolio.",
+  areasCta1:"View portfolio", areasCta2:"About us",
+  portTag:"Featured Rx portfolio", portTitle:"A specialised Rx portfolio",
+  portSub:"Each brand with its own positioning; the full product page is developed separately.",
+  portState:"Product pages in preparation",
+  portNote:"Clinical data, molecule and posology are added to each product page after regulatory validation (COFEPRIS).",
+  portCta1:"Product pages", portCta2:"Request information",
+  aboutTitle:"A Mexican benchmark in health",
+  aboutBody:"We are a health-focused group dedicated to developing high-value products and turning them into strong, relevant brands. Through our in-house brand-building and distribution capabilities, we ensure efficient operations and scalable growth across the Mexican market.",
+  aboutCta2:"Our ecosystem",
+  purposeTitle:"Purpose", purpose:"We make a real, positive impact on people, strengthening their health and overall wellbeing through responsible products and services.",
+  visionTitle:"Vision", vision:"To be a Mexican benchmark that inspires pride, empowers people, and shows that effort and passion turn any dream into reality.",
+  doTitle:"What we do", figuresTitle:"In figures", closeTitle:"Shall we work together?",
+  ecoTag:"Group ecosystem", ecoTitle:"Four brands, one standard",
+  ecoSub:"GABAME is the gateway to an ecosystem that will connect with Medinter, Ordan and A7.",
+  ecoNote:"Medinter, Ordan and A7 go live in later phases.",
+  ecoCta1:"Explore ecosystem", ecoCta2:"Become a partner",
+  partTag:"Commitment · Collaboration", partTitle:"With you at every stage",
+  partSub:"Report a suspected adverse reaction or join our distribution and strategic partner network across Mexico.",
+  pvTitle:"Pharmacovigilance",
+  pvIntro:"Your report helps us monitor the safety of our products. Notify any suspected adverse reaction related to a GABAME product.",
+  pvWarnTitle:"Important notice",
+  pvWarn:"This is not an emergency channel. If you or someone else has a medical emergency, go to health services immediately or call emergency numbers.",
+  pvCta:"Report", pvConfidential:"Information is handled confidentially and used solely for product safety purposes.",
+  partnerTitle:"Become a partner", partnerBody:"Join our distribution and strategic partner network across Mexico.", partnerCta:"Become a partner",
+  contactTitle:"Let's talk", contactSub:"Write to us and we will reply within our business hours.",
+  contactPVNote:"Reporting a suspected adverse reaction? Use the pharmacovigilance channel.",
+  cPhone:"Phone", cMail:"Email", cHours:"Hours", cHoursVal:"Monday to Friday, 8:00–18:00", cAddr:"Address",
+  formName:"Name", formEmail:"Email", formPhone:"Phone (optional)", formOrg:"Institution or organisation",
+  formProfile:"Profile", formMsg:"Message", formNotifier:"Reporter type", formProduct:"Suspected product", formDesc:"Description",
+  prof1:"Healthcare professional", prof2:"Distributor", prof3:"Strategic partner", prof4:"Institution",
+  notifier1:"Patient or caregiver", notifier2:"Healthcare professional", notifier3:"Other",
+  send:"Send", sent:"Sent", sendReport:"Send report",
+  footerTag:"Mexican health group since 2013.", footerSite:"Site", footerLegal:"Legal", footerSocial:"Follow us",
+  portalSoon:"Client portal · coming soon", socialSoon:"WhatsApp and other channels · coming soon",
+  privacyTitle:"Privacy notice",
+  privacyPending:"Preliminary text. The final version is pending legal validation.",
+  privacyBody:"GABAME Human Health processes the personal data you provide in order to handle your enquiry, manage commercial relationships and, where applicable, follow up on pharmacovigilance reports. Data is not shared with third parties except where required by law or by the health authority. You may exercise your rights of access, rectification, cancellation and objection by writing to contacto@gabame.com.",
+  close:"Close",
+  botTitle:"GABAME assistant", botBody:"It will answer questions on areas, portfolio and contact.", botBadge:"Beta · Coming soon",
+  areas:[["Cardiometabolic","Solutions for managing cardiovascular and metabolic disease."],["Oncology","Supportive therapies for oncology treatment."],["Hospital","Products for the hospital and acute care setting."],["Urology","Treatments for urological health."],["Central Nervous System","Therapies for central nervous system disorders."],["Ophthalmology","Products for visual health care."]],
+  figures:[["2013","Founded"],["~250","Employees"],["6","Therapeutic areas"]],
+  brands:[["GABAME","Active"],["Medinter","Later phase"],["Ordan","Later phase"],["A7","Later phase"]]
+};
+
+class Component extends DCLogic {
+  state = { lang: "es", page: "home", privacy: false, sent: false, area: 0 };
+
+  go(page) { return (e) => { if (e) e.preventDefault(); this.setState({ page, sent: false }); window.scrollTo(0, 0); }; }
+
+  anchor(id) {
+    return (e) => {
+      if (e) e.preventDefault();
+      const jump = () => {
+        const el = document.getElementById(id);
+        if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: "smooth" });
+      };
+      if (this.state.page !== "home") this.setState({ page: "home" }, () => setTimeout(jump, 60));
+      else jump();
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const d = s.lang === "es" ? ES : EN;
+    const navItem = (active) => ({
+      color: "#000", display: "flex", alignItems: "center", padding: "10px 14px",
+      background: active ? "#3D89FD" : "transparent",
+      borderBottom: active ? "3px solid #000" : "3px solid transparent"
+    });
+    const nav = (p) => navItem(s.page === p);
+    return {
+      t: d,
+      areas: d.areas.map(([name, desc], i) => ({ name, desc, num: String(i + 1).padStart(2, "0") })),
+      areaRows: d.areas.map(([name], i) => ({
+        name,
+        num: String(i + 1).padStart(2, "0"),
+        arrow: s.area === i ? "→" : "",
+        select: () => this.setState({ area: i }),
+        rowStyle: {
+          display: "flex", alignItems: "center", gap: "20px", width: "100%", cursor: "pointer",
+          padding: "20px 22px", border: "0", borderBottom: "1px solid rgba(0,0,0,.18)",
+          background: s.area === i ? "#3D89FD" : "transparent", color: "#000", font: "inherit"
+        }
+      })),
+      selectedNum: String(s.area + 1).padStart(2, "0"),
+      selectedName: d.areas[s.area][0],
+      selectedDesc: d.areas[s.area][1],
+      figures: d.figures.map(([n, label]) => ({ n, label })),
+      brands: d.brands.map(([name, state], i) => ({
+        name, state,
+        stateBg: i === 0 ? "#000" : "transparent", stateColor: i === 0 ? "#FFF" : "#000",
+        chipBg: i === 0 ? "#3D89FD" : "transparent",
+        dotStyle: { width: "16px", height: "16px", borderRadius: "999px", margin: "0 0 22px", background: i === 0 ? "#000" : "#3D89FD" },
+        chipColor: "#000",
+        tileStyle: {
+          padding: "26px 24px 24px", minHeight: "220px", display: "flex", flexDirection: "column",
+          background: i === 0 ? "#3D89FD" : "#FFFFFF",
+          border: i === 0 ? "2px solid #3D89FD" : "2px solid #000",
+          borderTop: "6px solid #3D89FD",
+          color: "#000"
+        }
+      })),
+      isHome: s.page === "home", isPortfolio: s.page === "portfolio", isAbout: s.page === "about", isPV: s.page === "pv", isContact: s.page === "contact",
+      goHome: this.go("home"), goPortfolio: this.go("portfolio"), goAbout: this.go("about"), goPV: this.go("pv"), goContact: this.go("contact"),
+      goAreas: this.anchor("areas"), goEco: this.anchor("ecosistema"), goPartners: this.anchor("socios"),
+      navPlain: navItem(false),
+      navHome: nav("home"), navPortfolio: nav("portfolio"), navAbout: nav("about"), navContact: nav("contact"),
+      toggleLang: () => this.setState({ lang: s.lang === "es" ? "en" : "es" }),
+      langLabel: s.lang === "es" ? "EN" : "ES",
+      privacyOpen: s.privacy,
+      openPrivacy: (e) => { if (e) e.preventDefault(); this.setState({ privacy: true }); },
+      closePrivacy: () => this.setState({ privacy: false }),
+      submit: () => this.setState({ sent: true }),
+      submitContact: s.sent ? d.sent : d.send,
+      submitPV: s.sent ? d.sent : d.sendReport
+    };
+  }
+}
+
+</script>
+</body>
+</html>

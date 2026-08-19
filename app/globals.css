@@ -1,0 +1,2176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================================
+   GABAME — SISTEMA DE DISEÑO (v9)
+   Esquinas rectas, sin sombras, filetes sólidos. Un solo tema.
+
+   PALETA ESTRICTA: #3D89FD, negro y blanco. Cualquier gris o profundidad se
+   construye con rgba() de esos tres. Ningún hex nuevo.
+
+   TIPOGRAFÍA: Barlow Condensed (titulares, nav, etiquetas, cifras) + Inter
+   (cuerpo). Aprobadas con el cliente.
+   ========================================================================== */
+
+:root {
+  --blue: #3D89FD;
+
+  /* Derivados permitidos (solo opacidad de negro/blanco) */
+  --on-white: rgba(0, 0, 0, 0.82);
+  --on-black: rgba(255, 255, 255, 0.86);
+  --rule-dark: rgba(0, 0, 0, 0.2);
+  --rule-light: rgba(255, 255, 255, 0.24);
+
+  /**
+   * Velo del suelo claro. El blanco puro a pantalla completa deslumbra y
+   * aplana; un velo de negro lo asienta sin sacar un gris nuevo de la nada
+   * (mismo recurso que usaban los fondos claros del sitio v1).
+   * Subir o bajar este valor cambia el gris de TODO el sitio.
+   *
+   * 0.08 → rgb(235). Se pudo pasar de 0.05 al retirar el azul como texto de
+   * las superficies claras; mientras estuvo ahí, el tope era 0.05.
+   */
+  --veil: rgba(0, 0, 0, 0.08);
+
+  /* Retícula */
+  --container: 1600px;
+  --pad-x: 40px;
+  --section-y: 96px;
+
+  /* Radios. La familia de botones y chips va en pastilla; las superficies
+     (secciones, tablas, filetes) siguen rectas — es lo que sostiene el
+     carácter sobrio del sistema. */
+  --r-btn: 999px;
+  --r-chip: 999px;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --pad-x: 20px;
+    --section-y: 64px;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Compensa la cabecera pegajosa YA CONDENSADA al saltar a un ancla:
+     cuando el salto ocurre, la barra de utilidades ya se retrajo. */
+  scroll-padding-top: 96px;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(var(--veil), var(--veil)), #fff;
+  color: #000;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  /* Red de seguridad contra scroll lateral. `clip` y NO `hidden`: `hidden`
+     convierte al body en contenedor de scroll, lo que rompe `position: sticky`
+     y los eventos de scroll de window. */
+  overflow-x: clip;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display), 'Arial Narrow', sans-serif;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: clamp(40px, 6vw, 88px);
+  line-height: 0.94;
+  letter-spacing: 0.005em;
+}
+h2 {
+  font-size: clamp(34px, 5vw, 64px);
+  line-height: 0.98;
+}
+h3 {
+  font-size: clamp(22px, 2.4vw, 32px);
+  line-height: 1;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* Accesibilidad ------------------------------------------------------------ */
+:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 200;
+  background: var(--blue);
+  color: #000;
+  padding: 12px 20px;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Primitivas --------------------------------------------------------------- */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-left: var(--pad-x);
+  padding-right: var(--pad-x);
+}
+
+.section {
+  padding-top: var(--section-y);
+  padding-bottom: var(--section-y);
+  /* Marco de referencia para `.atmo`, que va absoluta a `inset: 0`. Ponerlo
+     aquí evita repetir `position: relative` en cada sección que la use. */
+  position: relative;
+}
+/* La atmósfera lleva `z-index: 0`, y eso la sitúa en la capa de los elementos
+   posicionados: por encima del contenido en flujo normal. El contenedor tiene
+   que subir con ella o el texto queda debajo del resplandor. */
+.section > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Superficies. Sobre azul el texto va SIEMPRE en negro (6.19:1).
+   El color del texto secundario se pasa por variable (`--ink-soft`) en vez de
+   por selector descendente: así una superficie ANIDADA gana siempre sobre la
+   que la contiene. Con reglas tipo `.surface-white .lead` un bloque negro
+   dentro de una sección blanca heredaba tinta negra y el texto desaparecía. */
+.surface-blue {
+  background: var(--blue);
+  color: #000;
+  /* Sobre azul nunca alpha < .8: el negro va sólido. */
+  --ink-soft: #000;
+}
+.surface-black {
+  background: #000;
+  color: #fff;
+  --ink-soft: var(--on-black);
+}
+.surface-white {
+  background: linear-gradient(var(--veil), var(--veil)), #fff;
+  color: #000;
+  --ink-soft: var(--on-white);
+}
+
+.eyebrow {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.17em;
+  line-height: 1.2;
+}
+
+.lead {
+  font-size: clamp(17px, 1.3vw, 20px);
+  line-height: 1.6;
+  max-width: 62ch;
+  color: var(--ink-soft, inherit);
+}
+
+/* Botones — rectos, sin radio, sin sombra ---------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  padding: 15px 30px;
+  border: 2px solid transparent;
+  border-radius: var(--r-btn);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease,
+    transform 0.18s cubic-bezier(0.22, 0.7, 0.25, 1);
+}
+/* Sin sombras en el sistema: el relieve se sugiere con un desplazamiento
+   mínimo, y se devuelve al pulsar. */
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn:active {
+  transform: translateY(0);
+}
+.btn-blue {
+  background: var(--blue);
+  color: #000;
+  border-color: var(--blue);
+}
+.btn-blue:hover {
+  background: #000;
+  color: var(--blue);
+  border-color: #000;
+}
+.btn-black {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+.btn-black:hover {
+  background: transparent;
+  color: #000;
+}
+.btn-white {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+.btn-white:hover {
+  background: transparent;
+  color: #fff;
+}
+.btn-outline-black {
+  background: transparent;
+  color: #000;
+  border-color: #000;
+}
+.btn-outline-black:hover {
+  background: #000;
+  color: #fff;
+}
+.btn-outline-white {
+  background: transparent;
+  color: #fff;
+  border-color: #fff;
+}
+.btn-outline-white:hover {
+  background: #fff;
+  color: #000;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* Chip de estado */
+.chip {
+  display: inline-block;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  padding: 8px 14px;
+  border-radius: var(--r-chip);
+  white-space: nowrap;
+  max-width: 100%;
+}
+/* En pantallas estrechas «Fichas en preparación» no cabe en una línea:
+   se le permite romper en vez de empujar el ancho del documento. */
+@media (max-width: 560px) {
+  .chip {
+    white-space: normal;
+    line-height: 1.25;
+    font-size: 13px;
+    padding: 7px 12px;
+  }
+}
+.chip-blue {
+  background: var(--blue);
+  color: #000;
+}
+.chip-outline {
+  border: 2px solid currentColor;
+}
+
+/* Nota con filete azul a la izquierda */
+.note {
+  border-left: 3px solid var(--blue);
+  padding-left: 16px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink-soft, inherit);
+}
+
+/* ---------------------------------------------------------------- CABECERA */
+/* Negra, según la referencia del cliente. Todo lo que dentro era negro sobre
+   blanco pasa a blanco sobre negro; el azul se queda donde estaba. */
+.site-chrome {
+  position: sticky;
+  top: 0;
+  /* Por encima del panel móvil: así el botón de cerrar sigue accesible. */
+  z-index: 90;
+  background: #000;
+  color: #fff;
+  border-bottom: 3px solid var(--blue);
+  transition: border-bottom-width 0.25s ease;
+}
+/* Al condensarse el filete se afina: la cabecera se percibe más ligera. */
+.site-chrome.is-condensed {
+  border-bottom-width: 2px;
+}
+
+.site-header-inner {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2vw, 28px);
+  padding-top: 14px;
+  padding-bottom: 14px;
+  transition: padding 0.25s ease;
+}
+.site-chrome.is-condensed .site-header-inner {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+/* =========================================================== ATMÓSFERA ======
+   Auroras azules derivando + rejilla con paneo. Retomado del v1.
+
+   Solo se anima `transform`: nada de `filter` ni `background-position`, que
+   obligan a repintar en cada fotograma. El recorte vive en `.atmo`, así el
+   contenedor no necesita `overflow` y el panel puede seguir sobresaliendo.
+   ========================================================================== */
+.atmo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: clip;
+  pointer-events: none;
+  contain: paint;
+}
+/* Resplandor azul FIJO bajo las auroras, del idiom del v1 (`.bg-light`): es el
+   color de base sobre el que las auroras se leen como cambios de luz.
+   Sin rejilla encima puede ir más franco. */
+.atmo-light {
+  background: radial-gradient(
+      1000px 620px at 74% 18%,
+      rgba(61, 137, 253, 0.26),
+      transparent 64%
+    ),
+    radial-gradient(
+      760px 520px at 22% 96%,
+      rgba(61, 137, 253, 0.16),
+      transparent 62%
+    );
+}
+
+/* Tono AZUL. Sobre el color de marca no se puede usar la aurora azul —azul
+   sobre azul no se ve— y la paleta prohíbe sacar un segundo azul. La
+   profundidad se hace con LUZ y SOMBRA del mismo sistema: blanco y negro.
+
+   El reparto no es simétrico y es a propósito: sobre azul el texto va en negro
+   (6,19:1), así que aclarar SUBE el contraste y oscurecer lo BAJA. Un velo del
+   18% ya deja el negro en 4,37:1 y rompe AA. Por eso la pieza grande que se
+   mueve es la blanca y la negra va corta: el punto más oscuro se mantiene
+   dentro de presupuesto en vez de depender de dónde coincidan dos capas. */
+.atmo-blue {
+  background: radial-gradient(
+      900px 560px at 10% -8%,
+      rgba(255, 255, 255, 0.1),
+      transparent 62%
+    ),
+    radial-gradient(
+      1100px 680px at 94% 108%,
+      rgba(0, 0, 0, 0.06),
+      transparent 66%
+    );
+}
+/* La blanca es la que puede crecer: aclarar el azul SUBE el contraste con el
+   negro. Con el reparto inicial el movimiento medía 0,6/255 de media, por
+   debajo del umbral al que se percibe; la atmósfera clara del resto del sitio
+   trabaja alrededor de 3. */
+.atmo-blue .atmo-a1 {
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.38),
+    rgba(255, 255, 255, 0) 70%
+  );
+  opacity: 1;
+}
+.atmo-blue .atmo-a2 {
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0) 68%);
+  opacity: 0.55;
+}
+
+.atmo-aurora {
+  position: absolute;
+  /* Tamaño en px, no en vmax: en un monitor grande un blur de 40px sobre
+     60vmax se vuelve carísimo y el efecto no mejora. */
+  width: clamp(420px, 52vw, 820px);
+  height: clamp(420px, 52vw, 820px);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(61, 137, 253, 0.5),
+    rgba(61, 137, 253, 0) 68%
+  );
+  filter: blur(40px);
+  will-change: transform;
+}
+.atmo-light .atmo-aurora {
+  opacity: 0.45;
+}
+.atmo-dark .atmo-aurora {
+  opacity: 0.5;
+  mix-blend-mode: screen;
+}
+
+/* Colocadas donde SE VEN: el panel azul es opaco y ocupa los 1000px de la
+   izquierda, así que una aurora arriba a la izquierda no se lee nunca. Van a la
+   columna derecha y a la franja inferior. */
+/* Tiempos y recorridos del v1: ciclos largos con `ease-in-out` alterno. Lo que
+   se lee no es el desplazamiento en sí, sino el cambio lento de luz sobre un
+   área grande. */
+.atmo-a1 {
+  top: -26%;
+  right: -6%;
+  animation: atmoDerivaA 22s ease-in-out infinite alternate;
+}
+.atmo-a2 {
+  bottom: -34%;
+  left: 38%;
+  width: clamp(360px, 44vw, 700px);
+  height: clamp(360px, 44vw, 700px);
+  animation: atmoDerivaB 28s ease-in-out infinite alternate;
+}
+@keyframes atmoDerivaA {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(12%, 8%, 0) scale(1.16);
+  }
+}
+@keyframes atmoDerivaB {
+  from {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  to {
+    transform: translate3d(-10%, -8%, 0) scale(1.22);
+  }
+}
+
+/* La rejilla del v1 estuvo aquí y se retiró de los dos tonos: ver la nota de
+   `components/shared/Atmosphere.tsx`. El original sigue en
+   `docs/design-v9/v9.html` por si hay que recuperarlo. */
+
+/* ------------------------------------------------------------- LOCKUP -----
+   Símbolo del cliente recortado a su caja + nombre en Barlow Condensed.
+   El símbolo se pinta por máscara: silueta exacta, tinta de marca. */
+.lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lockup-gap, 12px);
+}
+.lockup-mark {
+  flex: 0 0 auto;
+  /* Proporción real del hexágono recortado (567 × 718). */
+  height: var(--lockup-size, 44px);
+  width: calc(var(--lockup-size, 44px) * 0.79);
+  background: var(--lockup-ink, var(--blue));
+  -webkit-mask-image: url('/media/gabame-mark.png');
+  mask-image: url('/media/gabame-mark.png');
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  transition: height 0.25s ease, width 0.25s ease;
+}
+.lockup-words {
+  display: grid;
+  gap: 1px;
+}
+.lockup-name {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: var(--lockup-name-size, 30px);
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  transition: font-size 0.25s ease;
+}
+.lockup-tag {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: var(--lockup-tag-size, 12px);
+  line-height: 1;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  /* Sobre blanco el azul da 3,39:1 y NO pasa AA en texto pequeño: la bajada va
+     en negro atenuado. El azul se reserva para fondos oscuros (6,06:1 sobre
+     negro), que es donde sí cumple — ver `.footer-lockup`. */
+  color: var(--lockup-tag-ink, rgba(0, 0, 0, 0.72));
+  transition: font-size 0.25s ease;
+}
+
+/* El lockup NUNCA se comprime: es un item flex que no encoge. Sin esto, la
+   navegación lo aplastaba un 33% por debajo de 1180px. */
+.brand {
+  flex: 0 0 auto;
+  display: block;
+  --lockup-size: 46px;
+  --lockup-name-size: 30px;
+  --lockup-tag-size: 12px;
+  /* Sobre negro el azul cumple AA (6,06:1): la etiqueta va en azul. */
+  --lockup-tag-ink: var(--blue);
+  color: #fff;
+}
+.site-chrome.is-condensed .brand {
+  --lockup-size: 36px;
+  --lockup-name-size: 24px;
+  --lockup-tag-size: 10px;
+}
+@media (max-width: 860px) {
+  .brand {
+    --lockup-size: 38px;
+    --lockup-name-size: 25px;
+    --lockup-tag-size: 10px;
+    --lockup-gap: 10px;
+  }
+}
+
+/* La navegación cuelga del lockup, no del borde derecho.
+   Con `margin-left: auto` quedaban 342px de vacío tras la marca y los nueve
+   controles se apelotonaban en el tercio derecho: los siete enlaces terminaban
+   a 28px del conmutador de idioma, así que navegación y acciones se leían como
+   una sola tirada. Ahora la barra tiene tres zonas: marca + navegación a la
+   izquierda —donde se alinea todo lo demás del sitio— y acciones al otro
+   extremo, separadas por el hueco. */
+.site-nav {
+  margin-left: clamp(16px, 3vw, 56px);
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.6vw, 22px);
+}
+/* El subrayado no se enciende: se DIBUJA de izquierda a derecha, tanto al
+   pasar el cursor como al entrar en la sección. Un borde que aparece de golpe
+   se lee como parpadeo; un trazo que crece se lee como recorrido. */
+.nav-link {
+  position: relative;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: clamp(15px, 1.25vw, 18px);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  padding: 4px 0 7px;
+  transition: color 0.18s ease;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--blue);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.28s cubic-bezier(0.22, 0.7, 0.25, 1);
+}
+.nav-link:hover::after,
+.nav-link:focus-visible::after,
+.nav-link.is-active::after {
+  transform: scaleX(1);
+}
+/* Sobre negro el azul sí cumple AA a este tamaño (6,06:1), así que el hover
+   puede teñir además de dibujar el trazo. Sobre blanco no podía (3,39:1). */
+.nav-link:hover {
+  color: var(--blue);
+}
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+.lang-switch {
+  border: 1px solid #fff;
+  border-radius: var(--r-btn);
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: transparent;
+  color: #fff;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease,
+    transform 0.18s cubic-bezier(0.22, 0.7, 0.25, 1);
+}
+.lang-switch:hover {
+  background: #fff;
+  color: #000;
+  transform: translateY(-2px);
+}
+.header-cta {
+  padding: 12px 24px;
+  font-size: 16px;
+  white-space: nowrap;
+}
+/* Bloque de teléfono, de la referencia: icono en disco azul + etiqueta y
+   número en dos líneas. Es un enlace tel: entero. */
+.header-phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 6px;
+  color: #fff;
+}
+.header-phone-ic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #000;
+  display: grid;
+  place-items: center;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+.header-phone:hover .header-phone-ic {
+  background: #fff;
+}
+.header-phone-tx {
+  display: grid;
+  gap: 2px;
+  line-height: 1;
+}
+.header-phone-k {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-black);
+}
+.header-phone-v {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+/* Por debajo de 1380 no caben nav + idioma + botón + teléfono: el teléfono
+   es lo primero que se va (sigue en el pie, en contacto y en el panel móvil). */
+@media (max-width: 1380px) {
+  .header-phone {
+    display: none;
+  }
+}
+
+.menu-toggle {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  border: 1px solid #fff;
+  border-radius: var(--r-btn);
+  background: transparent;
+  color: #fff;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+/* Las tres barras se convierten en aspa al abrir. */
+.menu-bars {
+  position: relative;
+  width: 18px;
+  height: 14px;
+}
+.menu-bars span {
+  position: absolute;
+  left: 0;
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  transition: transform 0.28s cubic-bezier(0.22, 0.7, 0.25, 1), opacity 0.18s ease;
+}
+.menu-bars span:nth-child(1) {
+  top: 0;
+}
+.menu-bars span:nth-child(2) {
+  top: 6px;
+}
+.menu-bars span:nth-child(3) {
+  top: 12px;
+}
+.menu-toggle[aria-expanded='true'] .menu-bars span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+.menu-toggle[aria-expanded='true'] .menu-bars span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0.4);
+}
+.menu-toggle[aria-expanded='true'] .menu-bars span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* El lockup responde al cursor: el símbolo respira, el conjunto no se mueve. */
+.brand .lockup-mark {
+  transition: transform 0.3s cubic-bezier(0.22, 0.7, 0.25, 1), height 0.25s ease,
+    width 0.25s ease;
+}
+.brand:hover .lockup-mark {
+  transform: rotate(-20deg) scale(1.06);
+}
+
+/* Por debajo de 1080 la fila de 7 enlaces ya no cabe sin apretarse:
+   pasa a panel. Antes envolvía a una tercera línea a ancho completo. */
+@media (max-width: 1080px) {
+  .site-nav,
+  .header-tools {
+    display: none;
+  }
+  .menu-toggle {
+    display: inline-flex;
+  }
+}
+/* Panel de navegación a pantalla completa (móvil y tablet) */
+.menu-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 85;
+  background: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
+  padding: 96px clamp(20px, 6vw, 56px) 48px;
+  overflow-y: auto;
+  animation: panelEntra 0.28s ease both;
+}
+.menu-panel[hidden] {
+  display: none;
+}
+@keyframes panelEntra {
+  from {
+    opacity: 0;
+  }
+}
+.menu-panel-nav {
+  display: grid;
+  gap: 2px;
+}
+/* `justify-self: start` o la rejilla estira el enlace a todo el ancho, y como
+   el trazo va a `left: 0; right: 0`, el subrayado del activo cruzaba el panel
+   entero: se leía como un separador, no como la marca de la palabra. */
+.menu-panel .nav-link {
+  justify-self: start;
+  font-size: clamp(28px, 7vw, 46px);
+  line-height: 1.15;
+  padding: 10px 0;
+  color: #fff;
+  /* Entrada escalonada: cada enlace entra un poco después del anterior. */
+  animation: enlaceEntra 0.42s cubic-bezier(0.22, 0.7, 0.25, 1) both;
+}
+@keyframes enlaceEntra {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+.menu-panel .nav-link:nth-child(1) { animation-delay: 0.04s; }
+.menu-panel .nav-link:nth-child(2) { animation-delay: 0.08s; }
+.menu-panel .nav-link:nth-child(3) { animation-delay: 0.12s; }
+.menu-panel .nav-link:nth-child(4) { animation-delay: 0.16s; }
+.menu-panel .nav-link:nth-child(5) { animation-delay: 0.2s; }
+.menu-panel .nav-link:nth-child(6) { animation-delay: 0.24s; }
+.menu-panel .nav-link:nth-child(7) { animation-delay: 0.28s; }
+/* En el panel el trazo va bajo el texto grande, no pegado al borde. */
+.menu-panel .nav-link::after {
+  height: 4px;
+}
+.menu-panel .nav-link:hover,
+.menu-panel .nav-link.is-active {
+  color: var(--blue);
+}
+.menu-panel-foot {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-top: 1px solid var(--rule-light);
+  padding-top: 28px;
+  animation: enlaceEntra 0.42s cubic-bezier(0.22, 0.7, 0.25, 1) 0.32s both;
+}
+.menu-panel .lang-switch {
+  border-color: #fff;
+  color: #fff;
+}
+.menu-panel .lang-switch:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* -------------------------------------------------------------------- HERO
+   Referencia del cliente: video a sangre con velo, texto centrado encima, y
+   una franja azul de tarjetas montada sobre el borde inferior del video. */
+.hero {
+  --strip-overlap: 72px;
+  position: relative;
+}
+/* Caja negra del video. Es el ANCESTRO del texto: su fondo (negro + velo) es
+   el que cuenta para el contraste, y el video solo lo decora. */
+.hero-media {
+  position: relative;
+  display: grid;
+  align-items: center;
+  min-height: clamp(560px, 80vh, 840px);
+  background: #000;
+  color: #fff;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+}
+.hero-bg video,
+.hero-bg img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+/* Velo: 0,62 de negro. Sobre el fotograma más claro posible (blanco) deja el
+   texto blanco en 5,8:1, así que AA no depende de lo que salga en el video. */
+.hero-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.62) 0%,
+    rgba(0, 0, 0, 0.62) 70%,
+    rgba(0, 0, 0, 0.78) 100%
+  );
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  /* Arriba, aire; abajo, sitio para la franja que monta. */
+  padding-top: 72px;
+  padding-bottom: calc(var(--strip-overlap) + 48px);
+}
+.hero-tag {
+  display: inline-block;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #000;
+  background: var(--blue);
+  border-radius: var(--r-chip);
+  padding: 9px 16px;
+}
+.hero-content h1 {
+  margin-top: 22px;
+  max-width: 16ch;
+  font-size: clamp(44px, 6.4vw, 96px);
+}
+.hero-content .lead {
+  margin-top: 20px;
+  max-width: 58ch;
+  color: rgba(255, 255, 255, 0.86);
+}
+.hero-content .btn-row {
+  margin-top: 32px;
+  justify-content: center;
+}
+
+/* Franja azul de cifras. Monta sobre el video con margen negativo; las
+   tarjetas van blancas sobre azul, como en la referencia. */
+.hero-strip {
+  position: relative;
+  z-index: 2;
+  margin: calc(-1 * var(--strip-overlap)) 0 0;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.hero-stat {
+  background: #fff;
+  color: #000;
+  border: 2px solid #000;
+  padding: 22px 24px;
+  display: grid;
+  gap: 6px;
+  text-align: center;
+}
+.hero-stat .stat-value {
+  margin: 0;
+  font-size: clamp(36px, 3.6vw, 52px);
+}
+.hero-stat .stat-label {
+  margin: 0;
+}
+@media (max-width: 760px) {
+  .hero-media {
+    min-height: 540px;
+  }
+  .hero-content {
+    align-items: flex-start;
+    text-align: left;
+    padding-top: 56px;
+  }
+  .hero-content .btn-row {
+    justify-content: flex-start;
+  }
+  .hero {
+    --strip-overlap: 48px;
+  }
+  .hero-strip {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 12px;
+  }
+  .hero-stat {
+    padding: 16px 18px;
+    text-align: left;
+  }
+}
+
+.stats-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 48px;
+  border-top: 2px solid currentColor;
+  padding: 26px 0 0;
+  margin: 34px 0 0;
+}
+/* La cifra hereda la tinta de su superficie. El azul se reserva para fondos
+   oscuros: sobre el gris claro no llega ni al 3:1 que exige el texto grande. */
+.stat-value {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: clamp(38px, 4vw, 56px);
+  line-height: 1;
+  color: inherit;
+}
+.surface-black .stat-value {
+  color: var(--blue);
+}
+.stat-label {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-top: 6px;
+}
+.surface-blue .stat-value {
+  /* Sobre azul el azul desaparece: la cifra va en negro sólido. */
+  color: #000;
+}
+
+/* ------------------------------------------------------------------- ÁREAS */
+.section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 24px 56px;
+  align-items: end;
+  margin-bottom: 56px;
+}
+.section-head .eyebrow {
+  margin-bottom: 12px;
+}
+@media (max-width: 900px) {
+  .section-head {
+    grid-template-columns: 1fr;
+    align-items: start;
+    margin-bottom: 40px;
+  }
+}
+
+.area-table {
+  border-top: 2px solid currentColor;
+}
+.area-row {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr) minmax(0, 1.2fr) auto;
+  gap: 20px 24px;
+  align-items: center;
+  padding: 22px 0;
+  border-bottom: 1px solid currentColor;
+}
+.area-num {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.14em;
+}
+.area-desc {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink-soft, inherit);
+}
+@media (max-width: 900px) {
+  .area-row {
+    grid-template-columns: 48px minmax(0, 1fr);
+    row-gap: 10px;
+  }
+  /* Los hijos que envuelven contenido deben poder encoger. */
+  .area-row > * {
+    min-width: 0;
+  }
+  .area-row .area-desc,
+  .area-row .chip {
+    grid-column: 2;
+  }
+  .area-row .chip {
+    justify-self: start;
+  }
+}
+
+/* -------------------------------------------------------------- PORTAFOLIO */
+/* El video es 9:16 y el texto de al lado mide un tercio de su alto. Con la
+   columna a 0.62fr y `align-items: start` quedaban 409px de negro muerto bajo
+   el texto. Columna más estrecha (marco más bajo) y contenido centrado: el aire
+   sobrante se reparte arriba y abajo y se lee como respiración, no como hueco. */
+.pf-grid {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.5fr) minmax(0, 1.5fr);
+  gap: 56px;
+  align-items: center;
+}
+.pf-frame {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  border: 1px solid #fff;
+  overflow: hidden;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.05) 0,
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px,
+    transparent 10px
+  );
+}
+.pf-frame video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pf-frame-slot {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  padding: 20px;
+}
+.pf-play {
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #000;
+  display: grid;
+  place-items: center;
+}
+.pf-slot-label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--on-black);
+}
+.pf-rows {
+  border-top: 1px solid var(--rule-light);
+  margin: 32px 0;
+}
+.pf-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--rule-light);
+}
+@media (max-width: 900px) {
+  .pf-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .pf-frame {
+    max-width: 300px;
+  }
+}
+
+/* ---------------------------------------------------------------- NOSOTROS
+   Foto con marco y sello a un lado, texto + cifras al otro (referencia). */
+.about-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: center;
+}
+.about-visual {
+  position: relative;
+  /* Sitio para el sello que sobresale por abajo a la derecha. */
+  padding: 0 28px 28px 0;
+}
+/* Marco negro grueso: es el filete de 6px del sistema, cerrado en caja. */
+.about-photo {
+  border: 6px solid #000;
+  overflow: hidden;
+  background: #000;
+  aspect-ratio: 4 / 3;
+}
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Sello: disco negro con el símbolo en azul, montado en la esquina inferior
+   derecha del marco. Es el punto de marca de la composición. */
+.about-seal {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: clamp(96px, 10vw, 140px);
+  height: clamp(96px, 10vw, 140px);
+  border-radius: 50%;
+  background: #000;
+  border: 4px solid var(--blue);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+/* El PNG trae un 72% de aire alrededor del hexágono: hay que pasarse del
+   100% para que el símbolo llene el disco. */
+.about-seal-mark {
+  width: 190%;
+  max-width: none;
+  height: auto;
+  /* El PNG es azul acero: se pasa a blanco y se tiñe de azul con la mezcla. */
+  filter: brightness(0) invert(1);
+  opacity: 0.95;
+}
+.about-copy {
+  display: grid;
+  gap: 18px;
+}
+.about-copy h2 {
+  margin-top: -6px;
+}
+.about-text {
+  font-size: clamp(17px, 1.3vw, 20px);
+  line-height: 1.55;
+  max-width: 60ch;
+}
+.about-copy .stats-strip {
+  margin-top: 8px;
+  gap: 16px 40px;
+}
+.about-copy .stat-value {
+  font-size: clamp(32px, 3vw, 44px);
+}
+.about-copy .btn-row {
+  margin-top: 6px;
+}
+@media (max-width: 900px) {
+  .about-layout {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .about-visual {
+    max-width: 560px;
+  }
+}
+
+/* --------------------------------------------------------------- ECOSISTEMA
+   Banda de una sola fila, según referencia del cliente: texto a la izquierda,
+   tira de tarjetas compactas a la derecha. Cada tarjeta es zona visual arriba
+   + etiqueta abajo, como una ficha de galería.
+
+   Las esquinas suaves son un token LOCAL, como en `.form-v1`: el resto del
+   sistema sigue recto. */
+#ecosistema {
+  --r-eco: 14px;
+  --section-y: 72px;
+}
+.eco-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 2.1fr);
+  gap: clamp(32px, 4vw, 64px);
+  align-items: center;
+}
+.eco-intro {
+  display: grid;
+  gap: 14px;
+}
+.eco-intro h2 {
+  font-size: clamp(30px, 3.4vw, 46px);
+}
+.eco-intro .lead {
+  font-size: 17px;
+}
+.eco-intro .btn-row {
+  margin-top: 8px;
+}
+
+/* Carrusel circular. La pista lleva el juego de tarjetas dos veces y recorre
+   la mitad de su ancho: el final de la primera copia coincide con el principio
+   de la segunda y el bucle no salta. Solo se anima `transform` (GPU).
+   La máscara difumina los bordes para que las tarjetas entren y salgan sin
+   cortarse contra el límite. */
+.eco-marquee {
+  --eco-gap: 16px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.eco-track {
+  display: flex;
+  gap: var(--eco-gap);
+  width: max-content;
+  /* El hueco final es el que separa la última tarjeta de la primera copia. */
+  padding-right: var(--eco-gap);
+  animation: ecoDesfile 32s linear infinite;
+  will-change: transform;
+}
+/* Al pasar el cursor o enfocar se detiene: es la única forma de leer una
+   tarjeta concreta sin perseguirla. */
+.eco-marquee:hover .eco-track,
+.eco-marquee:focus-within .eco-track {
+  animation-play-state: paused;
+}
+@keyframes ecoDesfile {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .eco-track {
+    animation: none;
+  }
+}
+.eco-card {
+  flex: 0 0 clamp(200px, 16.5vw, 236px);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  color: #000;
+  border: 2px solid #000;
+  border-radius: var(--r-eco);
+  overflow: hidden;
+}
+/* Zona visual: proporción fija para que las cuatro midan lo mismo aunque una
+   lleve símbolo y las otras la trama. */
+.eco-media {
+  aspect-ratio: 4 / 3;
+  display: grid;
+  place-items: center;
+  border-bottom: 2px solid #000;
+}
+.eco-card-active .eco-media {
+  background: var(--blue);
+}
+/* El PNG trae mucho aire alrededor del hexágono: al 56% de la caja el símbolo
+   se veía diminuto. Se deja crecer y que el aire propio del archivo haga de
+   margen. */
+.eco-mark {
+  width: 92%;
+  height: auto;
+  filter: brightness(0);
+  opacity: 0.85;
+  user-select: none;
+}
+/* Trama diagonal para las fases posteriores: es la misma que marca el hueco
+   del video en el portafolio, así que en este sistema ya significa
+   «todavía no». Cuando lleguen sus logotipos, entran aquí. */
+.eco-card-later .eco-media {
+  background-color: #fff;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.05) 0,
+    rgba(0, 0, 0, 0.05) 1px,
+    transparent 1px,
+    transparent 9px
+  );
+}
+/* El ordinal rima con la tabla de áreas terapéuticas. */
+.eco-num {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: clamp(34px, 3.4vw, 48px);
+  letter-spacing: 0.06em;
+  /* Decorativo (va en `aria-hidden`), pero se deja en 3:1 igualmente: a 0.22
+     se quedaba en 1,7 y en pantallas flojas desaparecía. */
+  color: rgba(0, 0, 0, 0.42);
+}
+.eco-body {
+  padding: 12px 14px 14px;
+  display: grid;
+  gap: 6px;
+}
+.eco-card h3 {
+  font-size: clamp(18px, 1.5vw, 22px);
+}
+.eco-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft, inherit);
+}
+.eco-dot {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.eco-card-active .eco-dot {
+  background: var(--blue);
+}
+.eco-card-later .eco-dot {
+  background: #000;
+}
+@media (max-width: 1180px) {
+  .eco-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .eco-intro {
+    max-width: 62ch;
+  }
+}
+/* En estrecho, el carrusel sale del contenedor y ocupa el ancho de la
+   pantalla: la máscara ya suaviza los bordes, y así se ven dos tarjetas y
+   media en vez de una y media. */
+@media (max-width: 760px) {
+  .eco-marquee {
+    margin-left: calc(-1 * var(--pad-x));
+    margin-right: calc(-1 * var(--pad-x));
+  }
+}
+
+/* ------------------------------------------------------------------ SOCIOS */
+.partners-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+}
+.partners-main {
+  padding: var(--section-y) clamp(24px, 4vw, 64px);
+  /* Mismo montaje que en las secciones: la atmósfera va detrás y el contenido
+     sube por encima. Aquí el contenido no vive en un `.container`, así que la
+     regla apunta a los hijos directos. */
+  position: relative;
+}
+.partners-main > *:not(.atmo) {
+  position: relative;
+  z-index: 1;
+}
+.partners-side {
+  padding: var(--section-y) clamp(24px, 4vw, 48px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+  position: relative;
+}
+.partners-side > *:not(.atmo) {
+  position: relative;
+  z-index: 1;
+}
+.pv-block {
+  margin-top: 40px;
+  border-top: 1px solid var(--rule-light);
+  padding-top: 28px;
+}
+.pv-block h3 {
+  color: var(--blue);
+}
+.pv-block .lead {
+  margin: 12px 0 22px;
+}
+@media (max-width: 900px) {
+  .partners-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ------------------------------------------------------------------- PIE */
+.site-footer {
+  background: #000;
+  color: var(--on-black);
+  padding-top: 52px;
+  padding-bottom: 24px;
+  /* Mismo tratamiento que los demás bloques negros del sitio. */
+  position: relative;
+}
+/* El pie NO usa el ancho de retícula del resto del sitio (1600px). Con cuatro
+   bloques cortos repartidos en 1360px las columnas quedaban tan separadas que
+   el pie se leía como cuatro islas. Se acota y se centra: es el bloque de
+   cierre, y un ancho propio más corto lo señala como tal.
+   Para ensancharlo o estrecharlo, este es el único número que hay que tocar. */
+.site-footer > .container {
+  position: relative;
+  z-index: 1;
+  max-width: 880px;
+}
+/* Mapa | contacto | sitio | legal. El mapa ancla la izquierda y se estira a
+   la altura de la fila, que la fija la lista de contacto (la dirección, lo
+   único largo del pie). Así las cuatro celdas miden lo mismo. */
+.footer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.45fr) minmax(0, 0.5fr) minmax(0, 0.85fr);
+  gap: 32px;
+  align-items: stretch;
+}
+.footer-grid h4 {
+  font-size: 16px;
+  letter-spacing: 0.14em;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.footer-list {
+  display: grid;
+  gap: 8px;
+  font-size: 15px;
+  line-height: 1.45;
+}
+.footer-list a:hover,
+.footer-privacy-link:hover {
+  color: var(--blue);
+}
+/* El aviso de privacidad abre un modal: es <button>, pero en el pie se lee
+   como un enlace más de la lista. */
+.footer-privacy-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+/* En la barra de cierre el lockup firma, no preside: a escala de barra. */
+.footer-lockup {
+  --lockup-size: 32px;
+  --lockup-name-size: 21px;
+  --lockup-tag-size: 9px;
+  --lockup-gap: 9px;
+  /* Sobre negro el azul sí cumple AA (6,06:1). */
+  --lockup-tag-ink: var(--blue);
+  color: #fff;
+}
+.footer-rights {
+  flex-basis: 100%;
+  font-size: 13px;
+  color: var(--on-black);
+}
+
+/* Mini mapa. Teselas del estilo `dark` de OpenFreeMap, que es monocromo de
+   fábrica —21 colores y todos grises, o sea negro y blanco en rgba, que es lo
+   que la paleta permite—. Se probó primero invertir el estilo claro por
+   filtro y las calles (blancas sobre casi blanco) desaparecían al invertir. */
+/* Se estira a la altura de la fila (`align-items: stretch` en la rejilla);
+   `min-height` es la red para cuando la fila es más baja que un mapa legible. */
+.footer-map {
+  position: relative;
+  min-height: 160px;
+  border: 1px solid var(--rule-light);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+}
+.footer-map-canvas {
+  position: absolute;
+  inset: 0;
+}
+/* La atribución es obligatoria (OSM), pero pequeña y sin fondo blanco.
+   MapLibre la arranca DESPLEGADA y solo la pliega con la primera interacción
+   —que aquí no llega nunca, el mapa no es interactivo—: en 290px de ancho el
+   texto tapaba medio mapa. Se pliega por CSS y se despliega al pasar el cursor
+   o al enfocar el botón, que es cómo funciona su modo compacto. */
+.footer-map-canvas .maplibregl-ctrl-attrib {
+  background: rgba(0, 0, 0, 0.7);
+  color: var(--on-black);
+  font-size: 10px;
+}
+.footer-map-canvas .maplibregl-ctrl-attrib.maplibregl-compact .maplibregl-ctrl-attrib-inner {
+  display: none;
+}
+.footer-map-canvas .maplibregl-ctrl-attrib.maplibregl-compact:hover .maplibregl-ctrl-attrib-inner,
+.footer-map-canvas .maplibregl-ctrl-attrib.maplibregl-compact:focus-within .maplibregl-ctrl-attrib-inner {
+  display: block;
+}
+.footer-map-canvas .maplibregl-ctrl-attrib a {
+  color: inherit;
+}
+.footer-map-canvas .maplibregl-ctrl-attrib-button {
+  filter: invert(1);
+}
+/* MapLibre mide el contenedor al crearse; si el pie aún no tiene su alto
+   final la caja del mapa sale con el alto por defecto de la librería (300px)
+   y el pin queda descentrado. Alto explícito, no solo `inset`. */
+.footer-map-canvas,
+.footer-map-canvas .maplibregl-canvas {
+  width: 100%;
+  height: 100%;
+}
+.footer-map-pin {
+  display: block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--blue);
+  border: 2px solid #000;
+  box-sizing: content-box;
+  /* Halo que respira: es el único punto de color del mapa y tiene que
+     encontrarse de un vistazo. */
+  animation: pinHalo 2.2s ease-out infinite;
+}
+@keyframes pinHalo {
+  0% {
+    outline: 0 solid rgba(61, 137, 253, 0.55);
+  }
+  100% {
+    outline: 12px solid rgba(61, 137, 253, 0);
+  }
+}
+/* El enlace cubre el mapa entero: un mapa pequeño es, en la práctica, un botón
+   de «cómo llegar». La etiqueta es una pastilla azul en la esquina. */
+.footer-map-link {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 8px;
+}
+.footer-map-link span {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #000;
+  background: var(--blue);
+  border-radius: var(--r-btn);
+  padding: 7px 12px;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+.footer-map-link:hover span {
+  background: #fff;
+}
+.footer-map-link:focus-visible {
+  outline-offset: -3px;
+}
+.footer-social {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+/* En móvil la barra envuelve y este grupo cae al final de la página, justo
+   donde el botón flotante del asistente está anclado: el mosaico quedaba
+   debajo y no se podía pulsar. Invertido, el enlace queda a la izquierda y el
+   botón flotante solo tapa texto. */
+@media (max-width: 760px) {
+  .footer-social {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+  }
+}
+.footer-social-note {
+  font-size: 14px;
+}
+/* Antes eran las letras «in» y «wa» dentro de cajas. El glifo real de LinkedIn
+   ya viene con los iconos que el sitio usa en la página de contacto, así que
+   no hace falta esperar a los SVG del cliente para esto. */
+.social-tile {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  transition: background 0.18s ease, color 0.18s ease,
+    transform 0.18s cubic-bezier(0.22, 0.7, 0.25, 1);
+}
+.social-tile-active {
+  background: var(--blue);
+  color: #000;
+}
+/* Misma inversión que los botones azules del sistema. */
+.social-tile-active:hover {
+  background: #fff;
+  transform: translateY(-2px);
+}
+/* Barra de cierre: marca | copyright | redes. Tres piezas, `space-between`;
+   en estrecho envuelve y cada una cae a su línea. */
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 24px;
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule-light);
+  font-size: 14px;
+}
+@media (max-width: 1180px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  /* En 2×2 el mapa deja de estirarse con la fila: proporción propia. */
+  .footer-map {
+    aspect-ratio: 16 / 9;
+  }
+}
+@media (max-width: 560px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* -------------------------------------------------------------- ASISTENTE
+   Lanzador en pastilla + panel de anuncio. Ver `AssistantButton.tsx`.
+
+   Azul sólido con borde negro: es la única combinación que llama sobre las
+   TRES superficies del sitio. Sobre negro y sobre claro llama el azul; sobre
+   azul, el borde negro lo recorta. Antes era negro con borde azul y sobre los
+   bloques negros —portafolio, socios, pie— desaparecía. */
+.assistant-launcher {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 80;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 54px;
+  padding: 0 22px 0 18px;
+  border-radius: var(--r-btn);
+  background: var(--blue);
+  border: 2px solid #000;
+  color: #000;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease,
+    transform 0.18s cubic-bezier(0.22, 0.7, 0.25, 1);
+  /* Halo que respira: mismo recurso que el pin del mapa. Es un `outline`
+     animado, no una sombra: el sistema no tiene sombras. */
+  animation: launcherHalo 2.8s ease-out infinite;
+}
+@keyframes launcherHalo {
+  0% {
+    outline: 0 solid rgba(61, 137, 253, 0.6);
+  }
+  70%,
+  100% {
+    outline: 14px solid rgba(61, 137, 253, 0);
+  }
+}
+/* En cuanto se abre una vez, el halo se apaga: ya sabes que está. */
+.assistant-launcher.is-seen,
+.assistant-launcher[aria-expanded='true'] {
+  animation: none;
+}
+/* Y el foco de teclado tiene que verse por encima del halo. */
+.assistant-launcher:focus-visible {
+  animation: none;
+  outline: 3px solid #000;
+  outline-offset: 3px;
+}
+/* El icono destella suave, desfasado del halo: dos ritmos distintos se leen
+   como vida, uno solo se lee como alarma. */
+.assistant-spark {
+  animation: sparkTwinkle 2.8s ease-in-out infinite;
+  animation-delay: -1.1s;
+  transform-origin: center;
+}
+@keyframes sparkTwinkle {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.18) rotate(-12deg);
+    opacity: 0.85;
+  }
+}
+.assistant-launcher.is-seen .assistant-spark {
+  animation: none;
+}
+/* Al pasar el cursor invierte, como los botones azules del sistema. */
+.assistant-launcher:hover,
+.assistant-launcher[aria-expanded='true'] {
+  background: #000;
+  color: var(--blue);
+  transform: translateY(-2px);
+}
+/* En estrecho la etiqueta sobra: queda el icono, y el lanzador vuelve a ser
+   compacto (54×54) para no tapar los botones de envío de la misma esquina. */
+@media (max-width: 760px) {
+  .assistant-launcher {
+    padding: 0 15px;
+  }
+  .assistant-launcher-label {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .assistant-launcher,
+  .assistant-spark {
+    animation: none;
+  }
+}
+
+.assistant-panel {
+  position: fixed;
+  right: 20px;
+  bottom: 88px;
+  z-index: 80;
+  width: min(360px, calc(100vw - 40px));
+  background: #000;
+  color: #fff;
+  border: 2px solid var(--blue);
+  padding: 22px 22px 24px;
+  display: grid;
+  gap: 14px;
+  animation: assistantEntra 0.24s cubic-bezier(0.22, 0.7, 0.25, 1) both;
+}
+@keyframes assistantEntra {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.assistant-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.assistant-badge {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+.assistant-panel h2 {
+  font-size: 24px;
+  margin-top: 6px;
+}
+.assistant-close {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: 1px solid var(--rule-light);
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+}
+.assistant-close:hover {
+  background: #fff;
+  color: #000;
+}
+.assistant-greeting {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--on-black);
+}
+.assistant-notice {
+  border-left: 3px solid var(--blue);
+  padding-left: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--on-black);
+}
+.assistant-panel .btn {
+  justify-self: start;
+}
+
+/* ------------------------------------------------------------------ MODAL */
+.modal-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: rgba(0, 0, 0, 0.76);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+.modal-card {
+  background: #fff;
+  color: #000;
+  width: min(720px, 100%);
+  max-height: 84vh;
+  overflow-y: auto;
+  padding: 32px;
+}
+.modal-notice {
+  background: var(--blue);
+  color: #000;
+  padding: 14px 16px;
+  font-size: 15px;
+  margin: 18px 0;
+}
+.modal-close {
+  border: 2px solid #000;
+  border-radius: var(--r-btn);
+  background: transparent;
+  color: #000;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+/* ======================================================= FORMULARIOS (v1) ====
+   Tratamiento heredado del sitio v1 —tarjeta delimitada, campos con relleno,
+   esquinas suaves— compartido por los DOS formularios del sitio. Antes vivía
+   solo en el bloque de contacto y farmacovigilancia iba con campos desnudos y
+   esquinas rectas: dos formularios que no se parecían en nada.
+
+   Los radios siguen siendo tokens locales: el resto del sistema conserva sus
+   esquinas rectas. Para llevar la suavidad a todo el sitio bastaría con subir
+   estas variables a `:root`.
+
+   `--fill`, `--hairline` y `--placeholder` van en el valor que CONTRASTA con la
+   superficie, y cada superficie los redefine. Así el mismo CSS sirve sobre
+   negro (contacto) y sobre claro (farmacovigilancia) sin duplicar reglas.
+   ========================================================================== */
+.form-v1 {
+  --r-tile: 12px;
+  --r-field: 10px;
+  --r-card: 18px;
+  --fill: rgba(0, 0, 0, 0.04);
+  --hairline: rgba(0, 0, 0, 0.18);
+  /* Estaba en 0.45, o sea 3,3:1 sobre el relleno claro. El texto fantasma no
+     es contenido y no le exige AA, pero no hay razón para que sea peor que su
+     equivalente oscuro: a 0.6 cruza el 4,5:1. */
+  --placeholder: rgba(0, 0, 0, 0.6);
+}
+.form-v1.surface-black {
+  --fill: rgba(255, 255, 255, 0.05);
+  --hairline: rgba(255, 255, 255, 0.14);
+  --placeholder: rgba(255, 255, 255, 0.5);
+}
+
+/* Dos columnas: la información pesa menos que el formulario. Iba en estilos en
+   línea, duplicado en las dos páginas, con `auto-fit minmax(300px, 1fr)`: eso
+   reparte 50/50 y dejaba la columna de texto medio vacía. */
+.form-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(32px, 4vw, 64px);
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .form-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.contact-info {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 20px;
+}
+.contact-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+/* Mosaico del v1: icono azul sobre tinte azul, con su contorno. */
+.form-v1 .contact-item .ic {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-tile);
+  color: var(--blue);
+  background: rgba(61, 137, 253, 0.14);
+  border: 1px solid rgba(61, 137, 253, 0.32);
+}
+.contact-item .tx {
+  display: grid;
+  gap: 4px;
+  padding-top: 2px;
+}
+.contact-item .k {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-soft, inherit);
+}
+.contact-item .v {
+  font-size: 17px;
+  line-height: 1.5;
+  max-width: 36ch;
+}
+.contact-item a.v:hover {
+  color: var(--blue);
+}
+
+/* Tarjeta, campos y botón con las esquinas del v1 */
+.form-v1 .form-card {
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-card);
+  background: var(--fill);
+  padding: clamp(22px, 2.2vw, 32px);
+}
+.form-v1 .field input,
+.form-v1 .field select,
+.form-v1 .field textarea {
+  border: 1px solid var(--hairline);
+  background: var(--fill);
+  border-radius: var(--r-field);
+}
+.form-v1 .field input::placeholder,
+.form-v1 .field textarea::placeholder {
+  color: var(--placeholder);
+}
+/* El foco usa el aro del sistema (3px azul), no una sombra propia: era el
+   único `box-shadow` que quedaba en un sistema declarado sin sombras. */
+.form-v1 .field input:focus,
+.form-v1 .field select:focus,
+.form-v1 .field textarea:focus {
+  border-color: var(--blue);
+}
+.form-v1 .field-label {
+  color: var(--ink-soft, inherit);
+}
+/* El bloque que deriva a farmacovigilancia acompaña a la tarjeta.
+   Los botones ya vienen en pastilla del sistema: no hace falta repetirlo. */
+.form-v1 .pv-redirect {
+  border: 1px solid rgba(61, 137, 253, 0.32);
+  border-radius: var(--r-card);
+  background: rgba(61, 137, 253, 0.1);
+  padding: 22px 24px;
+}
+/* El aviso de urgencias es del mismo bloque que la tarjeta: dentro de
+   `.form-v1` toma sus esquinas, o la página mezcla dos lenguajes de forma. */
+.form-v1 .notice-card {
+  border-radius: var(--r-card);
+  padding: clamp(22px, 2.2vw, 32px);
+  margin-bottom: 48px;
+}
+/* El aviso de privacidad cierra la tarjeta: separado por un filete, no suelto
+   contra el borde inferior. */
+.form-v1 .form-privacy {
+  border-top: 1px solid var(--hairline);
+  padding-top: 16px;
+  margin-top: 2px;
+}
+
+/* ---------------------------------------------------------------- FORMULARIOS */
+.form-grid {
+  display: grid;
+  gap: 18px;
+}
+/* El `fieldset` agrupa para el lector de pantalla; visualmente no debe existir.
+   Estaba resuelto con estilos en línea en el formulario de farmacovigilancia. */
+.form-fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+/* Tarjeta de formulario (patrón del v1): delimita el formulario del resto. */
+.form-card {
+  border: 2px solid currentColor;
+  background: var(--surface-soft, rgba(0, 0, 0, 0.03));
+  padding: 28px;
+}
+.surface-black .form-card {
+  --surface-soft: rgba(255, 255, 255, 0.05);
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+@media (max-width: 860px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+.field-error {
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+.field input[aria-invalid='true'],
+.field select[aria-invalid='true'],
+.field textarea[aria-invalid='true'] {
+  border-width: 2px;
+  outline: 2px solid var(--blue);
+  outline-offset: 0;
+}
+.form-submit {
+  width: 100%;
+  padding: 18px 26px;
+  font-size: 18px;
+}
+.form-status {
+  border-left: 3px solid var(--blue);
+  padding-left: 16px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+.field {
+  display: grid;
+  gap: 8px;
+}
+.field-label {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font-family: var(--font-body), sans-serif;
+  font-size: 16px;
+  padding: 13px 14px;
+}
+.field textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
+}
+.form-privacy {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.form-privacy a,
+.form-privacy-link {
+  text-decoration: underline;
+}
+/* El aviso de privacidad abre modal: <button> con aspecto de enlace en línea. */
+.form-privacy-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

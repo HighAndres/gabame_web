@@ -1,0 +1,290 @@
+{
+  "meta": {
+    "home": {
+      "title": "GABAME Human Health · Grupo mexicano de salud",
+      "description": "Grupo mexicano de salud desde 2013. Desarrollamos productos Rx de alto valor y los convertimos en marcas sólidas y relevantes en todo México."
+    },
+    "productos": {
+      "title": "Portafolio Rx",
+      "description": "Portafolio farmacéutico Rx de GABAME Human Health, organizado por área terapéutica: cardiometabólico, oncología, hospitalario, urología, sistema nervioso central y oftalmología."
+    },
+    "farmacovigilancia": {
+      "title": "Farmacovigilancia",
+      "description": "Reporta una sospecha de reacción adversa a un producto de GABAME Human Health. Canal de farmacovigilancia confidencial, separado del contacto comercial."
+    },
+    "nosotros": {
+      "title": "Nosotros",
+      "description": "GABAME Human Health es un grupo mexicano de salud desde 2013: desarrollamos productos de alto valor y los convertimos en marcas sólidas, puerta de entrada a un ecosistema con Medinter, Ordan y A7."
+    }
+  },
+  "nav": {
+    "skipToContent": "Saltar al contenido",
+    "inicio": "Inicio",
+    "sections": "Navegación de secciones",
+    "areas": "Áreas",
+    "portafolio": "Portafolio",
+    "nosotros": "Nosotros",
+    "ecosistema": "Ecosistema",
+    "socios": "Socios",
+    "contacto": "Contacto",
+    "cta": "Contáctanos",
+    "menu": "Menú",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar",
+    "brandTag": "Human Health",
+    "callUs": "Llámanos"
+  },
+  "theme": {
+    "toLight": "Cambiar a modo claro",
+    "toDark": "Cambiar a modo oscuro"
+  },
+  "language": {
+    "label": "Idioma",
+    "es": "ES",
+    "en": "EN",
+    "esLong": "Español",
+    "enLong": "English"
+  },
+  "home": {
+    "hero": {
+      "kicker": "Grupo mexicano de salud · Desde 2013",
+      "title": "Salud que impacta de verdad",
+      "subtitle": "Desarrollamos productos de alto valor y los transformamos en marcas sólidas y relevantes para todo México.",
+      "ctaPrimary": "Ver portafolio Rx",
+      "ctaSecondary": "Contáctanos",
+      "scrollCue": "Desliza",
+      "mediaSlot": "'{'VIDEO CORPORATIVO'}' — 16:9 · loop silencioso con poster"
+    },
+    "areas": {
+      "kicker": "Portafolio · Áreas terapéuticas",
+      "title": "Seis áreas, una misión",
+      "subtitle": "Cubrimos las necesidades del sistema de salud mexicano con un portafolio Rx especializado.",
+      "list": {
+        "cardiometabolico": "Cardiometabólico",
+        "oncologia": "Oncología",
+        "hospitalario": "Hospitalario",
+        "urologia": "Urología",
+        "snc": "Sistema Nervioso Central",
+        "oftalmologia": "Oftalmología"
+      },
+      "ctaPrimary": "Ver portafolio",
+      "ctaSecondary": "Conócenos",
+      "mediaSlot": "'{'FOTO CORPORATIVA PENDIENTE'}' — fondo 16:9, área farmacéutica"
+    },
+    "portafolio": {
+      "kicker": "Portafolio Rx destacado",
+      "title": "Un portafolio Rx especializado",
+      "subtitle": "Cada marca con su posicionamiento; la ficha completa se desarrolla en su propia página.",
+      "brandsSlot": "'{'MARCAS DEL PORTAFOLIO'}' — se poblarán desde la colección de productos (por área terapéutica)",
+      "note": "Datos clínicos y posología se incorporan en las fichas tras validación regulatoria (COFEPRIS).",
+      "ctaPrimary": "Fichas de producto",
+      "ctaSecondary": "Solicitar información",
+      "mediaSlot": "'{'FOTO PRODUCTO'}' — fondo 16:9",
+      "videoSlot": "'{'VIDEO VERTICAL'}' — 9:16, MP4 mudo en loop",
+      "railHint": "Desliza para explorar",
+      "prev": "Anterior",
+      "next": "Siguiente"
+    },
+    "nosotros": {
+      "kicker": "Nosotros",
+      "title": "Un referente mexicano en salud",
+      "subtitle": "Somos un grupo especializado en salud, enfocado en desarrollar productos de alto valor y transformarlos en marcas sólidas y relevantes. A través de nuestras capacidades incorporadas en construcción de marca y distribución, garantizamos operaciones eficientes y un crecimiento escalable en todo el mercado mexicano.",
+      "stats": {
+        "foundedValue": "2013",
+        "foundedLabel": "Fundación",
+        "peopleValue": "~250",
+        "peopleLabel": "Colaboradores",
+        "areasValue": "6",
+        "areasLabel": "Áreas terapéuticas"
+      },
+      "ctaPrimary": "Contáctanos",
+      "ctaSecondary": "Nuestro ecosistema",
+      "mediaSlot": "'{'FOTO CORPORATIVA PENDIENTE'}' — equipo / instalaciones, 16:9"
+    },
+    "ecosistema": {
+      "kicker": "Ecosistema del grupo",
+      "title": "Cuatro marcas, un estándar",
+      "subtitle": "GABAME es la puerta de entrada a un ecosistema que se conectará con Medinter, Ordan y A7.",
+      "ctaPrimary": "Explorar ecosistema",
+      "ctaSecondary": "Ser socio",
+      "mediaSlot": "'{'FOTO CORPORATIVA PENDIENTE'}' — logística / operación, 16:9",
+      "statusActive": "Activo",
+      "statusLater": "Fase posterior",
+      "note": "Medinter, Ordan y A7 se habilitan en fases posteriores."
+    },
+    "socios": {
+      "kicker": "Compromiso · Colaboración",
+      "title": "Contigo en cada etapa",
+      "subtitle": "Reporta una sospecha de reacción adversa o únete a nuestra red de distribución y socios estratégicos en todo México.",
+      "ctaPrimary": "Farmacovigilancia",
+      "ctaSecondary": "Quiero ser socio",
+      "mediaSlot": "'{'FOTO CORPORATIVA PENDIENTE'}' — colaboración / alianza, 16:9",
+      "pvTitle": "Farmacovigilancia",
+      "pvText": "Notifica cualquier sospecha de reacción adversa relacionada con un producto de GABAME.",
+      "pvCta": "Reportar",
+      "partnerTitle": "Quiero ser socio",
+      "partnerText": "Súmate a nuestra red de distribución y socios estratégicos en todo México.",
+      "partnerCta": "Escríbenos"
+    },
+    "contacto": {
+      "kicker": "Contacto",
+      "title": "Hablemos",
+      "subtitle": "Escríbenos y te responderemos dentro de nuestro horario de atención.",
+      "phoneLabel": "Teléfono",
+      "phone": "55 5548 7579",
+      "emailLabel": "Correo",
+      "email": "contacto@gabame.com",
+      "hoursLabel": "Horario",
+      "hours": "Lunes a viernes, 8:00–18:00 h",
+      "addressLabel": "Dirección",
+      "address": "Av. de la Palma 8, primer piso, Villa de las Palmas, CP 52787, Huixquilucan, Estado de México"
+    }
+  },
+  "productos": {
+    "kicker": "Portafolio · Áreas terapéuticas",
+    "title": "Portafolio Rx",
+    "subtitle": "Un portafolio especializado organizado por área terapéutica. Cada marca con su posicionamiento; la ficha completa vivirá en su propia página.",
+    "note": "Datos clínicos, molécula y posología se incorporan a cada ficha tras validación regulatoria (COFEPRIS). Para información específica, escríbenos.",
+    "indexLabel": "Áreas",
+    "emptyState": "Fichas en preparación",
+    "emptyHint": "Estamos preparando las fichas de esta área. Solicita información y te compartimos el detalle disponible.",
+    "comingSoon": "Próximamente",
+    "available": "Disponible",
+    "requestInfo": "Solicitar información",
+    "moleculeLabel": "Molécula",
+    "presentationLabel": "Presentación",
+    "statusLabel": "Estado",
+    "pendingValue": "— pendiente",
+    "close": "Cerrar",
+    "ctaContact": "Solicitar información",
+    "backHome": "Volver al inicio",
+    "areaBlurb": {
+      "cardiometabolico": "Soluciones para el manejo de enfermedades cardiovasculares y metabólicas.",
+      "oncologia": "Terapias de apoyo al tratamiento oncológico.",
+      "hospitalario": "Productos para el entorno hospitalario y de cuidado agudo.",
+      "urologia": "Tratamientos para la salud urológica.",
+      "snc": "Terapias para trastornos del sistema nervioso central.",
+      "oftalmologia": "Productos para el cuidado de la salud visual."
+    }
+  },
+  "farmacovigilancia": {
+    "kicker": "Seguridad del paciente",
+    "title": "Farmacovigilancia",
+    "subtitle": "Tu reporte nos ayuda a vigilar la seguridad de nuestros productos. Notifica cualquier sospecha de reacción adversa relacionada con un producto de GABAME.",
+    "whatTitle": "¿Qué puedes reportar?",
+    "whatText": "Cualquier efecto no deseado o inesperado que sospeches que pueda estar relacionado con el uso de uno de nuestros productos, aunque no estés seguro de la relación.",
+    "emergencyTitle": "Este no es un canal de urgencias",
+    "emergencyText": "Si tú o alguien más presenta una emergencia médica, acude de inmediato a servicios de salud o llama a emergencias. Este formulario no sustituye la atención médica.",
+    "privacyTitle": "Confidencialidad",
+    "privacyText": "Los reportes se tratan de forma confidencial y por un canal separado del contacto comercial. Consulta el",
+    "form": {
+      "legend": "Reporte de sospecha de reacción adversa",
+      "reporterName": "Nombre del notificador",
+      "reporterEmail": "Correo",
+      "reporterPhone": "Teléfono (opcional)",
+      "reporterType": "Eres",
+      "typePaciente": "Paciente / cuidador",
+      "typeProfesional": "Profesional de la salud",
+      "typeOtro": "Otro",
+      "product": "Producto sospechoso",
+      "description": "Describe la reacción adversa",
+      "descriptionPlaceholder": "¿Qué ocurrió? Incluye síntomas, cuándo aparecieron y cualquier detalle relevante.",
+      "submit": "Enviar reporte",
+      "sending": "Enviando…",
+      "success": "Gracias. Hemos recibido tu reporte de farmacovigilancia. Nuestro equipo lo revisará de forma confidencial.",
+      "errorGeneric": "No se pudo enviar el reporte. Inténtalo de nuevo en un momento.",
+      "errorNotConfigured": "El canal de farmacovigilancia está en configuración. Escríbenos entre tanto a farmacovigilancia@gabame.com.",
+      "invalidName": "Ingresa tu nombre.",
+      "invalidEmail": "Ingresa un correo válido.",
+      "invalidProduct": "Indica el producto sospechoso.",
+      "invalidDescription": "Describe la reacción adversa.",
+      "privacyNote": "Al enviar aceptas el tratamiento de tus datos conforme al",
+      "privacyLink": "Aviso de privacidad"
+    },
+    "backHome": "Volver al inicio",
+    "noticeLabel": "Aviso importante",
+    "fallbackNote": "Si prefieres el correo, escríbenos a farmacovigilancia@gabame.com.",
+    "fallbackEmail": "farmacovigilancia@gabame.com"
+  },
+  "nosotros": {
+    "kicker": "Nosotros",
+    "title": "Un referente mexicano en salud",
+    "purposeTitle": "Propósito",
+    "purposeText": "Impactamos de forma real y positiva en las personas, fortaleciendo su salud y bienestar integral a través de productos y servicios responsables.",
+    "visionTitle": "Visión",
+    "visionText": "Ser un referente mexicano que inspire orgullo, empodere a las personas, y demuestre que el esfuerzo y la pasión convierten cualquier sueño en realidad.",
+    "statsTitle": "En cifras",
+    "missionTitle": "Qué hacemos",
+    "ecosystemTitle": "Ecosistema del grupo",
+    "ecosystemNote": "La conexión con Medinter, Ordan y A7 se habilitará en fases posteriores.",
+    "ctaTitle": "¿Trabajamos juntos?",
+    "ctaContact": "Contáctanos",
+    "backHome": "Volver al inicio"
+  },
+  "legal": {
+    "close": "Cerrar",
+    "updatedLabel": "Última actualización",
+    "pendingNotice": "Texto preliminar. El aviso de privacidad definitivo está pendiente de entrega y validación legal por el cliente."
+  },
+  "contactForm": {
+    "name": "Nombre",
+    "email": "Correo",
+    "message": "Mensaje",
+    "submit": "Enviar mensaje",
+    "sending": "Enviando…",
+    "success": "Gracias. Hemos recibido tu mensaje y te contactaremos pronto.",
+    "errorGeneric": "No se pudo enviar. Inténtalo de nuevo en un momento.",
+    "errorValidation": "Revisa los campos marcados.",
+    "invalidName": "Ingresa tu nombre.",
+    "invalidEmail": "Ingresa un correo válido.",
+    "invalidMessage": "Escribe tu mensaje.",
+    "privacyNote": "Al enviar aceptas nuestro Aviso de privacidad.",
+    "privacyLink": "Aviso de privacidad",
+    "org": "Institución u organización",
+    "orgOptional": "Opcional",
+    "profile": "Perfil",
+    "profileChoose": "Selecciona una opción",
+    "profileHcp": "Profesional de la salud",
+    "profileDistributor": "Distribuidor",
+    "profilePartner": "Socio estratégico",
+    "profileInstitution": "Institución",
+    "pvRedirect": "¿Vas a notificar una sospecha de reacción adversa? Usa el canal de farmacovigilancia.",
+    "pvRedirectCta": "Reportar"
+  },
+  "footer": {
+    "tagline": "Grupo mexicano de salud desde 2013.",
+    "contactTitle": "Contacto",
+    "phone": "55 5548 7579",
+    "email": "contacto@gabame.com",
+    "address": "Av. de la Palma 8, primer piso, Villa de las Palmas, CP 52787, Huixquilucan, Estado de México",
+    "hours": "Horario de atención: 8:00–18:00 h",
+    "linksTitle": "Sitio",
+    "legalTitle": "Legal",
+    "privacy": "Aviso de privacidad",
+    "pharmacovigilance": "Farmacovigilancia",
+    "clientPortal": "Portal de clientes",
+    "comingSoon": "próximamente",
+    "socialTitle": "Síguenos",
+    "linkedin": "LinkedIn: GABAME Human Health",
+    "socialPending": "WhatsApp y otras redes: próximamente",
+    "rights": "© {year} GABAME Human Health. Todos los derechos reservados.",
+    "directions": "Cómo llegar"
+  },
+  "chat": {
+    "launcher": "Asistente IA",
+    "title": "Asistente GABAME",
+    "badge": "Beta · Próximamente",
+    "close": "Cerrar",
+    "greeting": "Hola. Soy el asistente de GABAME Human Health. Pronto podré ayudarte con información del portafolio, servicios y contacto.",
+    "sample": "¿Qué áreas terapéuticas manejan?",
+    "notice": "El asistente aún no está activo. Mientras tanto, escríbenos por el formulario de contacto.",
+    "placeholder": "Escribe un mensaje…",
+    "send": "Enviar"
+  },
+  "a11y": {
+    "mainNav": "Navegación principal",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "assistantSoon": "Asistente de IA — próximamente"
+  }
+}
