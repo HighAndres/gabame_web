@@ -200,6 +200,68 @@ y sobre claro (farmacovigilancia). Los radios (`--r-card`, `--r-field`,
 `--r-tile`) son locales de este bloque: el resto del sistema sigue con esquinas
 rectas.
 
+## Despliegue (preview: gabame.mirmiapps.com)
+
+**El build se hace en local y al VPS se sube el artefacto.** No hay repo ni
+`npm install` en el servidor: `output: 'standalone'` produce una carpeta
+autocontenida que se copia tal cual.
+
+| | |
+|---|---|
+| Servidor | `andresadmin@69.6.207.137 -p 22022` |
+| Directorio | `/var/www/gabame` |
+| Proceso | pm2 `gabame` (id 3), `fork`, arranca `/var/www/gabame/server.js` |
+| Puerto | 3007, y **`PORT` vive en el entorno de pm2**, no en un `.env` |
+| nginx | `/etc/nginx/conf.d/gabame.mirmiapps.com.conf` |
+
+`/media/` lo sirve nginx directo desde `/var/www/gabame/public/media/`, sin
+pasar por Node.
+
+### Preparar el paquete (en local)
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://gabame.mirmiapps.com npm run build
+```
+
+**Esa variable tiene que estar EN EL BUILD, no en el arranque**: se hornea en el
+bundle. Compilar sin ella deja las `og:image` y `og:url` apuntando a
+`localhost:3010` y las tarjetas al compartir salen rotas.
+
+Después hay que armar la carpeta a mano, porque `standalone` **no** copia solo
+ni los estáticos ni `public/` — y sin ellos el sitio arranca pero sale sin CSS,
+sin imágenes y sin videos:
+
+```
+gabame/                        <- contenido de .next/standalone/
+gabame/.next/static/           <- copiado de .next/static/
+gabame/public/                 <- copiado de public/
+```
+
+### Subir y reemplazar
+
+```bash
+scp -P 22022 gabame-v2.tar.gz andresadmin@69.6.207.137:~/
+```
+
+En el servidor, mismo patrón de siempre (renombrar el viejo, poner el nuevo):
+
+```bash
+cd ~ && tar -xzf gabame-v2.tar.gz   && sudo mv /var/www/gabame /var/www/gabame_old_$(date +%Y%m%d-%H%M)   && sudo mv ~/gabame /var/www/gabame   && sudo chown -R andresadmin:andresadmin /var/www/gabame   && pm2 restart gabame && pm2 logs gabame --lines 20 --nostream
+```
+
+La vuelta atrás es mover de nuevo el `gabame_old_…` y reiniciar pm2.
+
+### Pendientes del servidor
+
+- **No hay SMTP configurado** (`pm2 env 3` no tiene ninguna `SMTP_*` ni
+  `MAIL_*`). Los dos formularios responden 503 desde el primer despliegue: la
+  interfaz enseña el correo de respaldo, pero **no se ha entregado ni un
+  mensaje**. Los reportes de farmacovigilancia que fallen quedan ahora en
+  `/var/www/gabame/.pv-reportes/huerfanos.jsonl`.
+- Al publicar en gabame.com, la indexación está bloqueada en **tres** sitios:
+  `app/robots.ts`, el `robots:` de `app/[locale]/layout.tsx` y el
+  `add_header X-Robots-Tag` del nginx.
+
 ## Seguridad y cabeceras
 
 `next.config.mjs` sirve CSP, HSTS, `X-Content-Type-Options`, `X-Frame-Options`,
@@ -212,9 +274,12 @@ SOLO el modo desarrollo. Los únicos hosts externos permitidos son los del mapa
 (`tiles.openfreemap.org`); las tipografías no necesitan a Google porque
 `next/font` las descarga en el build y las sirve locales.
 
-**Pendiente en el servidor, no en el repo:** nginx no pasa `X-Forwarded-Proto`,
-así que las cabeceras `Link` de hreflang que emite el middleware salen como
-`http://` en un sitio que es `https://`.
+**El bloque de nginx tiene que pasar las cabeceras de proxy** (`X-Real-IP`,
+`X-Forwarded-For`, `X-Forwarded-Proto`). Sin `X-Forwarded-Proto`, next-intl no
+sabe que está detrás de TLS y emite los `Link` de hreflang como `http://`; sin
+las de IP, el límite de envíos mete a todos los visitantes en el mismo cubo y
+pasa de ser por IP a ser de 5 cada 10 minutos para todo el sitio. Aplicado en
+el preview el 21-ago-2026; al montar gabame.com hay que repetirlo.
 
 ## Compartir en redes
 
