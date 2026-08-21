@@ -3,7 +3,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { PageHero } from '@/components/shared/PageHero';
-import { buildAlternates } from '@/lib/seo';
+import { pageMetadata, SITE_NAME } from '@/lib/seo';
 import { AREA_ORDER, products } from '@/content/products';
 
 export async function generateMetadata({
@@ -18,7 +18,12 @@ export async function generateMetadata({
   return {
     title: t('title'),
     description: t('description'),
-    alternates: buildAlternates(params.locale, 'portafolio'),
+    ...pageMetadata({
+      locale: params.locale,
+      path: 'portafolio',
+      title: `${t('title')} · ${SITE_NAME}`,
+      description: t('description'),
+    }),
   };
 }
 

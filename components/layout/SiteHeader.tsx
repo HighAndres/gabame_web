@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Phone } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
-import { NAV, CONTACT } from '@/lib/nav';
+import { NAV, EXTERNAL } from '@/lib/nav';
 import { LangSwitch } from './LangSwitch';
 import { BrandLockup } from './BrandLockup';
 
@@ -20,12 +20,13 @@ const SPY_IDS = ['areas', 'ecosistema', 'socios'];
  * - En móvil abre un panel a pantalla completa en vez de empujar el contenido.
  *
  * Negra, según la referencia del cliente (ago 2026): lockup a la izquierda,
- * navegación, y a la derecha el botón de contacto y un bloque de teléfono con
- * icono. El lockup va en blanco con la etiqueta en azul, como en el pie.
+ * navegación, y a la derecha el conmutador de idioma y el botón a Farmacias
+ * GABAME. El lockup va en blanco con la etiqueta en azul, como en el pie.
  *
- * Nota histórica: los datos de contacto vivieron aquí en una franja superior y
- * se retiraron a petición del cliente; el bloque de teléfono vuelve ahora por
- * la referencia que él mismo aportó. Si vuelve a sobrar, es `.header-phone`.
+ * Nota histórica: los datos de contacto han entrado y salido de aquí dos veces
+ * —primero una franja superior, después un bloque de teléfono con icono— y las
+ * dos se retiraron a petición del cliente. El teléfono sigue en el pie y en
+ * /contacto, que son los sitios donde se busca.
  */
 export function SiteHeader() {
   const t = useTranslations('nav');
@@ -107,6 +108,26 @@ export function SiteHeader() {
     return pathname === item.href;
   }
 
+  /**
+   * Farmacias GABAME — sale del sitio, así que no usa el `Link` de next-intl:
+   * es un `<a>` a otro dominio, sin prefijo de idioma. La flecha diagonal es
+   * la que avisa de que se abre fuera; el texto oculto lo dice para quien no
+   * ve la flecha.
+   */
+  const pharmaLink = (className: string, labelKey: 'pharmacy' | 'pharmacyFull') => (
+    <a
+      className={`btn btn-blue header-pharma ${className}`}
+      href={EXTERNAL.farmacias}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={() => setOpen(false)}
+    >
+      <span className="header-pharma-tx">{t(labelKey)}</span>
+      <ArrowUpRight className="header-pharma-ic" size={18} aria-hidden="true" />
+      <span className="sr-only"> ({tA11y('newTab')})</span>
+    </a>
+  );
+
   const navLinks = NAV.map((item) => {
     const active = isActive(item);
     return (
@@ -141,18 +162,7 @@ export function SiteHeader() {
 
             <div className="header-tools">
               <LangSwitch />
-              <Link href="/contacto" className="btn btn-blue header-cta">
-                {t('cta')}
-              </Link>
-              <a className="header-phone" href={`tel:${CONTACT.phoneHref}`}>
-                <span className="header-phone-ic" aria-hidden="true">
-                  <Phone size={18} />
-                </span>
-                <span className="header-phone-tx">
-                  <span className="header-phone-k">{t('callUs')}</span>
-                  <span className="header-phone-v">{CONTACT.phone}</span>
-                </span>
-              </a>
+              {pharmaLink('header-cta', 'pharmacy')}
             </div>
 
             <button
@@ -184,13 +194,7 @@ export function SiteHeader() {
         </nav>
         <div className="menu-panel-foot">
           <LangSwitch />
-          <Link
-            href="/contacto"
-            className="btn btn-blue"
-            onClick={() => setOpen(false)}
-          >
-            {t('cta')}
-          </Link>
+          {pharmaLink('menu-panel-pharma', 'pharmacyFull')}
         </div>
       </div>
     </>

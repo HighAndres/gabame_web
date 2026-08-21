@@ -6,7 +6,7 @@ import { PageHero } from '@/components/shared/PageHero';
 import { Atmosphere } from '@/components/shared/Atmosphere';
 import { PvForm } from '@/components/forms/PvForm';
 import { PrivacyModal } from '@/components/legal/PrivacyModal';
-import { buildAlternates } from '@/lib/seo';
+import { pageMetadata, SITE_NAME } from '@/lib/seo';
 
 export async function generateMetadata({
   params,
@@ -20,7 +20,12 @@ export async function generateMetadata({
   return {
     title: t('title'),
     description: t('description'),
-    alternates: buildAlternates(params.locale, 'farmacovigilancia'),
+    ...pageMetadata({
+      locale: params.locale,
+      path: 'farmacovigilancia',
+      title: `${t('title')} · ${SITE_NAME}`,
+      description: t('description'),
+    }),
   };
 }
 

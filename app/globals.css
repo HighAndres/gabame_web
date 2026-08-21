@@ -650,56 +650,90 @@ img {
   font-size: 16px;
   white-space: nowrap;
 }
-/* Bloque de teléfono, de la referencia: icono en disco azul + etiqueta y
-   número en dos líneas. Es un enlace tel: entero. */
-.header-phone {
+/* Farmacias GABAME — la única acción que SALE del sitio.
+   Se distingue de los botones internos por la flecha diagonal, no por un
+   color nuevo: la paleta sigue siendo azul, negro y blanco. La flecha vive en
+   una caja de ancho fijo para que al desplazarse en hover no empuje el texto
+   ni cambie el ancho del botón (y con él, el de toda la barra). */
+.header-pharma {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  margin-left: 6px;
-  color: #fff;
+  gap: 8px;
 }
-.header-phone-ic {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--blue);
-  color: #000;
-  display: grid;
-  place-items: center;
-  transition: background 0.18s ease, color 0.18s ease;
+.header-pharma-ic {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  transition: transform 0.18s cubic-bezier(0.22, 0.7, 0.25, 1);
 }
-.header-phone:hover .header-phone-ic {
-  background: #fff;
+.header-pharma:hover .header-pharma-ic {
+  transform: translate(2px, -2px);
 }
-.header-phone-tx {
-  display: grid;
-  gap: 2px;
-  line-height: 1;
+/* Latido. Dos recursos a la vez, con el MISMO ciclo de 2,6s:
+   - el halo, que es el `outline` animado que ya usan el lanzador del asistente
+     y el pin del mapa (el sistema no tiene sombras, así que el aura se dibuja
+     con trazo);
+   - y el pulso en dos tiempos —fuerte, flojo, reposo— que es lo que separa un
+     latido de un parpadeo.
+   El asistente respira a 2,8s de forma continua; este va a 2,6s y con pausa,
+   así los dos botones azules de la pantalla nunca laten al unísono, que es
+   justo lo que se leería como fallo. */
+.header-pharma {
+  animation: pharmaHalo 2.6s ease-out infinite,
+    pharmaLatido 2.6s cubic-bezier(0.22, 0.7, 0.25, 1) infinite;
 }
-.header-phone-k {
-  font-family: var(--font-display), sans-serif;
-  font-weight: 600;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--on-black);
-}
-.header-phone-v {
-  font-family: var(--font-display), sans-serif;
-  font-weight: 700;
-  font-size: 17px;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-}
-/* Por debajo de 1380 no caben nav + idioma + botón + teléfono: el teléfono
-   es lo primero que se va (sigue en el pie, en contacto y en el panel móvil). */
-@media (max-width: 1380px) {
-  .header-phone {
-    display: none;
+/* El halo se abre y se apaga en 780ms — exactamente lo que dura el latido de
+   dos tiempos. Estirado al 55% del ciclo iba por detrás del pulso y se leían
+   como dos animaciones distintas encima del mismo botón. */
+@keyframes pharmaHalo {
+  0% {
+    outline: 0 solid rgba(61, 137, 253, 0.55);
+  }
+  30%,
+  100% {
+    outline: 12px solid rgba(61, 137, 253, 0);
   }
 }
-
+@keyframes pharmaLatido {
+  0%,
+  30%,
+  100% {
+    transform: scale(1);
+  }
+  7% {
+    transform: scale(1.05);
+  }
+  14% {
+    transform: scale(1);
+  }
+  21% {
+    transform: scale(1.028);
+  }
+}
+/* En cuanto lo tocas o lo enfocas, deja de latir: ya cumplió su función, y el
+   `transform` del latido tiene que soltar el mando para que el hover pueda
+   subir el botón 2px como todos los demás del sistema. El foco de teclado, de
+   paso, necesita el `outline` libre. */
+.header-pharma:hover,
+.header-pharma:focus-visible {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .header-pharma {
+    animation: none;
+  }
+}
+/* El botón entero ya sube 2px en hover (.btn): si además se mueve la flecha,
+   son dos desplazamientos a la vez. Con reduced-motion se quedan los dos
+   quietos y el cambio de color hace todo el trabajo. */
+@media (prefers-reduced-motion: reduce) {
+  .header-pharma-ic {
+    transition: none;
+  }
+  .header-pharma:hover .header-pharma-ic {
+    transform: none;
+  }
+}
 .menu-toggle {
   display: none;
   align-items: center;
@@ -835,10 +869,24 @@ img {
 .menu-panel-foot {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 14px;
   border-top: 1px solid var(--rule-light);
   padding-top: 28px;
   animation: enlaceEntra 0.42s cubic-bezier(0.22, 0.7, 0.25, 1) 0.32s both;
+}
+/* En el panel el botón manda: es la acción de la barra y aquí tiene sitio para
+   el nombre completo. Conserva su ancho natural — estirándolo a todo el hueco
+   libre (tablet: 616px) la flecha quedaba a medio metro del texto, flotando. */
+.menu-panel-pharma {
+  flex: 0 0 auto;
+  gap: 12px;
+  padding: 16px 26px;
+  font-size: 18px;
+}
+.menu-panel-pharma .header-pharma-ic {
+  width: 22px;
+  height: 22px;
 }
 .menu-panel .lang-switch {
   border-color: #fff;
@@ -847,6 +895,218 @@ img {
 .menu-panel .lang-switch:hover {
   background: #fff;
   color: #000;
+}
+
+/* --------------------------------------------------------------- FARMACIAS
+   Franja estrecha entre la portada y Áreas. No es una `.section`: su alto es
+   la mitad, porque tiene que leerse como una banda de paso, no como un bloque
+   con el que competir con la portada.
+
+   Los dos filetes azules de 2px son los que la cosen: arriba muere la franja
+   de cifras, abajo empieza el azul de Áreas, y el negro de en medio necesita
+   un borde que diga dónde acaba cada cosa. -------------------------------- */
+.pharma-band {
+  position: relative;
+  border-top: 2px solid var(--blue);
+  border-bottom: 2px solid var(--blue);
+  padding: 26px 0;
+}
+.pharma-band > .container {
+  position: relative;
+  z-index: 1;
+}
+.pharma-inner {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 28px);
+}
+.pharma-copy {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.pharma-kicker {
+  font-size: 13px;
+  color: var(--blue);
+}
+.pharma-title {
+  font-size: clamp(24px, 2.4vw, 34px);
+  line-height: 1.05;
+  margin: 4px 0 0;
+}
+.pharma-line {
+  margin: 6px 0 0;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--on-black);
+  max-width: 62ch;
+}
+/* Cruz de farmacia en disco azul. Mismo objeto que el disco del teléfono que
+   había en la cabecera: el sistema ya sabe qué significa un disco azul con un
+   icono negro dentro. */
+.pharma-badge {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #000;
+  display: grid;
+  place-items: center;
+}
+.pharma-cta {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 26px;
+  font-size: 16px;
+  white-space: nowrap;
+}
+.pharma-cta-ic {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  transition: transform 0.18s cubic-bezier(0.22, 0.7, 0.25, 1);
+}
+.pharma-cta:hover .pharma-cta-ic {
+  transform: translate(2px, -2px);
+}
+
+/* --- Animaciones ---------------------------------------------------------
+   Entrada por TRANSICIÓN, no por `animation`. La diferencia importa: una
+   animación con `fill-mode` fija el primer fotograma mientras no avanza, así
+   que si por lo que sea no llega a correr, la pieza se queda en `opacity: 0`
+   y el contenido desaparece. Una transición que no corre salta al estado
+   final, que es justamente lo que se quiere de un adorno.
+
+   Y el estado escondido cuelga de `.is-armed`, que SOLO pone el componente:
+   sin JS no hay `is-armed`, y sin `is-armed` no hay nada escondido. Ver la
+   nota larga en `Pharmacies.tsx`. Entre las dos cosas, no hay ningún camino
+   por el que la franja pueda quedarse invisible. */
+.pharma-badge,
+.pharma-copy,
+.pharma-cta {
+  transition: opacity 0.5s ease,
+    transform 0.5s cubic-bezier(0.22, 0.7, 0.25, 1);
+}
+.pharma-badge svg {
+  transition: transform 0.6s cubic-bezier(0.22, 0.7, 0.25, 1) 0.12s;
+}
+/* Escondida: solo cuando el componente lo pide. */
+.pharma-band.is-armed .pharma-badge,
+.pharma-band.is-armed .pharma-copy,
+.pharma-band.is-armed .pharma-cta {
+  opacity: 0;
+  transform: translateY(14px);
+}
+/* La cruz entra torcida 45° —que es una equis— y se endereza hasta ser una
+   cruz. El icono cuenta lo que pasa. */
+.pharma-band.is-armed .pharma-badge svg {
+  transform: rotate(45deg) scale(0.7);
+}
+/* Dentro: se deshace el escondido, escalonado cruz → texto → botón. Estas
+   reglas tienen que existir y ganar en especificidad a las de `.is-armed`
+   —que sigue puesta— o la franja se arma y no se destapa jamás. */
+.pharma-band.is-armed.is-in .pharma-badge,
+.pharma-band.is-armed.is-in .pharma-copy,
+.pharma-band.is-armed.is-in .pharma-cta,
+.pharma-band.is-armed.is-in .pharma-badge svg {
+  opacity: 1;
+  transform: none;
+}
+.pharma-band.is-in .pharma-copy {
+  transition-delay: 0.08s;
+}
+.pharma-band.is-in .pharma-cta {
+  transition-delay: 0.16s;
+}
+/* La cruz late: halo con `outline`, el mismo recurso del botón de la cabecera
+   y del lanzador del asistente. Va a 3,4s, más lento que los otros dos (2,6s
+   y 2,8s), porque tres cosas azules latiendo al mismo compás se leen como un
+   parpadeo del sitio, no como tres avisos. Empieza cuando la entrada ya
+   terminó. */
+.pharma-band.is-in .pharma-badge {
+  animation: pharmaHaloLento 3.4s ease-out 0.9s infinite;
+}
+@keyframes pharmaHaloLento {
+  0% {
+    outline: 0 solid rgba(61, 137, 253, 0.5);
+  }
+  40%,
+  100% {
+    outline: 14px solid rgba(61, 137, 253, 0);
+  }
+}
+
+@media (max-width: 860px) {
+  .pharma-inner {
+    flex-wrap: wrap;
+  }
+  .pharma-copy {
+    /* El texto baja a su propia línea; la cruz y el botón se quedan arriba,
+       uno en cada extremo. */
+    flex: 1 0 100%;
+    order: 3;
+  }
+  .pharma-cta {
+    margin-left: auto;
+  }
+}
+@media (max-width: 520px) {
+  .pharma-band {
+    padding: 22px 0;
+  }
+  .pharma-cta {
+    flex: 1 0 100%;
+    order: 4;
+    justify-content: space-between;
+    margin-left: 0;
+  }
+}
+/* Sin animación: todo puesto y quieto. La franja no depende de moverse para
+   entenderse. */
+@media (prefers-reduced-motion: reduce) {
+  .pharma-badge,
+  .pharma-copy,
+  .pharma-cta,
+  .pharma-badge svg,
+  .pharma-band.is-armed .pharma-badge,
+  .pharma-band.is-armed .pharma-copy,
+  .pharma-band.is-armed .pharma-cta,
+  .pharma-band.is-armed .pharma-badge svg,
+  .pharma-band.is-in .pharma-badge {
+    transition: none;
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------- 404 */
+.notfound {
+  min-height: 60vh;
+  display: grid;
+  align-items: center;
+}
+.notfound-inner {
+  max-width: 62ch;
+}
+.notfound-code {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: clamp(72px, 12vw, 140px);
+  line-height: 0.9;
+  color: var(--blue);
+  margin: 0 0 12px;
+}
+.notfound h1 {
+  margin: 0;
+}
+.notfound .lead {
+  margin: 18px 0 0;
+}
+.notfound .btn-row {
+  margin-top: 36px;
 }
 
 /* -------------------------------------------------------------------- HERO
@@ -1503,6 +1763,21 @@ img {
   gap: 8px;
   font-size: 15px;
   line-height: 1.45;
+}
+/* Objetivos táctiles. Medidos en móvil, los enlaces del pie caían a 22px de
+   alto: por debajo de los 44 que pide la WCAG (2.5.8) y, apilados a 8px, con
+   los dedos gordos se pulsa el de al lado. En móvil se les da alto propio; en
+   escritorio no hace falta y estirarlos separaría la columna sin motivo. */
+@media (max-width: 720px) {
+  .footer-list {
+    gap: 2px;
+  }
+  .footer-list a,
+  .footer-list .footer-privacy-link {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
 }
 .footer-list a:hover,
 .footer-privacy-link:hover {

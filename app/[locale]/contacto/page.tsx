@@ -6,7 +6,7 @@ import { Link } from '@/i18n/navigation';
 import { PageHero } from '@/components/shared/PageHero';
 import { Atmosphere } from '@/components/shared/Atmosphere';
 import { ContactForm } from '@/components/forms/ContactForm';
-import { buildAlternates } from '@/lib/seo';
+import { pageMetadata, SITE_NAME } from '@/lib/seo';
 import { CONTACT } from '@/lib/nav';
 
 export async function generateMetadata({
@@ -14,14 +14,22 @@ export async function generateMetadata({
 }: {
   params: { locale: string };
 }): Promise<Metadata> {
+  // `meta.contacto`, como las otras tres páginas. Antes tiraba de
+  // `home.contacto`, que es el copy VISIBLE de la página: su `subtitle` sirve
+  // para leerlo en pantalla, no como descripción de buscador.
   const t = await getTranslations({
     locale: params.locale,
-    namespace: 'home.contacto',
+    namespace: 'meta.contacto',
   });
   return {
     title: t('title'),
-    description: t('subtitle'),
-    alternates: buildAlternates(params.locale, 'contacto'),
+    description: t('description'),
+    ...pageMetadata({
+      locale: params.locale,
+      path: 'contacto',
+      title: `${t('title')} · ${SITE_NAME}`,
+      description: t('description'),
+    }),
   };
 }
 

@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { HeroVideo } from './HeroVideo';
+import { AutoVideo } from '@/components/shared/AutoVideo';
 
 /**
  * Portada, según la referencia del cliente: video a sangre con velo oscuro y
@@ -32,7 +32,10 @@ export function Hero() {
           puede fluir y crecer sin que la franja se le monte encima. */}
       <div className="hero-media">
         <div className="hero-bg" aria-hidden="true">
-          <HeroVideo src="/media/vid_header.mp4" poster="/media/vid_header_poster.jpg" />
+          <AutoVideo
+            src="/media/vid_header.mp4"
+            poster="/media/vid_header_poster.jpg"
+          />
           <div className="hero-veil" />
         </div>
 

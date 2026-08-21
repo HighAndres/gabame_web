@@ -31,6 +31,7 @@ dos versiones del sitio.
 | Sección | Componente | Claves i18n |
 |---|---|---|
 | Portada (video + panel azul + cifras) | `components/home/Hero.tsx` | `home.hero`, `home.nosotros.stats` |
+| Franja Farmacias GABAME | `components/home/Pharmacies.tsx` | `home.farmacias` |
 | Áreas terapéuticas | `components/home/Areas.tsx` | `home.areas`, `productos.areaBlurb` |
 | Portafolio Rx | `components/home/Portfolio.tsx` | `home.portafolio` |
 | Nosotros | `components/home/About.tsx` | `home.nosotros` |
@@ -51,6 +52,12 @@ Para reordenar las secciones, cambia el orden en `app/[locale]/page.tsx`.
 ### Globales
 
 - Cabecera: `components/layout/SiteHeader.tsx` · menú en `lib/nav.ts`
+  A la derecha van el conmutador de idioma y el botón a **Farmacias
+  GABAME** (`EXTERNAL.farmacias` en `lib/nav.ts`, hoy el preview tras
+  autenticación básica). El botón late: halo con `outline` + pulso en dos
+  tiempos, que se detiene al pasar el cursor, al enfocar y con
+  `prefers-reduced-motion`. El teléfono ya NO está en la cabecera; vive en el
+  pie y en `/contacto`.
 - Pie: `components/layout/Footer.tsx`
 - Aviso de privacidad (modal): `components/legal/PrivacyModal.tsx`, texto en
   `content/legal.ts`
@@ -58,6 +65,30 @@ Para reordenar las secciones, cambia el orden en `app/[locale]/page.tsx`.
 - Sistema visual completo: `app/globals.css`
 
 ### Datos
+
+### Franja de Farmacias GABAME
+
+Banda estrecha entre la portada y Áreas, sobre negro (las dos piezas que la
+rodean son azules y una tercera azul las fundiría). Enlaza fuera del sitio, a
+`EXTERNAL.farmacias` en `lib/nav.ts`.
+
+**⚠ `home.farmacias.kicker` y `home.farmacias.subtitle` están marcados como
+`[PENDIENTE]` en los dos idiomas.** El título y el botón sí son definitivos: no
+afirman nada que haya que validar. Al llegar el texto del cliente se sustituyen
+esas dos claves y ya.
+
+Animaciones, todas apagadas con `prefers-reduced-motion`:
+
+- Entrada escalonada (cruz → texto → botón) al llegar a pantalla, una sola vez,
+  con `IntersectionObserver`.
+- La cruz entra girada 45° —una equis— y se endereza.
+- La cruz late con el halo de `outline` del sistema, a 3,4s: distinto del botón
+  de la cabecera (2,6s) y del lanzador del asistente (2,8s), a propósito.
+
+El estado escondido lo enciende el **componente**, nunca el CSS, y la entrada
+es una **transición**, no una `animation`. Las dos cosas por lo mismo: que no
+exista ningún camino —JS caído, observador que no dispara, animación que no
+avanza— por el que la franja pueda quedarse invisible.
 
 - `content/products.ts` — portafolio. **Vacío a propósito**: sin validación
   COFEPRIS no se publican marcas, moléculas ni posología. Al llenarlo, las
@@ -93,8 +124,13 @@ Para reordenar las secciones, cambia el orden en `app/[locale]/page.tsx`.
 Comprobación de paleta antes de cada entrega:
 
 ```bash
-grep -rnE "#(?!3[Dd]89[Ff][Dd]\b)[0-9A-Fa-f]{3,8}\b" app components lib
+grep -rnEi "#(?!3d89fd\b|fff\b|ffffff\b|000\b|000000\b)[0-9a-f]{3,8}\b" app components lib
 ```
+
+La versión anterior de este grep marcaba `#fff` y `#000` como violaciones
+cuando son dos de los tres valores de la paleta: devolvía decenas de falsos
+positivos, y por eso no lo miraba nadie. Con la corrección, hoy no devuelve
+nada.
 
 ## Mapa del pie
 
@@ -130,6 +166,27 @@ aviso de privacidad en el punto de recolección (LFPDPPP). Si faltan las
 variables SMTP responden 503 y la interfaz enseña el correo de respaldo en vez
 de fallar en silencio. Ver `.env.example`.
 
+**Límite de envíos** (`lib/rate-limit.ts`): 5 por IP cada 10 min en contacto, 8
+en farmacovigilancia. El honeypot solo frena bots ingenuos y los dos endpoints
+son relés a correo: sin límite, un script inunda los buzones. El contador va
+EN MEMORIA, así que se pierde al reiniciar y no se comparte entre procesos;
+vale para el despliegue actual (un solo proceso Node) y hay que cambiarlo por
+Redis el día que haya más de una instancia.
+
+**Respaldo de farmacovigilancia** (`lib/pv-fallback.ts`): si el envío falla, el
+reporte se guarda en `PV_LOG_DIR` (por defecto `.pv-reportes/huerfanos.jsonl`)
+y, si el disco no deja, en `stderr`. Antes se perdía: la ruta devolvía 502 y no
+quedaba rastro en ningún lado, lo que para un canal de farmacovigilancia no es
+una molestia sino un problema de trazabilidad (NOM-220).
+⚠ Ese archivo lleva datos personales SENSIBLES en claro. Está en `.gitignore`;
+en el servidor hay que darle permisos restringidos, vaciarlo en cuanto el
+reporte esté recuperado, e incluirlo en la política de retención.
+
+Los mínimos y máximos de cada campo viven en `LIMITES` (`lib/schemas.ts`) y los
+usan LOS DOS lados. Antes no coincidían —el cliente solo pedía «no vacío», el
+servidor `min(2)` y `min(10)`—, así que un nombre de una letra pasaba la
+validación en línea y volvía como error genérico sin decir qué campo era.
+
 **Los dos comparten presentación y comportamiento**, y esa es la regla a
 mantener: tarjeta `.form-card`, campos emparejados en `.form-row`, validación
 en línea por campo en el cliente ANTES de tocar el servidor (con `noValidate`,
@@ -143,6 +200,61 @@ y sobre claro (farmacovigilancia). Los radios (`--r-card`, `--r-field`,
 `--r-tile`) son locales de este bloque: el resto del sistema sigue con esquinas
 rectas.
 
+## Seguridad y cabeceras
+
+`next.config.mjs` sirve CSP, HSTS, `X-Content-Type-Options`, `X-Frame-Options`,
+`Referrer-Policy` y `Permissions-Policy`, y apaga `X-Powered-By`. Antes no salía
+ninguna.
+
+En la CSP, `'unsafe-inline'` es inevitable mientras haya `style={{…}}` en los
+componentes y Next inyecte sus scripts de arranque así; `'unsafe-eval'` lo lleva
+SOLO el modo desarrollo. Los únicos hosts externos permitidos son los del mapa
+(`tiles.openfreemap.org`); las tipografías no necesitan a Google porque
+`next/font` las descarga en el build y las sirve locales.
+
+**Pendiente en el servidor, no en el repo:** nginx no pasa `X-Forwarded-Proto`,
+así que las cabeceras `Link` de hreflang que emite el middleware salen como
+`http://` en un sitio que es `https://`.
+
+## Compartir en redes
+
+`pageMetadata()` (`lib/seo.ts`) arma canonical, hreflang, Open Graph y Twitter
+Card de cada página. La imagen es `public/media/og.png` (1200×630), que llevaba
+en el repo desde el principio **sin que ninguna etiqueta la usara**: hasta ahora
+no había ni un solo `og:*` y cada enlace compartido salía en gris.
+
+`og:title` se pasa ya compuesto porque `title.template` solo actúa sobre
+`<title>` y no lo hereda.
+
+## Rendimiento
+
+La Home pesaba 6,0 MB, de los cuales 5,7 eran los dos videos. Ahora pesa 2,7 MB
+(medido sobre el build de producción). Qué cambió:
+
+- `components/shared/AutoVideo.tsx` sustituye al antiguo `HeroVideo` y sirve a
+  los dos videos. Respeta `prefers-reduced-motion` y **no descarga el MP4 si no
+  se va a reproducir** (`preload="metadata"` no basta: con `autoPlay` el
+  navegador se lo baja entero igual).
+- El video del portafolio va `lazy`: son 3 MB muy por debajo del pliegue que se
+  descargaban aunque nadie bajara hasta ahí. Mientras no carga se ve la trama
+  diagonal de `.pf-frame`, que en este sistema ya significa «hueco de media».
+- `sizes` en el símbolo del ecosistema y en el sello de Nosotros: se pintan a
+  ~200px y Next servía la variante de 1200.
+
+Sigue pendiente: `public/media/favicon.png` pesa 189 KB, y
+`gabame_header.mp4` (2,6 MB), `gabame_header_poster.jpg` y `gabame_org_sf.png`
+solo aparecen en el inventario de `content/media.ts` —no los renderiza nadie—
+pero se despliegan igual.
+
+## Accesibilidad
+
+- Los errores de cada campo se enlazan con `aria-describedby`, y al fallar el
+  envío el foco salta al primer campo con problema.
+- 404 traducido con el layout del sitio (`app/[locale]/not-found.tsx`, más el
+  cazatodo que lo dispara). El de la raíz queda para lo que cae fuera de los dos
+  idiomas.
+- Los enlaces del pie tienen 44px de alto en móvil; medían 22.
+
 ## Estado
 
 - Copy real del cliente en ES y EN, sin datos inventados.
@@ -150,7 +262,13 @@ rectas.
   fotografía de equipo e instalaciones, SVG de redes sociales, y el lockup en
   `#3D89FD` (el actual es azul acero, fuera de paleta).
 - `robots.ts` bloquea la indexación. **Al publicar en gabame.com hay que
-  permitirla** y fijar `NEXT_PUBLIC_SITE_URL`.
+  permitirla** y fijar `NEXT_PUBLIC_SITE_URL`. Ojo: el bloqueo está en DOS
+  sitios, `app/robots.ts` y el `robots: { index: false }` de
+  `generateMetadata` en `app/[locale]/layout.tsx`. Hay que quitarlo en los dos.
+- **El aviso de privacidad sigue siendo un placeholder** (`content/legal.ts`) y
+  el sitio ya recauda datos de salud por el formulario de farmacovigilancia,
+  que bajo la LFPDPPP son datos sensibles. Es un bloqueante para publicar, no
+  un pendiente más.
 
 ## Referencia
 

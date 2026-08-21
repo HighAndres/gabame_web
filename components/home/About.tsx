@@ -41,6 +41,8 @@ export function About() {
               alt=""
               width={600}
               height={600}
+              /* Se pinta hasta 228px; sin esto pedía la de 1200. */
+              sizes="240px"
               className="about-seal-mark"
             />
           </div>

@@ -8,13 +8,17 @@
       "title": "Portafolio Rx",
       "description": "Portafolio farmacéutico Rx de GABAME Human Health, organizado por área terapéutica: cardiometabólico, oncología, hospitalario, urología, sistema nervioso central y oftalmología."
     },
+    "nosotros": {
+      "title": "Nosotros",
+      "description": "GABAME Human Health es un grupo mexicano de salud desde 2013: desarrollamos productos de alto valor y los convertimos en marcas sólidas, puerta de entrada a un ecosistema con Medinter, Ordan y A7."
+    },
     "farmacovigilancia": {
       "title": "Farmacovigilancia",
       "description": "Reporta una sospecha de reacción adversa a un producto de GABAME Human Health. Canal de farmacovigilancia confidencial, separado del contacto comercial."
     },
-    "nosotros": {
-      "title": "Nosotros",
-      "description": "GABAME Human Health es un grupo mexicano de salud desde 2013: desarrollamos productos de alto valor y los convertimos en marcas sólidas, puerta de entrada a un ecosistema con Medinter, Ordan y A7."
+    "contacto": {
+      "title": "Contacto",
+      "description": "Contacta con GABAME Human Health: teléfono, correo y formulario para profesionales de la salud, distribuidores, socios estratégicos e instituciones en México."
     }
   },
   "nav": {
@@ -28,11 +32,12 @@
     "socios": "Socios",
     "contacto": "Contacto",
     "cta": "Contáctanos",
+    "pharmacy": "Farmacias",
+    "pharmacyFull": "Farmacias GABAME",
     "menu": "Menú",
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar",
-    "brandTag": "Human Health",
-    "callUs": "Llámanos"
+    "brandTag": "Human Health"
   },
   "theme": {
     "toLight": "Cambiar a modo claro",
@@ -54,6 +59,12 @@
       "ctaSecondary": "Contáctanos",
       "scrollCue": "Desliza",
       "mediaSlot": "'{'VIDEO CORPORATIVO'}' — 16:9 · loop silencioso con poster"
+    },
+    "farmacias": {
+      "kicker": "[PENDIENTE: bajada de una línea, p. ej. «Otra propiedad del grupo»]",
+      "title": "Farmacias GABAME",
+      "subtitle": "[PENDIENTE: una frase corta que diga qué es Farmacias GABAME. Sin claims que requieran validación.]",
+      "cta": "Visitar el sitio"
     },
     "areas": {
       "kicker": "Portafolio · Áreas terapéuticas",
@@ -199,7 +210,8 @@
       "invalidProduct": "Indica el producto sospechoso.",
       "invalidDescription": "Describe la reacción adversa.",
       "privacyNote": "Al enviar aceptas el tratamiento de tus datos conforme al",
-      "privacyLink": "Aviso de privacidad"
+      "privacyLink": "Aviso de privacidad",
+      "errorRateLimit": "Demasiados envíos desde esta conexión. Espera unos minutos e inténtalo de nuevo."
     },
     "backHome": "Volver al inicio",
     "noticeLabel": "Aviso importante",
@@ -249,7 +261,8 @@
     "profilePartner": "Socio estratégico",
     "profileInstitution": "Institución",
     "pvRedirect": "¿Vas a notificar una sospecha de reacción adversa? Usa el canal de farmacovigilancia.",
-    "pvRedirectCta": "Reportar"
+    "pvRedirectCta": "Reportar",
+    "errorRateLimit": "Demasiados envíos desde esta conexión. Espera unos minutos e inténtalo de nuevo."
   },
   "footer": {
     "tagline": "Grupo mexicano de salud desde 2013.",
@@ -283,8 +296,15 @@
   },
   "a11y": {
     "mainNav": "Navegación principal",
+    "newTab": "abre en una pestaña nueva",
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú",
     "assistantSoon": "Asistente de IA — próximamente"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "text": "La dirección que buscas no existe o cambió de sitio.",
+    "cta": "Ir al inicio",
+    "ctaContact": "Contáctanos"
   }
 }

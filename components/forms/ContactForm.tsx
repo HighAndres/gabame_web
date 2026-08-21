@@ -1,11 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { PrivacyModal } from '@/components/legal/PrivacyModal';
 import { CONTACT } from '@/lib/nav';
+import { LIMITES, RE_EMAIL } from '@/lib/schemas';
 
-type Status = 'idle' | 'sending' | 'sent' | 'error' | 'notConfigured';
+type Status =
+  | 'idle'
+  | 'sending'
+  | 'sent'
+  | 'error'
+  | 'notConfigured'
+  | 'rateLimit';
 type FieldErrors = Partial<Record<'name' | 'email' | 'message', string>>;
 
 /**
@@ -20,19 +27,38 @@ export function ContactForm() {
   const t = useTranslations('contactForm');
   const [status, setStatus] = useState<Status>('idle');
   const [errors, setErrors] = useState<FieldErrors>({});
+  const form = useRef<HTMLFormElement>(null);
 
+  /**
+   * Las mismas cifras que usa el servidor (`LIMITES` en `lib/schemas.ts`). Si
+   * el cliente pide menos que el servidor, el envío pasa la validación en
+   * línea, el servidor devuelve 400 y el formulario solo puede enseñar el
+   * error genérico: el usuario no sabe qué campo arreglar.
+   */
   function validate(d: { name: string; email: string; message: string }) {
     const e: FieldErrors = {};
-    if (!d.name.trim()) e.name = t('invalidName');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) e.email = t('invalidEmail');
-    if (!d.message.trim()) e.message = t('invalidMessage');
+    if (d.name.trim().length < LIMITES.name.min) e.name = t('invalidName');
+    if (!RE_EMAIL.test(d.email.trim())) e.email = t('invalidEmail');
+    if (d.message.trim().length < LIMITES.message.min) {
+      e.message = t('invalidMessage');
+    }
     return e;
+  }
+
+  /** Al fallar, el foco va al primer campo con problema. */
+  function enfocarPrimerError(e: FieldErrors) {
+    const orden: Array<keyof FieldErrors> = ['name', 'email', 'message'];
+    const primero = orden.find((k) => e[k]);
+    if (!primero) return;
+    form.current
+      ?.querySelector<HTMLElement>(`[name="${primero}"]`)
+      ?.focus();
   }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const form = e.currentTarget;
-    const fd = new FormData(form);
+    const elemento = e.currentTarget;
+    const fd = new FormData(elemento);
     const data = Object.fromEntries(fd) as Record<string, string>;
 
     const found = validate({
@@ -43,6 +69,7 @@ export function ContactForm() {
     setErrors(found);
     if (Object.keys(found).length > 0) {
       setStatus('error');
+      enfocarPrimerError(found);
       return;
     }
 
@@ -56,8 +83,9 @@ export function ContactForm() {
 
       if (res.ok) {
         setStatus('sent');
-        form.reset();
+        elemento.reset();
       } else if (res.status === 503) setStatus('notConfigured');
+      else if (res.status === 429) setStatus('rateLimit');
       else setStatus('error');
     } catch {
       setStatus('error');
@@ -77,7 +105,12 @@ export function ContactForm() {
   const hasFieldErrors = Object.keys(errors).length > 0;
 
   return (
-    <form className="form-card form-grid" onSubmit={onSubmit} noValidate>
+    <form
+      ref={form}
+      className="form-card form-grid"
+      onSubmit={onSubmit}
+      noValidate
+    >
       {/* Honeypot antispam — invisible para personas, atractivo para bots */}
       <div className="honeypot" aria-hidden="true">
         <label>
@@ -95,8 +128,13 @@ export function ContactForm() {
             autoComplete="name"
             placeholder={t('name')}
             aria-invalid={errors.name ? 'true' : undefined}
+            aria-describedby={errors.name ? 'err-name' : undefined}
           />
-          {errors.name && <span className="field-error">{errors.name}</span>}
+          {errors.name && (
+            <span className="field-error" id="err-name">
+              {errors.name}
+            </span>
+          )}
         </label>
 
         <label className="field">
@@ -107,8 +145,13 @@ export function ContactForm() {
             autoComplete="email"
             placeholder={t('email')}
             aria-invalid={errors.email ? 'true' : undefined}
+            aria-describedby={errors.email ? 'err-email' : undefined}
           />
-          {errors.email && <span className="field-error">{errors.email}</span>}
+          {errors.email && (
+            <span className="field-error" id="err-email">
+              {errors.email}
+            </span>
+          )}
         </label>
       </div>
 
@@ -143,8 +186,13 @@ export function ContactForm() {
           name="message"
           placeholder={t('message')}
           aria-invalid={errors.message ? 'true' : undefined}
+          aria-describedby={errors.message ? 'err-message' : undefined}
         />
-        {errors.message && <span className="field-error">{errors.message}</span>}
+        {errors.message && (
+          <span className="field-error" id="err-message">
+            {errors.message}
+          </span>
+        )}
       </label>
 
       {status === 'error' && hasFieldErrors && (
@@ -155,6 +203,11 @@ export function ContactForm() {
       {status === 'error' && !hasFieldErrors && (
         <p className="form-status" role="alert">
           {t('errorGeneric')}
+        </p>
+      )}
+      {status === 'rateLimit' && (
+        <p className="form-status" role="alert">
+          {t('errorRateLimit')}
         </p>
       )}
       {status === 'notConfigured' && (

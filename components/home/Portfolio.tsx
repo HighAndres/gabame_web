@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Atmosphere } from '@/components/shared/Atmosphere';
+import { AutoVideo } from '@/components/shared/AutoVideo';
 
 /**
  * Portafolio Rx en la Home: video vertical 9:16 + entrada a la página completa.
@@ -17,15 +18,11 @@ export function Portfolio() {
 
       <div className="container pf-grid">
         <div className="pf-frame">
-          <video
-            src="/media/portafoliorx.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-hidden="true"
-          />
+          {/* Diferido: son 3 MB muy por debajo del pliegue. Sin póster
+              propio (no hay fotograma extraído); mientras no carga se ve la
+              trama diagonal del marco, que en este sistema ya significa
+              «hueco de media». */}
+          <AutoVideo src="/media/portafoliorx.mp4" lazy />
         </div>
 
         <div>

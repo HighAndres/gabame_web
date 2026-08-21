@@ -1,8 +1,20 @@
 import { NextResponse } from 'next/server';
 import { contactSchema } from '@/lib/schemas';
 import { sendMail } from '@/lib/mailer';
+import { ipDe, limitar } from '@/lib/rate-limit';
+
+/** 5 envíos por IP cada 10 minutos. De sobra para una persona; nada para un bot. */
+const LIMITE = { maximo: 5, ventanaMs: 10 * 60 * 1000 };
 
 export async function POST(request: Request) {
+  const veredicto = limitar(`contacto:${ipDe(request)}`, LIMITE);
+  if (!veredicto.permitido) {
+    return NextResponse.json(
+      { error: 'rateLimit' },
+      { status: 429, headers: { 'Retry-After': String(veredicto.reintentarEn) } },
+    );
+  }
+
   const body = await request.json().catch(() => null);
   const parsed = contactSchema.safeParse(body);
 

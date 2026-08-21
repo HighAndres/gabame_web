@@ -50,3 +50,15 @@ export const CONTACT = {
       'https://www.google.com/maps/dir/?api=1&destination=Av.+de+la+Palma+8,+Villa+de+las+Palmas,+52787+Huixquilucan,+M%C3%A9x.',
   },
 } as const;
+
+/**
+ * Propiedades del grupo que viven FUERA de este sitio. Van aparte de `NAV`
+ * porque no son rutas de Next: no llevan prefijo de idioma, no entran en el
+ * sitemap y se abren en pestaña nueva.
+ *
+ * ⚠ `farmacias` apunta hoy al preview (`farmaciasgabame.mirmiapps.com`, tras
+ * autenticación básica). Sustituir por el dominio definitivo al publicar.
+ */
+export const EXTERNAL = {
+  farmacias: 'https://farmaciasgabame.mirmiapps.com',
+} as const;

@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { PageHero } from '@/components/shared/PageHero';
 import { Stats } from '@/components/shared/Stats';
-import { buildAlternates } from '@/lib/seo';
+import { pageMetadata, SITE_NAME } from '@/lib/seo';
 
 export async function generateMetadata({
   params,
@@ -18,7 +18,12 @@ export async function generateMetadata({
   return {
     title: t('title'),
     description: t('description'),
-    alternates: buildAlternates(params.locale, 'nosotros'),
+    ...pageMetadata({
+      locale: params.locale,
+      path: 'nosotros',
+      title: `${t('title')} · ${SITE_NAME}`,
+      description: t('description'),
+    }),
   };
 }
 

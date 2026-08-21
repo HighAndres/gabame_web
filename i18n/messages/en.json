@@ -8,13 +8,17 @@
       "title": "Rx Portfolio",
       "description": "GABAME Human Health's Rx pharmaceutical portfolio, organized by therapeutic area: cardiometabolic, oncology, hospital, urology, central nervous system and ophthalmology."
     },
+    "nosotros": {
+      "title": "About us",
+      "description": "GABAME Human Health is a Mexican health group since 2013: we develop high-value products and turn them into strong brands, a gateway to an ecosystem with Medinter, Ordan and A7."
+    },
     "farmacovigilancia": {
       "title": "Pharmacovigilance",
       "description": "Report a suspected adverse reaction to a GABAME Human Health product. A confidential pharmacovigilance channel, separate from commercial contact."
     },
-    "nosotros": {
-      "title": "About us",
-      "description": "GABAME Human Health is a Mexican health group since 2013: we develop high-value products and turn them into strong brands, a gateway to an ecosystem with Medinter, Ordan and A7."
+    "contacto": {
+      "title": "Contact",
+      "description": "Get in touch with GABAME Human Health: phone, email and a form for healthcare professionals, distributors, strategic partners and institutions in Mexico."
     }
   },
   "nav": {
@@ -28,11 +32,12 @@
     "socios": "Partners",
     "contacto": "Contact",
     "cta": "Contact us",
+    "pharmacy": "Pharmacies",
+    "pharmacyFull": "GABAME Pharmacies",
     "menu": "Menu",
     "openMenu": "Open menu",
     "closeMenu": "Close",
-    "brandTag": "Human Health",
-    "callUs": "Call us"
+    "brandTag": "Human Health"
   },
   "theme": {
     "toLight": "Switch to light mode",
@@ -54,6 +59,12 @@
       "ctaSecondary": "Contact us",
       "scrollCue": "Scroll",
       "mediaSlot": "'{'CORPORATE VIDEO'}' — 16:9 · silent loop with poster"
+    },
+    "farmacias": {
+      "kicker": "[PENDING: one-line eyebrow, e.g. «Another property of the group»]",
+      "title": "GABAME Pharmacies",
+      "subtitle": "[PENDING: one short sentence describing GABAME Pharmacies. No claims that need validation.]",
+      "cta": "Visit the site"
     },
     "areas": {
       "kicker": "Portfolio · Therapeutic areas",
@@ -199,7 +210,8 @@
       "invalidProduct": "Indicate the suspected product.",
       "invalidDescription": "Describe the adverse reaction.",
       "privacyNote": "By submitting you accept the processing of your data under the",
-      "privacyLink": "Privacy notice"
+      "privacyLink": "Privacy notice",
+      "errorRateLimit": "Too many submissions from this connection. Please wait a few minutes and try again."
     },
     "backHome": "Back to home",
     "noticeLabel": "Important notice",
@@ -249,7 +261,8 @@
     "profilePartner": "Strategic partner",
     "profileInstitution": "Institution",
     "pvRedirect": "Reporting a suspected adverse reaction? Use the pharmacovigilance channel.",
-    "pvRedirectCta": "Report"
+    "pvRedirectCta": "Report",
+    "errorRateLimit": "Too many submissions from this connection. Please wait a few minutes and try again."
   },
   "footer": {
     "tagline": "A Mexican health group since 2013.",
@@ -283,8 +296,15 @@
   },
   "a11y": {
     "mainNav": "Main navigation",
+    "newTab": "opens in a new tab",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "assistantSoon": "AI assistant — coming soon"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "The address you are looking for does not exist or has moved.",
+    "cta": "Go to home",
+    "ctaContact": "Contact us"
   }
 }

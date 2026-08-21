@@ -39,6 +39,10 @@ export function Ecosystem() {
             alt=""
             width={600}
             height={600}
+            /* La tarjeta mide como mucho 236px y el símbolo el 92% de ella:
+               217px de tope. Sin `sizes`, Next servía la variante de 1200px
+               para pintarla a 190. */
+            sizes="240px"
             className="eco-mark"
           />
         ) : (

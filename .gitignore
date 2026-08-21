@@ -6,3 +6,13 @@ build/
 .env.local
 *.tsbuildinfo
 .DS_Store
+
+# Fuentes originales pesadas (no se despliegan ni se suben)
+_assets_originales/
+
+# Respaldo de reportes de farmacovigilancia que no se pudieron enviar.
+# Lleva datos personales SENSIBLES: nunca al repositorio.
+.pv-reportes/
+
+# Configuracion local del agente (puerto de dev, etc.)
+.claude/

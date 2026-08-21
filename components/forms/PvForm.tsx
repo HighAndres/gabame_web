@@ -1,11 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { PrivacyModal } from '@/components/legal/PrivacyModal';
 import { CONTACT } from '@/lib/nav';
+import { LIMITES, RE_EMAIL } from '@/lib/schemas';
 
-type Status = 'idle' | 'sending' | 'sent' | 'error' | 'notConfigured';
+type Status =
+  | 'idle'
+  | 'sending'
+  | 'sent'
+  | 'error'
+  | 'notConfigured'
+  | 'rateLimit';
 type Campo = 'reporterName' | 'reporterEmail' | 'product' | 'description';
 type FieldErrors = Partial<Record<Campo, string>>;
 
@@ -26,29 +33,57 @@ export function PvForm() {
   const tPv = useTranslations('farmacovigilancia');
   const [status, setStatus] = useState<Status>('idle');
   const [errors, setErrors] = useState<FieldErrors>({});
+  const form = useRef<HTMLFormElement>(null);
 
+  /**
+   * Las mismas cifras que el servidor (`LIMITES` en `lib/schemas.ts`). Un
+   * reporte de farmacovigilancia con tres letras no sirve para nada, y si el
+   * cliente lo deja pasar el servidor devuelve un 400 que aquí solo se puede
+   * enseñar como error genérico.
+   */
   function validate(d: Record<string, string>) {
     const e: FieldErrors = {};
-    if (!d.reporterName?.trim()) e.reporterName = t('invalidName');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.reporterEmail ?? ''))
+    if ((d.reporterName ?? '').trim().length < LIMITES.name.min) {
+      e.reporterName = t('invalidName');
+    }
+    if (!RE_EMAIL.test((d.reporterEmail ?? '').trim())) {
       e.reporterEmail = t('invalidEmail');
-    if (!d.product?.trim()) e.product = t('invalidProduct');
-    // El mínimo de 10 caracteres venía del `minLength` nativo: un reporte de
-    // farmacovigilancia con tres letras no sirve para nada.
-    if ((d.description ?? '').trim().length < 10)
+    }
+    if ((d.product ?? '').trim().length < LIMITES.product.min) {
+      e.product = t('invalidProduct');
+    }
+    if ((d.description ?? '').trim().length < LIMITES.description.min) {
       e.description = t('invalidDescription');
+    }
     return e;
+  }
+
+  /** Al fallar, el foco va al primer campo con problema. */
+  function enfocarPrimerError(e: FieldErrors) {
+    const orden: Campo[] = [
+      'reporterName',
+      'reporterEmail',
+      'product',
+      'description',
+    ];
+    const primero = orden.find((k) => e[k]);
+    if (!primero) return;
+    form.current?.querySelector<HTMLElement>(`[name="${primero}"]`)?.focus();
   }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const form = e.currentTarget;
-    const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+    const elemento = e.currentTarget;
+    const data = Object.fromEntries(new FormData(elemento)) as Record<
+      string,
+      string
+    >;
 
     const found = validate(data);
     setErrors(found);
     if (Object.keys(found).length > 0) {
       setStatus('error');
+      enfocarPrimerError(found);
       return;
     }
 
@@ -62,8 +97,9 @@ export function PvForm() {
 
       if (res.ok) {
         setStatus('sent');
-        form.reset();
+        elemento.reset();
       } else if (res.status === 503) setStatus('notConfigured');
+      else if (res.status === 429) setStatus('rateLimit');
       else setStatus('error');
     } catch {
       setStatus('error');
@@ -83,7 +119,12 @@ export function PvForm() {
   const hasFieldErrors = Object.keys(errors).length > 0;
 
   return (
-    <form className="form-card form-grid" onSubmit={onSubmit} noValidate>
+    <form
+      ref={form}
+      className="form-card form-grid"
+      onSubmit={onSubmit}
+      noValidate
+    >
       <fieldset className="form-fieldset form-grid">
         <legend className="sr-only">{t('legend')}</legend>
 
@@ -103,9 +144,12 @@ export function PvForm() {
               autoComplete="name"
               required
               aria-invalid={errors.reporterName ? 'true' : undefined}
+              aria-describedby={errors.reporterName ? 'err-reporterName' : undefined}
             />
             {errors.reporterName && (
-              <span className="field-error">{errors.reporterName}</span>
+              <span className="field-error" id="err-reporterName">
+                {errors.reporterName}
+              </span>
             )}
           </label>
 
@@ -117,9 +161,12 @@ export function PvForm() {
               autoComplete="email"
               required
               aria-invalid={errors.reporterEmail ? 'true' : undefined}
+              aria-describedby={errors.reporterEmail ? 'err-reporterEmail' : undefined}
             />
             {errors.reporterEmail && (
-              <span className="field-error">{errors.reporterEmail}</span>
+              <span className="field-error" id="err-reporterEmail">
+                {errors.reporterEmail}
+              </span>
             )}
           </label>
         </div>
@@ -146,9 +193,12 @@ export function PvForm() {
             name="product"
             required
             aria-invalid={errors.product ? 'true' : undefined}
+            aria-describedby={errors.product ? 'err-product' : undefined}
           />
           {errors.product && (
-            <span className="field-error">{errors.product}</span>
+            <span className="field-error" id="err-product">
+                {errors.product}
+              </span>
           )}
         </label>
 
@@ -159,9 +209,12 @@ export function PvForm() {
             required
             placeholder={t('descriptionPlaceholder')}
             aria-invalid={errors.description ? 'true' : undefined}
+            aria-describedby={errors.description ? 'err-description' : undefined}
           />
           {errors.description && (
-            <span className="field-error">{errors.description}</span>
+            <span className="field-error" id="err-description">
+                {errors.description}
+              </span>
           )}
         </label>
       </fieldset>
@@ -169,6 +222,11 @@ export function PvForm() {
       {status === 'error' && !hasFieldErrors && (
         <p className="form-status" role="alert">
           {t('errorGeneric')}
+        </p>
+      )}
+      {status === 'rateLimit' && (
+        <p className="form-status" role="alert">
+          {t('errorRateLimit')}
         </p>
       )}
       {status === 'notConfigured' && (
