@@ -35,7 +35,7 @@ export default function NotFound() {
         >
           <div>
             <h1 style={{ fontSize: 64, color: 'var(--blue)' }}>404</h1>
-            <p style={{ color: 'var(--fg-muted)', marginTop: 12 }}>
+            <p style={{ color: 'var(--on-white)', marginTop: 12 }}>
               Página no encontrada.{' '}
               <a href="/es" style={{ color: 'var(--blue)' }}>
                 Ir al inicio

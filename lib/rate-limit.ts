@@ -78,3 +78,27 @@ export function limitar(
   registros.set(clave, { golpes: vigentes });
   return { permitido: true };
 }
+
+/**
+ * Devuelve el golpe más reciente de una clave.
+ *
+ * El limitador cuenta ANTES de saber si el envío sirvió de algo, que es lo
+ * correcto para no dejar la puerta abierta. Pero hay un caso en el que contar
+ * castiga a quien no tiene culpa: cuando el servidor NO TIENE CORREO
+ * CONFIGURADO. Ahí el envío no puede funcionar por mucho que se reintente, y
+ * el formulario —que además invita a reintentar— dejaba al visitante bloqueado
+ * al tercer intento con un «demasiados envíos desde esta conexión».
+ *
+ * Solo para ese caso. Un fallo de SMTP de verdad (`failed`) SÍ sigue contando:
+ * ahí hubo conexión, trabajo del servidor y puede funcionar al siguiente
+ * intento, así que no hay razón para regalar cupo.
+ */
+export function devolverGolpe(clave: string): void {
+  const registro = registros.get(clave);
+  if (!registro || registro.golpes.length === 0) return;
+
+  // El último de la lista es el que acaba de anotar `limitar`.
+  registro.golpes.pop();
+  if (registro.golpes.length === 0) registros.delete(clave);
+  else registros.set(clave, registro);
+}

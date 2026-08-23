@@ -212,9 +212,14 @@ export function ContactForm() {
           {t('errorRateLimit')}
         </p>
       )}
+      {/* 503: el correo del servidor no está configurado. NO es «inténtalo de
+          nuevo» —reintentar no puede funcionar, y encima gasta el cupo del
+          limitador—: es «escríbenos a esta dirección». Decía lo contrario
+          porque `errorNotConfigured` no existía en el diccionario y esta rama
+          caía en `errorGeneric`. */}
       {status === 'notConfigured' && (
         <p className="form-status" role="alert">
-          {t('errorGeneric')}{' '}
+          {t('errorNotConfigured')}{' '}
           <a href={`mailto:${CONTACT.email}`} style={{ textDecoration: 'underline' }}>
             {CONTACT.email}
           </a>

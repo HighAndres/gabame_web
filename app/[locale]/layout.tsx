@@ -82,7 +82,13 @@ export default async function LocaleLayout({
       <body>
         <NextIntlClientProvider messages={messages}>
           <SiteHeader />
-          <main id="contenido">{children}</main>
+          {/* `tabIndex={-1}`: sin esto el enlace «Saltar al contenido» solo
+              desplazaba la página —el foco se quedaba en el `body`— y el
+              siguiente tabulador devolvía al usuario a la cabecera, que es
+              justo lo que el enlace existe para saltar. */}
+          <main id="contenido" tabIndex={-1}>
+            {children}
+          </main>
           <Footer />
           <AssistantButton />
         </NextIntlClientProvider>

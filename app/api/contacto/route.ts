@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server';
 import { contactSchema } from '@/lib/schemas';
 import { sendMail } from '@/lib/mailer';
-import { ipDe, limitar } from '@/lib/rate-limit';
+import { devolverGolpe, ipDe, limitar } from '@/lib/rate-limit';
 
 /** 5 envíos por IP cada 10 minutos. De sobra para una persona; nada para un bot. */
 const LIMITE = { maximo: 5, ventanaMs: 10 * 60 * 1000 };
 
 export async function POST(request: Request) {
-  const veredicto = limitar(`contacto:${ipDe(request)}`, LIMITE);
+  const clave = `contacto:${ipDe(request)}`;
+  const veredicto = limitar(clave, LIMITE);
   if (!veredicto.permitido) {
     return NextResponse.json(
       { error: 'rateLimit' },
@@ -41,6 +42,10 @@ export async function POST(request: Request) {
   });
 
   if (!result.ok) {
+    // Sin correo configurado no hay reintento que valga: que no gaste cupo.
+    // Ver `devolverGolpe` en `lib/rate-limit.ts`.
+    if (result.reason === 'notConfigured') devolverGolpe(clave);
+
     return NextResponse.json(
       { error: result.reason },
       { status: result.reason === 'notConfigured' ? 503 : 502 },

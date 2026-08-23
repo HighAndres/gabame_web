@@ -186,6 +186,18 @@ EN MEMORIA, así que se pierde al reiniciar y no se comparte entre procesos;
 vale para el despliegue actual (un solo proceso Node) y hay que cambiarlo por
 Redis el día que haya más de una instancia.
 
+Un 503 por **falta de correo configurado NO gasta cupo** (`devolverGolpe`): el
+envío no puede funcionar por mucho que se reintente, y como el formulario
+invita a reintentar, el visitante quedaba bloqueado al tercer intento con un
+«demasiados envíos desde esta conexión». Un fallo de SMTP de verdad (`failed`)
+sí sigue contando: ahí hubo conexión y el siguiente intento puede funcionar. El
+efecto secundario asumido es que, mientras no haya SMTP, ese endpoint acepta
+peticiones sin tope —cuestan una validación y nada más, porque ni se abre
+conexión de correo—; el día que haya SMTP, el límite vuelve a aplicarse entero.
+
+⚠ El cupo es POR IP: detrás del NAT de un hospital o una distribuidora, esos 5
+envíos son de todo el edificio.
+
 **Respaldo de farmacovigilancia** (`lib/pv-fallback.ts`): si el envío falla, el
 reporte se guarda en `PV_LOG_DIR` (por defecto `.pv-reportes/huerfanos.jsonl`)
 y, si el disco no deja, en `stderr`. Antes se perdía: la ruta devolvía 502 y no
@@ -210,8 +222,8 @@ El tratamiento visual es `.form-v1` en la sección que los contiene. Sus
 rellenos y filetes van en variables (`--fill`, `--hairline`, `--placeholder`)
 que se redefinen por superficie, así el mismo CSS sirve sobre negro (contacto)
 y sobre claro (farmacovigilancia). Los radios (`--r-card`, `--r-field`,
-`--r-tile`) son locales de este bloque: el resto del sistema sigue con esquinas
-rectas.
+`--r-tile`) son locales de este bloque y hoy valen 0: el sistema tiene dos
+formas, pastilla y recto.
 
 ## Despliegue (preview: gabame.mirmiapps.com)
 

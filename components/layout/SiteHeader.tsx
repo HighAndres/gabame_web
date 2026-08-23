@@ -100,6 +100,29 @@ export function SiteHeader() {
     };
   }, [open]);
 
+  /**
+   * Al pasar el punto de corte, el panel se cierra solo.
+   *
+   * Por encima de 1080px el botón de menú desaparece (`.menu-toggle` va a
+   * `display: none` en `globals.css`) pero el panel seguía abierto: tapaba la
+   * página entera, con el scroll bloqueado y sin botón de cerrar. Pasaba al
+   * girar una tablet o al ensanchar la ventana con el menú desplegado, y solo
+   * se salía con Escape o pulsando un enlace.
+   *
+   * El 1080 de aquí es el mismo de la media query; si se cambia uno, hay que
+   * cambiar el otro.
+   */
+  useEffect(() => {
+    if (!open) return;
+    const mq = window.matchMedia('(min-width: 1081px)');
+    const cerrarSiEsAncho = () => {
+      if (mq.matches) setOpen(false);
+    };
+    cerrarSiEsAncho();
+    mq.addEventListener('change', cerrarSiEsAncho);
+    return () => mq.removeEventListener('change', cerrarSiEsAncho);
+  }, [open]);
+
   function isActive(item: (typeof NAV)[number]) {
     if (item.anchor) {
       return isHome && section === item.href.split('#')[1];

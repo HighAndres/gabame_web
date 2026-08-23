@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { pvSchema } from '@/lib/schemas';
 import { sendMail } from '@/lib/mailer';
-import { ipDe, limitar } from '@/lib/rate-limit';
+import { devolverGolpe, ipDe, limitar } from '@/lib/rate-limit';
 import { guardarReporteHuerfano } from '@/lib/pv-fallback';
 
 /**
@@ -15,7 +15,8 @@ const LIMITE = { maximo: 8, ventanaMs: 10 * 60 * 1000 };
  * Destino propio (MAIL_TO_PV) y asunto marcado para trazabilidad.
  */
 export async function POST(request: Request) {
-  const veredicto = limitar(`pv:${ipDe(request)}`, LIMITE);
+  const clave = `pv:${ipDe(request)}`;
+  const veredicto = limitar(clave, LIMITE);
   if (!veredicto.permitido) {
     return NextResponse.json(
       { error: 'rateLimit' },
@@ -55,6 +56,11 @@ export async function POST(request: Request) {
     // El correo se cayó: antes de rendirnos, el reporte se guarda. Un fallo de
     // SMTP no puede ser lo que borre una sospecha de reacción adversa.
     await guardarReporteHuerfano({ received, motivo: result.reason, datos: d });
+
+    // Sin correo configurado el reintento no puede funcionar: no gasta cupo.
+    // Aquí importa más que en contacto —quien notifica una RAM no puede
+    // quedarse fuera por un fallo del servidor—.
+    if (result.reason === 'notConfigured') devolverGolpe(clave);
 
     return NextResponse.json(
       { error: result.reason },

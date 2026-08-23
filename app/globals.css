@@ -162,6 +162,12 @@ img {
 .skip-link:focus {
   left: 0;
 }
+/* Destino del salto. Recibe el foco (ver `tabIndex` en el layout) pero no
+   dibuja el aro: un contorno alrededor de la página entera no señala nada. */
+#contenido:focus,
+#contenido:focus-visible {
+  outline: none;
+}
 
 .sr-only {
   position: absolute;
