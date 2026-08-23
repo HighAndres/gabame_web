@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useLocale, useTranslations } from 'next-intl';
 import { privacyNotice } from '@/content/legal';
 
@@ -9,6 +10,14 @@ import { privacyNotice } from '@/content/legal';
  * pie y los formularios lo montan sin estado compartido.
  *
  * Bloquea el scroll de fondo, cierra con Escape y devuelve el foco al botón.
+ *
+ * **Se pinta en `document.body`, no donde está el disparador.** El velo lleva
+ * `z-index: 120` —por encima de la cabecera, que va a 90— pero el disparador
+ * de los formularios vive dentro de `.section > .container`, que es
+ * `position: relative; z-index: 1`: eso abre un contexto de apilamiento y
+ * dentro de él el 120 solo compite con sus hermanos. El resultado era un aviso
+ * legal con la cabecera pegajosa por encima. Con `createPortal` el velo vuelve
+ * a la raíz y el 120 vale lo que dice.
  */
 export function PrivacyModal({
   className,
@@ -26,6 +35,9 @@ export function PrivacyModal({
   const [open, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
   const card = useRef<HTMLDivElement>(null);
+  /* `createPortal` necesita el DOM: en el render del servidor no hay `body`. */
+  const [montado, setMontado] = useState(false);
+  useEffect(() => setMontado(true), []);
 
   useEffect(() => {
     if (!open) return;
@@ -56,58 +68,61 @@ export function PrivacyModal({
         {label ?? tForm('privacyLink')}
       </button>
 
-      {open && (
-        <div
-          className="modal-scrim"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setOpen(false);
-          }}
-        >
+      {open &&
+        montado &&
+        createPortal(
           <div
-            ref={card}
-            className="modal-card"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="privacy-title"
-            tabIndex={-1}
+            className="modal-scrim"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setOpen(false);
+            }}
           >
-            <h2 id="privacy-title">{notice.title}</h2>
-
-            {notice.pending && (
-              <p className="modal-notice">{t('pendingNotice')}</p>
-            )}
-
-            {notice.updated && (
-              <p style={{ fontSize: 14, marginBottom: 18 }}>
-                {t('updatedLabel')}: {notice.updated}
-              </p>
-            )}
-
-            <p style={{ color: 'var(--on-white)', marginBottom: 24 }}>
-              {notice.intro}
-            </p>
-
-            {notice.sections.map((s) => (
-              <section key={s.heading} style={{ marginBottom: 22 }}>
-                <h3 style={{ fontSize: 20, marginBottom: 8 }}>{s.heading}</h3>
-                {s.body.map((p, i) => (
-                  <p key={i} style={{ color: 'var(--on-white)', marginTop: 6 }}>
-                    {p}
-                  </p>
-                ))}
-              </section>
-            ))}
-
-            <button
-              type="button"
-              className="modal-close"
-              onClick={() => setOpen(false)}
+            <div
+              ref={card}
+              className="modal-card"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="privacy-title"
+              tabIndex={-1}
             >
-              {t('close')}
-            </button>
-          </div>
-        </div>
-      )}
+              <h2 id="privacy-title">{notice.title}</h2>
+
+              {notice.pending && (
+                <p className="modal-notice">{t('pendingNotice')}</p>
+              )}
+
+              {notice.updated && (
+                <p style={{ fontSize: 14, marginBottom: 18 }}>
+                  {t('updatedLabel')}: {notice.updated}
+                </p>
+              )}
+
+              <p style={{ color: 'var(--on-white)', marginBottom: 24 }}>
+                {notice.intro}
+              </p>
+
+              {notice.sections.map((s) => (
+                <section key={s.heading} style={{ marginBottom: 22 }}>
+                  <h3 style={{ fontSize: 20, marginBottom: 8 }}>{s.heading}</h3>
+                  {s.body.map((p, i) => (
+                    <p key={i} style={{ color: 'var(--on-white)', marginTop: 6 }}>
+                      {p}
+                    </p>
+                  ))}
+                </section>
+              ))}
+
+              <button
+                type="button"
+                className="modal-close"
+                onClick={() => setOpen(false)}
+              >
+                {t('close')}
+              </button>
+            </div>
+          </div>,
+          document.body,
+        )}
     </>
   );
 }

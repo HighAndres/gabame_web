@@ -22,7 +22,15 @@ import { EXTERNAL } from '@/lib/nav';
  * espera del texto real del cliente: el sitio de farmacias está tras
  * autenticación básica y de aquí no se inventa nada. El título y el botón sí
  * son definitivos porque no afirman nada que haya que validar.
+ *
+ * Y mientras no llegue ese texto, NO SE PINTA. Las marcas «[PENDIENTE: …]»
+ * estaban saliendo en el sitio compilado, o sea delante del cliente. La franja
+ * se sostiene con título y botón; el día que lleguen las dos frases entran
+ * solas, sin tocar el componente.
  */
+
+/** Una cadena marcada como pendiente en `i18n` no se pinta. */
+const pendiente = (tx: string) => tx.trim().startsWith('[');
 export function Pharmacies() {
   const t = useTranslations('home.farmacias');
   const tA11y = useTranslations('a11y');
@@ -97,11 +105,15 @@ export function Pharmacies() {
         </span>
 
         <div className="pharma-copy">
-          <p className="eyebrow pharma-kicker">{t('kicker')}</p>
+          {!pendiente(t('kicker')) && (
+            <p className="eyebrow pharma-kicker">{t('kicker')}</p>
+          )}
           <h2 id="farmacias-title" className="pharma-title">
             {t('title')}
           </h2>
-          <p className="pharma-line">{t('subtitle')}</p>
+          {!pendiente(t('subtitle')) && (
+            <p className="pharma-line">{t('subtitle')}</p>
+          )}
         </div>
 
         <a

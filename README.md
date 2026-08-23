@@ -107,7 +107,20 @@ avanza— por el que la franja pueda quedarse invisible.
   sobre azul es 2,6:1 y no pasa: no usarlo para texto.
 - **Tipografías**: Barlow Condensed (titulares, nav, etiquetas, cifras) + Inter
   (cuerpo). Son las aprobadas con el cliente.
-- Esquinas rectas, sin sombras, filetes de 2 y 6px. Un solo tema.
+- **La caja alta es de etiqueta, no de lectura** (ago 2026). Titulares, nav y
+  botones van en caja alta y baja; las mayúsculas se quedan en `.eyebrow`,
+  `.stat-label`, `.field-label`, `.chip`, `.eco-status`, los `h4` del pie y el
+  lockup. Antes iba en mayúsculas entre el 47% y el 61% de los nodos de texto
+  de cada página; hoy, entre el 18% y el 26%. La regla vive en `globals.css`,
+  en el bloque de `h1…h4`.
+- **Dos formas y ninguna más**: pastilla (`--r-btn`/`--r-chip`, 999px) para
+  botones, chips y conmutadores; **recto (0)** para toda superficie —secciones,
+  tarjetas, campos, tablas—. Llegaron a convivir seis radios distintos (0, 10,
+  12, 14, 18 y 999): las tarjetas del ecosistema y los formularios parecían de
+  otro sistema. Los tokens locales (`--r-eco`, `--r-card`, `--r-field`,
+  `--r-tile`) siguen existiendo, valen 0, y devolverles 14/18/10/12px revierte
+  el cambio en una línea.
+- Sin sombras, filetes de 2 y 6px. Un solo tema.
 - **Atmósfera** (`components/shared/Atmosphere.tsx`): dos manchas a la deriva,
   heredadas del v1, en tres tonos. `light` y `dark` son auroras **azules**
   sobre claro y sobre negro. `blue` va sobre el propio color de marca, donde el
@@ -310,6 +323,28 @@ Sigue pendiente: `public/media/favicon.png` pesa 189 KB, y
 `gabame_header.mp4` (2,6 MB), `gabame_header_poster.jpg` y `gabame_org_sf.png`
 solo aparecen en el inventario de `content/media.ts` —no los renderiza nadie—
 pero se despliegan igual.
+
+**⚠ `sharp` no está en las dependencias y el despliegue es `standalone`.** Sin
+él, el optimizador de imágenes de Next falla en producción (`'sharp' is
+required to be installed in standalone mode`): las fotos se sirven sin
+optimizar, y `sizes` deja de servir para nada. En el servidor no hay
+`npm install`, así que no basta con instalarlo allí: o entra como dependencia
+del proyecto **compilada para linux/x64** (el build se hace en local), o se
+asume y se pone `images: { unoptimized: true }` en `next.config.mjs`, que para
+este sitio —cuatro imágenes, ya comprimidas, servidas por nginx— es defendible.
+Hay que decidirlo antes de publicar.
+
+**⚠ `portafoliorx.mp4` no tiene póster.** Con `prefers-reduced-motion` el video
+no se reproduce nunca, y sin póster el marco se queda vacío de forma
+permanente: medio metro de negro en la Home para quien navegue con esa
+preferencia. Se arregla con un fotograma:
+
+```bash
+ffmpeg -ss 1.5 -i public/media/portafoliorx.mp4 -frames:v 1 -q:v 4 \
+  public/media/portafoliorx_poster.jpg
+```
+
+y pasándoselo al componente: `<AutoVideo src="…" poster="/media/portafoliorx_poster.jpg" lazy />`.
 
 ## Accesibilidad
 

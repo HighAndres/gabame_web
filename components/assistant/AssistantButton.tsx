@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Sparkles, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
 
 /**
  * Asistente de IA — todavía sin motor detrás. Pero un botón que no hace nada
@@ -18,7 +18,24 @@ import { Link } from '@/i18n/navigation';
  *
  * Cierra con Escape, con el aspa y pulsando fuera; devuelve el foco al
  * lanzador al cerrar.
+ *
+ * DÓNDE NO SALE (ago 2026). Un botón fijo en la esquina inferior derecha se
+ * monta sobre lo que haya debajo, y lo que había debajo era contenido que
+ * importa: la tercera cifra de la portada, el campo de mensaje de /contacto y
+ * la esquina de la tarjeta de /farmacovigilancia. Dos reglas lo resuelven sin
+ * quitar el asistente:
+ *
+ *  1. **No aparece en las páginas con formulario.** Ahí el usuario ya está
+ *     escribiendo por el canal bueno; el lanzador solo podía estorbar sobre el
+ *     botón de enviar. Además el asistente todavía no responde: derivar al
+ *     contacto desde la página de contacto no lleva a ninguna parte.
+ *  2. **No aparece hasta pasar la primera pantalla.** Sobre la portada tapaba
+ *     una cifra; a partir del primer scroll el usuario ya está leyendo y el
+ *     lanzador entra donde se espera.
  */
+
+/** Páginas cuyo contenido principal ES un formulario. Sin prefijo de idioma. */
+const SIN_LANZADOR = ['/contacto', '/farmacovigilancia'];
 export function AssistantButton() {
   const t = useTranslations('chat');
   const tNav = useTranslations('nav');
@@ -28,6 +45,34 @@ export function AssistantButton() {
   const [visto, setVisto] = useState(false);
   const launcher = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
+
+  const pathname = usePathname();
+  const oculto = SIN_LANZADOR.includes(pathname);
+
+  /**
+   * Aparece al pasar la primera pantalla. El testigo es un elemento de 1px
+   * situado a 88vh del principio del documento: mientras se ve, seguimos en la
+   * portada. Se usa `IntersectionObserver` y no un lector de scroll a
+   * propósito —el sitio ya tiene uno, el de la cabecera, y no conviene añadir
+   * otro—. Si el navegador no lo trae, el lanzador sale desde el principio:
+   * el fallo tiene que ser hacia mostrarlo, no hacia esconderlo.
+   */
+  const testigo = useRef<HTMLSpanElement>(null);
+  const [pasoPortada, setPasoPortada] = useState(false);
+
+  useEffect(() => {
+    if (oculto) return;
+    const el = testigo.current;
+    if (!el || !('IntersectionObserver' in window)) {
+      setPasoPortada(true);
+      return;
+    }
+    const io = new IntersectionObserver(([e]) => {
+      setPasoPortada(!e.isIntersecting && e.boundingClientRect.top < 0);
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [oculto]);
 
   useEffect(() => {
     if (!open) return;
@@ -50,12 +95,18 @@ export function AssistantButton() {
     };
   }, [open]);
 
+  if (oculto) return null;
+
   return (
     <>
+      <span ref={testigo} className="assistant-sentinel" aria-hidden="true" />
+
       <button
         ref={launcher}
         type="button"
-        className={`assistant-launcher${visto ? ' is-seen' : ''}`}
+        className={`assistant-launcher${visto ? ' is-seen' : ''}${
+          pasoPortada ? ' is-ready' : ''
+        }`}
         aria-expanded={open}
         aria-controls="assistant-panel"
         onClick={() => {

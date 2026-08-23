@@ -85,6 +85,12 @@ function ContactBody() {
 
         <div className="container form-layout">
           <div>
+            {/* La página saltaba del `h1` de la cabecera a los `h4` del pie:
+                ni la columna de datos ni el formulario tenían encabezado, así
+                que en un lector de pantalla la página era una sola sección sin
+                estructura. Van ocultos: el diseño no los necesita a la vista,
+                el esquema del documento sí. */}
+            <h2 className="sr-only">{t('infoTitle')}</h2>
             <ul className="contact-info">
               {rows.map((r) => (
                 <li key={r.k} className="contact-item">
@@ -116,7 +122,10 @@ function ContactBody() {
             </div>
           </div>
 
-          <ContactForm />
+          <div>
+            <h2 className="sr-only">{t('formTitle')}</h2>
+            <ContactForm />
+          </div>
         </div>
       </section>
     </>

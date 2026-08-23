@@ -147,6 +147,8 @@
       "email": "contacto@gabame.com",
       "hoursLabel": "Hours",
       "hours": "Monday to Friday, 8:00–18:00",
+      "infoTitle": "Contact details",
+      "formTitle": "Contact form",
       "addressLabel": "Address",
       "address": "Av. de la Palma 8, first floor, Villa de las Palmas, ZIP 52787, Huixquilucan, State of Mexico"
     }

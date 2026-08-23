@@ -38,9 +38,17 @@
   --pad-x: 40px;
   --section-y: 96px;
 
-  /* Radios. La familia de botones y chips va en pastilla; las superficies
-     (secciones, tablas, filetes) siguen rectas — es lo que sostiene el
-     carácter sobrio del sistema. */
+  /**
+   * Radios. DOS formas en todo el sitio y ninguna más:
+   *  - pastilla (999px) para la familia de botones, chips y conmutadores;
+   *  - recto (0) para cualquier superficie: secciones, tarjetas, campos,
+   *    tablas y filetes.
+   *
+   * Llegaron a convivir seis valores distintos (0, 10, 12, 14, 18 y 999): las
+   * tarjetas del ecosistema y los formularios parecían venir de otro sistema.
+   * Los tokens locales (`--r-eco`, `--r-card`, `--r-field`, `--r-tile`) siguen
+   * existiendo para poder revertirlo en una línea, pero valen 0.
+   */
   --r-btn: 999px;
   --r-chip: 999px;
 }
@@ -77,6 +85,22 @@ body {
   overflow-x: clip;
 }
 
+/**
+ * TITULARES EN CAJA ALTA Y BAJA (ago 2026).
+ *
+ * Estaban todos en mayúsculas, y con ellos el nav, los botones y media
+ * interfaz: medido sobre los nodos de texto del sitio, entre el 47% y el 61%
+ * de la página iba en caja alta. La mayúscula borra la silueta de la palabra
+ * —que es por donde se lee— y en una condensada el efecto se multiplica.
+ *
+ * La caja alta se queda donde hace de ETIQUETA y no de lectura: `.eyebrow`,
+ * `.stat-label`, `.field-label`, `.chip`, `.eco-status`, los `h4` del pie y el
+ * lockup. Todo lo que se lee como frase —titulares, nav, botones— va en caja
+ * normal. La fuerza la sigue poniendo la condensada, no el bloqueo de mayúsculas.
+ *
+ * Los altos de línea suben con el cambio: 0.94 funcionaba sin ascendentes ni
+ * descendentes; con ellas, las líneas se tocaban.
+ */
 h1,
 h2,
 h3,
@@ -84,21 +108,23 @@ h4 {
   font-family: var(--font-display), 'Arial Narrow', sans-serif;
   font-weight: 700;
   margin: 0;
+}
+h4 {
   text-transform: uppercase;
 }
 
 h1 {
   font-size: clamp(40px, 6vw, 88px);
-  line-height: 0.94;
+  line-height: 1;
   letter-spacing: 0.005em;
 }
 h2 {
   font-size: clamp(34px, 5vw, 64px);
-  line-height: 0.98;
+  line-height: 1.02;
 }
 h3 {
   font-size: clamp(22px, 2.4vw, 32px);
-  line-height: 1;
+  line-height: 1.1;
 }
 
 p {
@@ -217,9 +243,8 @@ img {
   justify-content: center;
   font-family: var(--font-display), sans-serif;
   font-weight: 700;
-  font-size: 17px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  font-size: 18px;
+  letter-spacing: 0.01em;
   line-height: 1;
   padding: 15px 30px;
   border: 2px solid transparent;
@@ -590,9 +615,8 @@ img {
   position: relative;
   font-family: var(--font-display), sans-serif;
   font-weight: 600;
-  font-size: clamp(15px, 1.25vw, 18px);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  font-size: clamp(16px, 1.25vw, 19px);
+  letter-spacing: 0.005em;
   white-space: nowrap;
   padding: 4px 0 7px;
   transition: color 0.18s ease;
@@ -745,9 +769,8 @@ img {
   color: #fff;
   font-family: var(--font-display), sans-serif;
   font-weight: 700;
-  font-size: 15px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-size: 16px;
+  letter-spacing: 0.01em;
   padding: 10px 16px;
   cursor: pointer;
 }
@@ -1507,7 +1530,9 @@ img {
    Las esquinas suaves son un token LOCAL, como en `.form-v1`: el resto del
    sistema sigue recto. */
 #ecosistema {
-  --r-eco: 14px;
+  /* Recto, como el resto de superficies del sistema. Ver la nota de radios
+     en `:root`. */
+  --r-eco: 0px;
   --section-y: 72px;
 }
 .eco-layout {
@@ -1981,6 +2006,17 @@ img {
    TRES superficies del sitio. Sobre negro y sobre claro llama el azul; sobre
    azul, el borde negro lo recorta. Antes era negro con borde azul y sobre los
    bloques negros —portafolio, socios, pie— desaparecía. */
+/* Testigo de la primera pantalla. Ver `AssistantButton.tsx`: no se ve, no
+   ocupa y no se toca; solo marca dónde deja de estar la portada. */
+.assistant-sentinel {
+  position: absolute;
+  top: 88vh;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
 .assistant-launcher {
   position: fixed;
   right: 20px;
@@ -1997,9 +2033,8 @@ img {
   color: #000;
   font-family: var(--font-display), sans-serif;
   font-weight: 700;
-  font-size: 16px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 17px;
+  letter-spacing: 0.01em;
   line-height: 1;
   cursor: pointer;
   transition: background 0.18s ease, color 0.18s ease,
@@ -2007,6 +2042,17 @@ img {
   /* Halo que respira: mismo recurso que el pin del mapa. Es un `outline`
      animado, no una sombra: el sistema no tiene sombras. */
   animation: launcherHalo 2.8s ease-out infinite;
+  /* Escondido hasta pasar la portada. `visibility` además de `opacity`: así no
+     recibe foco de teclado mientras no está. */
+  visibility: hidden;
+  opacity: 0;
+  transition: background 0.18s ease, color 0.18s ease,
+    transform 0.18s cubic-bezier(0.22, 0.7, 0.25, 1), opacity 0.24s ease,
+    visibility 0.24s;
+}
+.assistant-launcher.is-ready {
+  visibility: visible;
+  opacity: 1;
 }
 @keyframes launcherHalo {
   0% {
@@ -2175,8 +2221,7 @@ img {
   color: #000;
   font-family: var(--font-display), sans-serif;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.01em;
   padding: 10px 20px;
   cursor: pointer;
 }
@@ -2196,9 +2241,13 @@ img {
    negro (contacto) y sobre claro (farmacovigilancia) sin duplicar reglas.
    ========================================================================== */
 .form-v1 {
-  --r-tile: 12px;
-  --r-field: 10px;
-  --r-card: 18px;
+  /* Las tarjetas y los campos SIGUEN siendo tokens locales, pero ya no
+     redondean: el sistema tiene dos formas —superficie recta y pastilla— y
+     los formularios eran la tercera. Para volver al tratamiento del v1 basta
+     con devolver aquí 12/10/18px. */
+  --r-tile: 0px;
+  --r-field: 0px;
+  --r-card: 0px;
   --fill: rgba(0, 0, 0, 0.04);
   --hairline: rgba(0, 0, 0, 0.18);
   /* Estaba en 0.45, o sea 3,3:1 sobre el relleno claro. El texto fantasma no
@@ -2284,7 +2333,9 @@ img {
 .form-v1 .field select,
 .form-v1 .field textarea {
   border: 1px solid var(--hairline);
-  background: var(--fill);
+  /* `background-color`, NO el atajo `background`: el atajo borraría la flecha
+     del `<select>`, que se pinta como `background-image`. */
+  background-color: var(--fill);
   border-radius: var(--r-field);
 }
 .form-v1 .field input::placeholder,
@@ -2405,6 +2456,33 @@ img {
 .field textarea {
   min-height: 130px;
   resize: vertical;
+}
+/**
+ * El `<select>` era el único control con el aspecto del navegador: tipografía
+ * del sistema operativo y flecha gris —un cuarto color— en una página donde
+ * todo lo demás está dibujado. Se apaga la apariencia nativa y la flecha se
+ * pinta con la paleta: negra sobre superficies claras, blanca sobre negro.
+ *
+ * `padding-right` reserva el sitio de la flecha para que el texto de la opción
+ * no se meta debajo.
+ */
+.field select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 44px;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23000' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+.surface-black .field select {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E");
+}
+/* La lista desplegable la pinta el sistema operativo; sin esto hereda el
+   fondo transparente del campo y en algunos navegadores sale texto blanco
+   sobre blanco. */
+.field select option {
+  background: #fff;
+  color: #000;
 }
 .field input:focus,
 .field select:focus,

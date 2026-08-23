@@ -22,6 +22,12 @@ type FieldErrors = Partial<Record<'name' | 'email' | 'message', string>>;
  *
  * Envía siempre al Route Handler (/api/contacto) — nunca credenciales en el
  * cliente. Honeypot antispam incluido.
+ *
+ * SIN `placeholder` (ago 2026): repetían literalmente la etiqueta que tienen
+ * justo encima —«Nombre» sobre «Nombre»— y el formulario de farmacovigilancia
+ * no los llevaba, así que los dos canales del sitio ni siquiera se parecían.
+ * El único que queda en el sitio es el de la descripción de la reacción
+ * adversa, y ese sí aporta: explica qué escribir, no repite el rótulo.
  */
 export function ContactForm() {
   const t = useTranslations('contactForm');
@@ -126,8 +132,7 @@ export function ContactForm() {
             type="text"
             name="name"
             autoComplete="name"
-            placeholder={t('name')}
-            aria-invalid={errors.name ? 'true' : undefined}
+                        aria-invalid={errors.name ? 'true' : undefined}
             aria-describedby={errors.name ? 'err-name' : undefined}
           />
           {errors.name && (
@@ -143,8 +148,7 @@ export function ContactForm() {
             type="email"
             name="email"
             autoComplete="email"
-            placeholder={t('email')}
-            aria-invalid={errors.email ? 'true' : undefined}
+                        aria-invalid={errors.email ? 'true' : undefined}
             aria-describedby={errors.email ? 'err-email' : undefined}
           />
           {errors.email && (
@@ -164,8 +168,7 @@ export function ContactForm() {
             type="text"
             name="org"
             autoComplete="organization"
-            placeholder={t('org')}
-          />
+                      />
         </label>
 
         <label className="field">
@@ -184,7 +187,6 @@ export function ContactForm() {
         <span className="field-label">{t('message')}</span>
         <textarea
           name="message"
-          placeholder={t('message')}
           aria-invalid={errors.message ? 'true' : undefined}
           aria-describedby={errors.message ? 'err-message' : undefined}
         />
