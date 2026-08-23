@@ -67,6 +67,17 @@ export function AssistantButton() {
       setPasoPortada(true);
       return;
     }
+
+    /* Página corta —el 404, por ejemplo—: si el recorrido de scroll no llega
+       ni a donde está el testigo, este no sale nunca de la pantalla y el
+       lanzador no aparecería jamás. Cuando la marca es inalcanzable, sale
+       desde el principio. */
+    const recorrido =
+      document.documentElement.scrollHeight - window.innerHeight;
+    if (recorrido <= el.offsetTop) {
+      setPasoPortada(true);
+      return;
+    }
     const io = new IntersectionObserver(([e]) => {
       setPasoPortada(!e.isIntersecting && e.boundingClientRect.top < 0);
     });
