@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
 import { NAV, EXTERNAL } from '@/lib/nav';
+import { useFocusTrap } from '@/lib/focus-trap';
 import { LangSwitch } from './LangSwitch';
 import { BrandLockup } from './BrandLockup';
 
@@ -36,6 +37,18 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [condensed, setCondensed] = useState(false);
   const [section, setSection] = useState<string | null>(null);
+
+  /**
+   * Con el panel abierto el foco se queda entre el botón de cerrar y el propio
+   * panel. Antes, tras el último enlace, el tabulador seguía al contenido de
+   * detrás —que el panel tapa— y se pulsaban botones invisibles.
+   *
+   * Las dos zonas van en este orden porque es el del documento: el botón vive
+   * en la cabecera y el panel viene después.
+   */
+  const toggle = useRef<HTMLButtonElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
+  useFocusTrap(open, [toggle, panel]);
 
   const isHome = pathname === '/';
 
@@ -189,6 +202,7 @@ export function SiteHeader() {
             </div>
 
             <button
+              ref={toggle}
               type="button"
               className="menu-toggle"
               aria-expanded={open}
@@ -208,6 +222,7 @@ export function SiteHeader() {
 
       {/* Panel móvil a pantalla completa */}
       <div
+        ref={panel}
         id="menu-panel"
         className={`menu-panel${open ? ' is-open' : ''}`}
         hidden={!open}

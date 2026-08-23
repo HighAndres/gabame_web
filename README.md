@@ -361,7 +361,19 @@ y pasándoselo al componente: `<AutoVideo src="…" poster="/media/portafoliorx_
 ## Accesibilidad
 
 - Los errores de cada campo se enlazan con `aria-describedby`, y al fallar el
-  envío el foco salta al primer campo con problema.
+  envío el foco salta al primer campo con problema. Cuando quien contesta es el
+  SERVIDOR (enviado, 429, 503), el foco va al aviso: al pasar a «enviado» el
+  formulario entero se sustituye por el mensaje y el botón que estaba enfocado
+  desaparece, así que el foco caía en el `body`.
+- **Trampa de foco** (`lib/focus-trap.ts`): las tres piezas que tapan la página
+  —panel de menú, aviso de privacidad y panel del asistente— retienen el
+  tabulador. Antes se escapaba al contenido de detrás, que está oculto a la
+  vista pero sigue siendo enfocable. El hook acepta VARIAS zonas porque el
+  botón de cerrar del menú vive en la cabecera, fuera del panel, y tiene que
+  seguir siendo alcanzable.
+- El enlace «Saltar al contenido» mueve el foco de verdad: `<main>` lleva
+  `tabIndex={-1}`. Sin eso solo desplazaba la página y el siguiente tabulador
+  devolvía a la cabecera.
 - 404 traducido con el layout del sitio (`app/[locale]/not-found.tsx`, más el
   cazatodo que lo dispara). El de la raíz queda para lo que cae fuera de los dos
   idiomas.

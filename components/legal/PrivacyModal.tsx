@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useLocale, useTranslations } from 'next-intl';
 import { privacyNotice } from '@/content/legal';
+import { useFocusTrap } from '@/lib/focus-trap';
 
 /**
  * Aviso de privacidad en modal. El disparador es el propio componente, así el
@@ -38,6 +39,11 @@ export function PrivacyModal({
   /* `createPortal` necesita el DOM: en el render del servidor no hay `body`. */
   const [montado, setMontado] = useState(false);
   useEffect(() => setMontado(true), []);
+
+  /* Es un diálogo modal y lo dice (`aria-modal`), así que tiene que cumplirlo:
+     sin esto el primer tabulador después de «Cerrar» ya estaba en la página de
+     detrás. */
+  useFocusTrap(open, [card]);
 
   useEffect(() => {
     if (!open) return;

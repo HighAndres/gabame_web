@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Sparkles, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
+import { useFocusTrap } from '@/lib/focus-trap';
 
 /**
  * Asistente de IA — todavía sin motor detrás. Pero un botón que no hace nada
@@ -48,6 +49,11 @@ export function AssistantButton() {
 
   const pathname = usePathname();
   const oculto = SIN_LANZADOR.includes(pathname);
+
+  /* El tercer diálogo del sitio, con el mismo problema que los otros dos: el
+     tabulador se iba a la página de detrás. El lanzador entra en la trampa
+     porque con el panel abierto hace de botón de cerrar. */
+  useFocusTrap(open, [launcher, panel]);
 
   /**
    * Aparece al pasar la primera pantalla. El testigo es un elemento de 1px

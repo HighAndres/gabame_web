@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { PrivacyModal } from '@/components/legal/PrivacyModal';
 import { CONTACT } from '@/lib/nav';
@@ -34,6 +34,24 @@ export function PvForm() {
   const [status, setStatus] = useState<Status>('idle');
   const [errors, setErrors] = useState<FieldErrors>({});
   const form = useRef<HTMLFormElement>(null);
+
+/**
+ * Tras responder el servidor, EL FOCO VA AL AVISO. Al pasar a «enviado» el
+ * formulario entero se sustituye por el mensaje, y con él desaparece el botón
+ * que el usuario tenía enfocado: el foco caía en el `body` y quien navega con
+ * teclado volvía al principio del documento sin saber qué había pasado. Los
+ * errores POR CAMPO no entran aquí —esos ya llevan el foco al primer campo con
+ * problema, que es más útil que el aviso general—.
+ */
+  const aviso = useRef<HTMLParagraphElement>(null);
+  useEffect(() => {
+    const respondioElServidor =
+      status === 'sent' ||
+      status === 'notConfigured' ||
+      status === 'rateLimit' ||
+      (status === 'error' && Object.keys(errors).length === 0);
+    if (respondioElServidor) aviso.current?.focus();
+  }, [status, errors]);
 
   /**
    * Las mismas cifras que el servidor (`LIMITES` en `lib/schemas.ts`). Un
@@ -109,7 +127,7 @@ export function PvForm() {
   if (status === 'sent') {
     return (
       <div className="form-card">
-        <p className="form-status" role="status">
+        <p className="form-status" role="status" ref={aviso} tabIndex={-1}>
           {t('success')}
         </p>
       </div>
@@ -220,17 +238,17 @@ export function PvForm() {
       </fieldset>
 
       {status === 'error' && !hasFieldErrors && (
-        <p className="form-status" role="alert">
+        <p className="form-status" role="alert" ref={aviso} tabIndex={-1}>
           {t('errorGeneric')}
         </p>
       )}
       {status === 'rateLimit' && (
-        <p className="form-status" role="alert">
+        <p className="form-status" role="alert" ref={aviso} tabIndex={-1}>
           {t('errorRateLimit')}
         </p>
       )}
       {status === 'notConfigured' && (
-        <p className="form-status" role="alert">
+        <p className="form-status" role="alert" ref={aviso} tabIndex={-1}>
           {t('errorNotConfigured')}{' '}
           <a
             href={`mailto:${CONTACT.pvEmail}`}
