@@ -2437,6 +2437,13 @@ img {
   font-size: 15px;
   line-height: 1.55;
 }
+/* Aviso de «guardado, pero sin entregar» del canal de farmacovigilancia:
+   lleva botón, así que necesita aire entre el texto y la acción. */
+.form-stored {
+  display: grid;
+  justify-items: start;
+  gap: 16px;
+}
 .field {
   display: grid;
   gap: 8px;

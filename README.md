@@ -203,6 +203,24 @@ reporte se guarda en `PV_LOG_DIR` (por defecto `.pv-reportes/huerfanos.jsonl`)
 y, si el disco no deja, en `stderr`. Antes se perdía: la ruta devolvía 502 y no
 quedaba rastro en ningún lado, lo que para un canal de farmacovigilancia no es
 una molestia sino un problema de trazabilidad (NOM-220).
+
+**Y el notificador se entera de cuál de las dos le tocó.** Cuando el respaldo
+llega a ARCHIVO, la ruta responde **202** con la hora de recepción en vez de un
+error; el formulario enseña esa hora como acuse, **conserva lo escrito** y
+ofrece un `mailto:` YA REDACTADO con el reporte completo. Hasta aquí las dos
+situaciones se contaban igual —«no se pudo enviar»— y con un `mailto:` vacío:
+quien acababa de describir una sospecha entendía que se había perdido y tenía
+que redactarla otra vez, y muchos no lo harán.
+
+Cuidado con lo que promete esa pantalla. El archivo **se recupera a mano y no
+avisa a nadie**, así que dice «quedó registrado» y empuja al correo; no dice
+«lo revisaremos». Si algún día hay aviso automático al equipo, ese es el
+momento de cambiar el texto (`farmacovigilancia.form.storedNotice`). Si el
+respaldo acabó en `stderr` no hay nada que prometer y sigue siendo un error.
+
+La descripción del `mailto:` se recorta a 1.500 caracteres —los `mailto:`
+largos los cortan algunos clientes— y cuando eso pasa el cuerpo lo dice; el
+texto completo sigue en el formulario, en pantalla.
 ⚠ Ese archivo lleva datos personales SENSIBLES en claro. Está en `.gitignore`;
 en el servidor hay que darle permisos restringidos, vaciarlo en cuanto el
 reporte esté recuperado, e incluirlo en la política de retención.

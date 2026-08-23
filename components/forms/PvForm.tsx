@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { PrivacyModal } from '@/components/legal/PrivacyModal';
 import { CONTACT } from '@/lib/nav';
 import { LIMITES, RE_EMAIL } from '@/lib/schemas';
@@ -10,6 +10,8 @@ type Status =
   | 'idle'
   | 'sending'
   | 'sent'
+  /** Guardado en el servidor, pero SIN entregar: ver `stored` en la ruta. */
+  | 'stored'
   | 'error'
   | 'notConfigured'
   | 'rateLimit';
@@ -31,8 +33,13 @@ type FieldErrors = Partial<Record<Campo, string>>;
 export function PvForm() {
   const t = useTranslations('farmacovigilancia.form');
   const tPv = useTranslations('farmacovigilancia');
+  const locale = useLocale();
   const [status, setStatus] = useState<Status>('idle');
   const [errors, setErrors] = useState<FieldErrors>({});
+  /** Lo último que se envió, para poder rearmarlo como correo si hace falta. */
+  const [enviado, setEnviado] = useState<Record<string, string> | null>(null);
+  /** Hora de recepción que devuelve el servidor: es el acuse del notificador. */
+  const [acuse, setAcuse] = useState<string | null>(null);
   const form = useRef<HTMLFormElement>(null);
 
 /**
@@ -47,6 +54,7 @@ export function PvForm() {
   useEffect(() => {
     const respondioElServidor =
       status === 'sent' ||
+      status === 'stored' ||
       status === 'notConfigured' ||
       status === 'rateLimit' ||
       (status === 'error' && Object.keys(errors).length === 0);
@@ -74,6 +82,43 @@ export function PvForm() {
       e.description = t('invalidDescription');
     }
     return e;
+  }
+
+  /**
+   * Correo de respaldo YA ESCRITO.
+   *
+   * Cuando el envío automático no sale, la salida era un `mailto:` vacío: el
+   * notificador tenía que volver a redactar la sospecha entera. Aquí se abre
+   * con todo lo que acaba de escribir, que es la diferencia entre reenviarlo
+   * de un toque y no reenviarlo.
+   *
+   * La descripción se recorta a 1.500 caracteres porque los `mailto:` largos
+   * los cortan algunos clientes de correo, y un recorte silencioso en un
+   * reporte de RAM sería peor que el aviso: cuando pasa, el propio cuerpo lo
+   * dice y el formulario sigue en pantalla con el texto completo.
+   */
+  const TOPE_DESCRIPCION = 1500;
+
+  function correoDeRespaldo(d: Record<string, string>) {
+    const desc = d.description ?? '';
+    const recortada = desc.length > TOPE_DESCRIPCION;
+    const cuerpo = [
+      t('mailIntro'),
+      '',
+      `${t('reporterName')}: ${d.reporterName} (${d.reporterType})`,
+      `${t('reporterEmail')}: ${d.reporterEmail}`,
+      `${t('reporterPhone')}: ${d.reporterPhone || '—'}`,
+      `${t('product')}: ${d.product}`,
+      '',
+      `${t('mailDescription')}:`,
+      recortada ? desc.slice(0, TOPE_DESCRIPCION) + ' […]' : desc,
+      ...(recortada ? ['', t('mailTruncated')] : []),
+    ].join('\n');
+
+    const asunto = t('mailSubject', { producto: d.product });
+    return `mailto:${CONTACT.pvEmail}?subject=${encodeURIComponent(
+      asunto,
+    )}&body=${encodeURIComponent(cuerpo)}`;
   }
 
   /** Al fallar, el foco va al primer campo con problema. */
@@ -114,8 +159,18 @@ export function PvForm() {
       });
 
       if (res.ok) {
-        setStatus('sent');
-        elemento.reset();
+        // 202 = guardado pero SIN entregar. No se limpia el formulario: el
+        // texto sigue en pantalla por si hay que copiarlo o completarlo.
+        const cuerpo = await res.json().catch(() => null);
+        setAcuse(cuerpo?.received ?? null);
+
+        if (cuerpo?.stored && !cuerpo?.delivered) {
+          setEnviado(data);
+          setStatus('stored');
+        } else {
+          setStatus('sent');
+          elemento.reset();
+        }
       } else if (res.status === 503) setStatus('notConfigured');
       else if (res.status === 429) setStatus('rateLimit');
       else setStatus('error');
@@ -247,6 +302,27 @@ export function PvForm() {
           {t('errorRateLimit')}
         </p>
       )}
+      {/* Guardado, sin entregar. Dice exactamente eso —el archivo se recupera
+          a mano y no avisa a nadie, así que aquí no se promete revisión— y
+          ofrece el correo ya escrito, que es la vía que sí llega hoy. */}
+      {status === 'stored' && enviado && (
+        <div className="form-status form-stored">
+          <p role="alert" ref={aviso} tabIndex={-1}>
+            {t('storedNotice', {
+              hora: acuse
+                ? new Date(acuse).toLocaleTimeString(locale, {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })
+                : '—',
+            })}
+          </p>
+          <a className="btn btn-blue" href={correoDeRespaldo(enviado)}>
+            {t('storedCta')}
+          </a>
+        </div>
+      )}
+
       {status === 'notConfigured' && (
         <p className="form-status" role="alert" ref={aviso} tabIndex={-1}>
           {t('errorNotConfigured')}{' '}
