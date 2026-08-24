@@ -1117,6 +1117,33 @@ img {
   }
 }
 
+/* Reveal genérico (`components/shared/Reveal.tsx`): la entrada de la franja
+   de farmacias, en pieza reutilizable para el resto de secciones. Misma
+   doctrina —transición y no `animation`, escondido solo bajo `.is-armed`, que
+   solo pone el JS— y mismo recorrido de 14px, que a 0.5s se percibe como un
+   asentarse, no como un salto. El escalonado entre hermanos lo pone el
+   componente con `transition-delay` en línea. */
+.reveal {
+  transition: opacity 0.5s ease,
+    transform 0.5s cubic-bezier(0.22, 0.7, 0.25, 1);
+}
+.reveal.is-armed {
+  opacity: 0;
+  transform: translateY(14px);
+}
+.reveal.is-armed.is-in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.is-armed {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* ------------------------------------------------------------------- 404 */
 .notfound {
   min-height: 60vh;

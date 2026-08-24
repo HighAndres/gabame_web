@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { PageHero } from '@/components/shared/PageHero';
+import { Reveal } from '@/components/shared/Reveal';
 import { Stats } from '@/components/shared/Stats';
 import { pageMetadata, SITE_NAME } from '@/lib/seo';
 
@@ -43,8 +44,10 @@ function AboutBody() {
     <>
       <PageHero eyebrow={t('kicker')} title={t('title')} />
 
+      {/* Cada sección entra como una unidad: el Reveal ocupa el lugar del
+          `.container`, así que la maquetación no gana envoltorios. */}
       <section className="section surface-white">
-        <div className="container">
+        <Reveal className="container">
           <div
             style={{
               display: 'grid',
@@ -75,11 +78,11 @@ function AboutBody() {
               </p>
             </article>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       <section className="section surface-blue">
-        <div className="container">
+        <Reveal className="container">
           <h2>{t('missionTitle')}</h2>
           <p
             className="lead"
@@ -87,18 +90,18 @@ function AboutBody() {
           >
             {tHome('subtitle')}
           </p>
-        </div>
+        </Reveal>
       </section>
 
       <section className="section surface-white">
-        <div className="container">
+        <Reveal className="container">
           <h2>{t('statsTitle')}</h2>
           <Stats />
-        </div>
+        </Reveal>
       </section>
 
       <section className="section surface-white" style={{ paddingTop: 0 }}>
-        <div className="container">
+        <Reveal className="container">
           <h2>{t('ecosystemTitle')}</h2>
           <p className="lead" style={{ marginTop: 16, marginBottom: 40 }}>
             {tEco('subtitle')}
@@ -125,11 +128,11 @@ function AboutBody() {
           <p className="note" style={{ marginTop: 28 }}>
             {t('ecosystemNote')}
           </p>
-        </div>
+        </Reveal>
       </section>
 
       <section className="section surface-black">
-        <div className="container">
+        <Reveal className="container">
           <h2>{t('ctaTitle')}</h2>
           <div className="btn-row" style={{ marginTop: 28 }}>
             <Link href="/contacto" className="btn btn-blue">
@@ -139,7 +142,7 @@ function AboutBody() {
               {t('backHome')}
             </Link>
           </div>
-        </div>
+        </Reveal>
       </section>
     </>
   );

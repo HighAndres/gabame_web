@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Atmosphere } from '@/components/shared/Atmosphere';
+import { Reveal } from '@/components/shared/Reveal';
 
 /** Las cuatro marcas del grupo. GABAME activa; el resto, fase posterior. */
 const BRANDS = [
@@ -70,7 +71,9 @@ export function Ecosystem() {
           la sección pasa de apilar cabecera + rejilla + nota + botones a una
           sola banda, y baja de ~750px a ~500. */}
       <div className="container eco-layout">
-        <div className="eco-intro">
+        {/* Entrada texto → desfile. Reveal ES el item de la rejilla: lleva la
+            clase del div al que sustituye. */}
+        <Reveal className="eco-intro">
           <p className="eyebrow">{t('kicker')}</p>
           <h2>{t('title')}</h2>
           <p className="lead">{t('subtitle')}</p>
@@ -83,14 +86,14 @@ export function Ecosystem() {
               {t('ctaSecondary')}
             </Link>
           </div>
-        </div>
+        </Reveal>
 
         {/* Carrusel circular: la pista lleva el juego de tarjetas DOS veces y
             se desplaza exactamente la mitad de su ancho, así el final de la
             primera copia coincide con el principio de la segunda y el bucle
             no tiene costura. Se detiene al pasar el cursor o al enfocar, y se
             queda quieto con `prefers-reduced-motion`. */}
-        <div className="eco-marquee">
+        <Reveal className="eco-marquee" delay={120}>
           <div className="eco-track">
             {BRANDS.map((b, i) => (
               <Card key={b.name} brand={b} index={i} />
@@ -99,7 +102,7 @@ export function Ecosystem() {
               <Card key={`${b.name}-bis`} brand={b} index={i} decorativa />
             ))}
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

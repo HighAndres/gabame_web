@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { AreaRows } from '@/components/shared/AreaRows';
 import { Atmosphere } from '@/components/shared/Atmosphere';
+import { Reveal } from '@/components/shared/Reveal';
 
 /**
  * Áreas terapéuticas. Va sobre AZUL: es el bloque de superficie más grande de
@@ -16,24 +17,30 @@ export function Areas() {
       <Atmosphere tone="blue" />
 
       <div className="container">
-        <div className="section-head">
+        {/* Entrada escalonada cabecera → filas → botones (Reveal ocupa el
+            lugar del div al que sustituye, la rejilla no cambia). */}
+        <Reveal className="section-head">
           <div>
             <p className="eyebrow">{t('kicker')}</p>
             <h2>{t('title')}</h2>
           </div>
           <p className="lead">{t('subtitle')}</p>
-        </div>
+        </Reveal>
 
-        <AreaRows variant="full" />
+        <Reveal delay={80}>
+          <AreaRows variant="full" />
+        </Reveal>
 
-        <div className="btn-row" style={{ marginTop: 48 }}>
-          <Link href="/portafolio" className="btn btn-black">
-            {t('ctaPrimary')}
-          </Link>
-          <Link href="/nosotros" className="btn btn-outline-black">
-            {t('ctaSecondary')}
-          </Link>
-        </div>
+        <Reveal delay={160}>
+          <div className="btn-row" style={{ marginTop: 48 }}>
+            <Link href="/portafolio" className="btn btn-black">
+              {t('ctaPrimary')}
+            </Link>
+            <Link href="/nosotros" className="btn btn-outline-black">
+              {t('ctaSecondary')}
+            </Link>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

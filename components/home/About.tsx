@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Atmosphere } from '@/components/shared/Atmosphere';
+import { Reveal } from '@/components/shared/Reveal';
 import { Stats } from '@/components/shared/Stats';
 import { mediaLibrary } from '@/content/media';
 
@@ -24,7 +25,9 @@ export function About() {
       <Atmosphere tone="blue" />
 
       <div className="container about-layout">
-        <div className="about-visual">
+        {/* Entrada foto → texto. Reveal ES el item de la rejilla: lleva la
+            clase del div al que sustituye. */}
+        <Reveal className="about-visual">
           <div className="about-photo">
             <Image
               src={lab.src}
@@ -46,9 +49,9 @@ export function About() {
               className="about-seal-mark"
             />
           </div>
-        </div>
+        </Reveal>
 
-        <div className="about-copy">
+        <Reveal className="about-copy" delay={100}>
           <p className="eyebrow">{t('kicker')}</p>
           <h2>{t('title')}</h2>
           <p className="about-text">{t('subtitle')}</p>
@@ -63,7 +66,7 @@ export function About() {
               {t('ctaSecondary')}
             </Link>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -90,6 +90,14 @@ es una **transición**, no una `animation`. Las dos cosas por lo mismo: que no
 exista ningún camino —JS caído, observador que no dispara, animación que no
 avanza— por el que la franja pueda quedarse invisible.
 
+Ese mismo patrón, hecho pieza reutilizable, es
+`components/shared/Reveal.tsx`: las secciones de la Home y las de `/nosotros`
+entran con él al llegar a pantalla (suben 14px y se asientan, escalonadas con
+`delay`). `<Reveal className="section-head">` ocupa en la maquetación el lugar
+exacto del `div` al que sustituye, así ninguna rejilla gana envoltorios. Lo que
+ya está en pantalla al cargar entra puesto, y todo se apaga con
+`prefers-reduced-motion`.
+
 - `content/products.ts` — portafolio. **Vacío a propósito**: sin validación
   COFEPRIS no se publican marcas, moléculas ni posología. Al llenarlo, las
   fichas aparecen solas en `/portafolio` y desaparece el estado «en preparación».
