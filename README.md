@@ -106,7 +106,10 @@ avanza— por el que la franja pueda quedarse invisible.
 - **Sobre azul, el texto va en negro** (6,19:1, AA a cualquier tamaño). Blanco
   sobre azul es 2,6:1 y no pasa: no usarlo para texto.
 - **Tipografías**: Barlow Condensed (titulares, nav, etiquetas, cifras) + Inter
-  (cuerpo). Son las aprobadas con el cliente.
+  (cuerpo). Son las aprobadas con el cliente. Cinzel se usa SOLO en el lockup
+  de marca (es la serif del logotipo definitivo de ago-2026; máster en
+  `_assets_originales/logo_gabame_render_2026.jpg`, assets derivados con
+  `scripts/derive-brand-assets.mjs`).
 - **La caja alta es de etiqueta, no de lectura** (ago 2026). Titulares, nav y
   botones van en caja alta y baja; las mayúsculas se quedan en `.eyebrow`,
   `.stat-label`, `.field-label`, `.chip`, `.eco-status`, los `h4` del pie y el

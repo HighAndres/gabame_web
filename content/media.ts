@@ -12,21 +12,23 @@ export type MediaAsset =
 export const mediaLibrary = {
   /**
    * Lockup horizontal: símbolo + «GABAME HUMAN HEALTH».
-   * OJO con el nombre del archivo: `gabame_org_sf.png` NO es el organigrama,
-   * es el lockup. Verificado abriendo el PNG (15-ago-2026).
+   * Desde ago-2026 es el logotipo definitivo (serif lapidaria, símbolo azul,
+   * nombre marino, bajada azul), extraído del render del cliente con
+   * `scripts/derive-brand-assets.mjs`. OJO con el nombre del archivo:
+   * `gabame_org_sf.png` NO es el organigrama, es el lockup.
    */
   logo: {
     type: 'image',
     src: '/media/gabame_org_sf.png',
     alt: 'GABAME Human Health',
-    note: 'Tinta azul acero (~#5B7FA8), NO es #3D89FD. Sobre fondos oscuros aplicar filter: brightness(0) invert(1).',
+    note: 'El nombre va en marino: sobre fondos oscuros usar BrandLockup (HTML), no esta imagen.',
   },
-  /** Símbolo hexagonal original, sin texto. Se usa de filigrana. */
+  /** Símbolo hexagonal solo, recortado a su caja. Ecosistema y filigranas. */
   mark: {
     type: 'image',
     src: '/media/logo_gabame_sf.png',
     alt: 'Símbolo GABAME',
-    note: 'Azul acero y con 72% de vacío lateral en el archivo.',
+    note: 'Recortado del render ago-2026; sin aire alrededor, el margen lo pone el CSS.',
   },
   /**
    * Símbolo recortado a su caja real (202×256). Se usa como `mask-image` en

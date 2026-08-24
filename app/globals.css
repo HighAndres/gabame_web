@@ -551,21 +551,26 @@ img {
   display: grid;
   gap: 1px;
 }
+/* Tipografía del logotipo aprobado (ago 2026): serif lapidaria (Cinzel, la
+   más cercana al Trajan del render del cliente). En el render «GABAME» va en
+   marino y «HUMAN HEALTH» en azul; sobre los fondos oscuros del sitio el
+   marino no lee, así que la jerarquía se invierte: nombre en blanco, bajada
+   en el azul de marca (mismo criterio que ya seguía el lockup). */
 .lockup-name {
-  font-family: var(--font-display), sans-serif;
+  font-family: var(--font-brand), serif;
   font-weight: 700;
   font-size: var(--lockup-name-size, 30px);
-  line-height: 0.92;
-  letter-spacing: 0.01em;
+  line-height: 1;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   transition: font-size 0.25s ease;
 }
 .lockup-tag {
-  font-family: var(--font-display), sans-serif;
+  font-family: var(--font-brand), serif;
   font-weight: 600;
   font-size: var(--lockup-tag-size, 12px);
   line-height: 1;
-  letter-spacing: 0.26em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   /* Sobre blanco el azul da 3,39:1 y NO pasa AA en texto pequeño: la bajada va
      en negro atenuado. El azul se reserva para fondos oscuros (6,06:1 sobre
@@ -580,22 +585,23 @@ img {
   flex: 0 0 auto;
   display: block;
   --lockup-size: 46px;
-  --lockup-name-size: 30px;
-  --lockup-tag-size: 12px;
+  /* Cinzel es ancha: a 23px el nombre ocupa lo que Barlow Condensed a 30. */
+  --lockup-name-size: 23px;
+  --lockup-tag-size: 10px;
   /* Sobre negro el azul cumple AA (6,06:1): la etiqueta va en azul. */
   --lockup-tag-ink: var(--blue);
   color: #fff;
 }
 .site-chrome.is-condensed .brand {
   --lockup-size: 36px;
-  --lockup-name-size: 24px;
-  --lockup-tag-size: 10px;
+  --lockup-name-size: 18px;
+  --lockup-tag-size: 8px;
 }
 @media (max-width: 860px) {
   .brand {
     --lockup-size: 38px;
-    --lockup-name-size: 25px;
-    --lockup-tag-size: 10px;
+    --lockup-name-size: 19px;
+    --lockup-tag-size: 8px;
     --lockup-gap: 10px;
   }
 }
@@ -1629,9 +1635,10 @@ img {
 }
 /* El PNG trae mucho aire alrededor del hexágono: al 56% de la caja el símbolo
    se veía diminuto. Se deja crecer y que el aire propio del archivo haga de
-   margen. */
+   margen. (Desde el logo de ago-2026 el PNG viene recortado a la caja real
+   del símbolo: el margen lo pone este ancho, no el archivo.) */
 .eco-mark {
-  width: 92%;
+  width: 56%;
   height: auto;
   filter: brightness(0);
   opacity: 0.85;
@@ -1829,8 +1836,8 @@ img {
 /* En la barra de cierre el lockup firma, no preside: a escala de barra. */
 .footer-lockup {
   --lockup-size: 32px;
-  --lockup-name-size: 21px;
-  --lockup-tag-size: 9px;
+  --lockup-name-size: 16px;
+  --lockup-tag-size: 7.5px;
   --lockup-gap: 9px;
   /* Sobre negro el azul sí cumple AA (6,06:1). */
   --lockup-tag-ink: var(--blue);

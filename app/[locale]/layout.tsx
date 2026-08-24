@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
-import { Barlow_Condensed, Inter } from 'next/font/google';
+import { Barlow_Condensed, Cinzel, Inter } from 'next/font/google';
 import { routing, type Locale } from '@/i18n/routing';
 import { pageMetadata, SITE_URL } from '@/lib/seo';
 import { SiteHeader } from '@/components/layout/SiteHeader';
@@ -20,6 +20,14 @@ const display = Barlow_Condensed({
 const body = Inter({
   subsets: ['latin'],
   variable: '--font-body',
+  display: 'swap',
+});
+/* Cinzel SOLO para el lockup de marca: es la serif lapidaria del logotipo
+   aprobado (ago 2026). No se usa en títulos ni cuerpo. */
+const brand = Cinzel({
+  subsets: ['latin'],
+  weight: ['600', '700'],
+  variable: '--font-brand',
   display: 'swap',
 });
 
@@ -76,7 +84,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${display.variable} ${body.variable}`}
+      className={`${display.variable} ${body.variable} ${brand.variable}`}
       suppressHydrationWarning
     >
       <body>
