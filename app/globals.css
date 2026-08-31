@@ -893,6 +893,7 @@ img {
 .menu-panel .nav-link:nth-child(5) { animation-delay: 0.2s; }
 .menu-panel .nav-link:nth-child(6) { animation-delay: 0.24s; }
 .menu-panel .nav-link:nth-child(7) { animation-delay: 0.28s; }
+.menu-panel .nav-link:nth-child(8) { animation-delay: 0.32s; }
 /* En el panel el trazo va bajo el texto grande, no pegado al borde. */
 .menu-panel .nav-link::after {
   height: 4px;
@@ -908,7 +909,8 @@ img {
   gap: 14px;
   border-top: 1px solid var(--rule-light);
   padding-top: 28px;
-  animation: enlaceEntra 0.42s cubic-bezier(0.22, 0.7, 0.25, 1) 0.32s both;
+  /* Después del octavo enlace (0.32s): el pie cierra la cascada. */
+  animation: enlaceEntra 0.42s cubic-bezier(0.22, 0.7, 0.25, 1) 0.36s both;
 }
 /* En el panel el botón manda: es la acción de la barra y aquí tiene sitio para
    el nombre completo. Conserva su ancho natural — estirándolo a todo el hueco
@@ -2560,6 +2562,30 @@ img {
   width: 1px;
   height: 1px;
   overflow: hidden;
+}
+
+/* ------------------------------------------------------------ MÉDICOS -----
+   Puerta profesional: una sola tarjeta centrada a ancho de lectura; el resto
+   del apartado no existe hasta declararse profesional (ver HcpGate.tsx). */
+.hcp-gate {
+  max-width: 760px;
+  margin-inline: auto;
+}
+/* Compromisos del alta: filete azul por viñeta, como los filetes del sistema.
+   Sin viñetas de fábrica: el marcador es el borde. */
+.medicos-benefits {
+  margin-top: 24px;
+  display: grid;
+  gap: 14px;
+  list-style: none;
+  padding: 0;
+}
+.medicos-benefits li {
+  padding-left: 18px;
+  border-left: 2px solid var(--blue);
+  font-size: 17px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 @media (prefers-reduced-motion: reduce) {

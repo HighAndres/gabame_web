@@ -45,6 +45,7 @@ Para reordenar las secciones, cambia el orden en `app/[locale]/page.tsx`.
 | Ruta | Archivo | Claves i18n |
 |---|---|---|
 | `/[locale]/portafolio` | `app/[locale]/portafolio/page.tsx` | `productos` |
+| `/[locale]/medicos` | `app/[locale]/medicos/page.tsx` | `medicos`, `medicoForm` |
 | `/[locale]/nosotros` | `app/[locale]/nosotros/page.tsx` | `nosotros` |
 | `/[locale]/farmacovigilancia` | `app/[locale]/farmacovigilancia/page.tsx` | `farmacovigilancia` |
 | `/[locale]/contacto` | `app/[locale]/contacto/page.tsx` | `home.contacto`, `contactForm` |
@@ -97,6 +98,25 @@ entran con él al llegar a pantalla (suben 14px y se asientan, escalonadas con
 exacto del `div` al que sustituye, así ninguna rejilla gana envoltorios. Lo que
 ya está en pantalla al cargar entra puesto, y todo se apaga con
 `prefers-reduced-motion`.
+
+### Médicos (`/medicos`)
+
+Espacio exclusivo para profesionales de la salud. Dos piezas:
+
+- **Puerta profesional** (`components/medicos/HcpGate.tsx`): declaración «soy
+  profesional de la salud» antes de enseñar el apartado (estándar del sector).
+  Dura la visita (`sessionStorage`); sin JS queda cerrada, que es el lado
+  seguro.
+- **Perfil médico** (`components/forms/MedicoForm.tsx` → `/api/medicos`):
+  alta con cédula profesional (7-8 dígitos, `RE_CEDULA`) y especialidad. El
+  sitio no tiene BD por diseño, así que el perfil viaja por correo
+  (`MAIL_TO_CONTACT`, asunto «Alta de médico») y el equipo valida a mano.
+
+**Pensado como base de la futura app de GABAME**: el contrato del perfil vive
+tipado en `lib/schemas.ts` (`medicoSchema` / `MedicoInput`) y lo comparten
+cliente y servidor. El día que haya cuentas de verdad, la app consume ese
+mismo esquema y `/api/medicos` cambia el correo por la BD sin tocar el
+formulario ni la página.
 
 - `content/products.ts` — portafolio. **Vacío a propósito**: sin validación
   COFEPRIS no se publican marcas, moléculas ni posología. Al llenarlo, las

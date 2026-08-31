@@ -13,6 +13,7 @@ export const NAV: NavItem[] = [
   { key: 'inicio', href: '/' },
   { key: 'areas', href: '/#areas', anchor: true },
   { key: 'portafolio', href: '/portafolio' },
+  { key: 'medicos', href: '/medicos' },
   { key: 'nosotros', href: '/nosotros' },
   { key: 'ecosistema', href: '/#ecosistema', anchor: true },
   { key: 'socios', href: '/#socios', anchor: true },
@@ -23,6 +24,7 @@ export const NAV: NavItem[] = [
 export const ROUTES = [
   '/',
   '/portafolio',
+  '/medicos',
   '/nosotros',
   '/farmacovigilancia',
   '/contacto',

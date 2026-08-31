@@ -19,6 +19,10 @@
     "contacto": {
       "title": "Contacto",
       "description": "Contacta con GABAME Human Health: teléfono, correo y formulario para profesionales de la salud, distribuidores, socios estratégicos e instituciones en México."
+    },
+    "medicos": {
+      "title": "Médicos",
+      "description": "Espacio exclusivo para profesionales de la salud: registra tu perfil médico con cédula y especialidad para recibir atención del equipo de GABAME Human Health."
     }
   },
   "nav": {
@@ -27,6 +31,7 @@
     "sections": "Navegación de secciones",
     "areas": "Áreas",
     "portafolio": "Portafolio",
+    "medicos": "Médicos",
     "nosotros": "Nosotros",
     "ecosistema": "Ecosistema",
     "socios": "Socios",
@@ -245,6 +250,45 @@
     "close": "Cerrar",
     "updatedLabel": "Última actualización",
     "pendingNotice": "Texto preliminar. El aviso de privacidad definitivo está pendiente de entrega y validación legal por el cliente."
+  },
+  "medicos": {
+    "kicker": "Profesionales de la salud",
+    "title": "Médicos",
+    "subtitle": "Un canal directo entre tu práctica y nuestro equipo.",
+    "gateEyebrow": "Acceso profesional",
+    "gateTitle": "Este espacio es exclusivo para profesionales de la salud",
+    "gateText": "La información y los servicios de este apartado están dirigidos a médicos y profesionales sanitarios con cédula profesional vigente en México. Confírmanos tu perfil para continuar.",
+    "gateYes": "Soy profesional de la salud",
+    "gateNo": "No soy profesional",
+    "whatTitle": "Tu perfil médico",
+    "whatText": "Regístrate con tu cédula profesional y tu especialidad. Nuestro equipo valida cada alta y a partir de ahí te atiende por el canal que prefieras.",
+    "benefit1": "Atención directa de nuestro equipo médico y de tu representante en zona.",
+    "benefit2": "Información científica y fichas de producto conforme estén disponibles.",
+    "benefit3": "Avisos de lanzamientos y materiales de apoyo para tu práctica.",
+    "reviewNote": "Nuestro equipo revisa cada registro antes de darlo de alta. Si algún dato no coincide, te escribimos antes de continuar.",
+    "formTitle": "Registro de perfil médico"
+  },
+  "medicoForm": {
+    "name": "Nombre completo",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "cedula": "Cédula profesional",
+    "specialty": "Especialidad",
+    "institution": "Institución o consultorio",
+    "comment": "Comentario",
+    "optional": "opcional",
+    "submit": "Registrar mi perfil",
+    "sending": "Enviando…",
+    "success": "Recibimos tu registro. Validaremos tu cédula y te contactaremos por correo para completar el alta.",
+    "errorGeneric": "No pudimos enviar tu registro. Inténtalo de nuevo en unos minutos.",
+    "errorNotConfigured": "El envío no está disponible por el momento. Escríbenos a",
+    "errorRateLimit": "Has hecho varios envíos seguidos. Espera unos minutos e inténtalo de nuevo.",
+    "errorValidation": "Revisa los campos marcados.",
+    "invalidName": "Escribe tu nombre completo.",
+    "invalidEmail": "Escribe un correo válido.",
+    "invalidCedula": "Escribe tu cédula profesional: 7 u 8 dígitos, sin letras.",
+    "invalidSpecialty": "Escribe tu especialidad.",
+    "privacyNote": "Al registrarte aceptas nuestro Aviso de privacidad."
   },
   "contactForm": {
     "name": "Nombre",

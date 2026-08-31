@@ -19,6 +19,10 @@
     "contacto": {
       "title": "Contact",
       "description": "Get in touch with GABAME Human Health: phone, email and a form for healthcare professionals, distributors, strategic partners and institutions in Mexico."
+    },
+    "medicos": {
+      "title": "Physicians",
+      "description": "A space exclusively for healthcare professionals: register your medical profile with your professional license and specialty to be served by the GABAME Human Health team."
     }
   },
   "nav": {
@@ -27,6 +31,7 @@
     "sections": "Section navigation",
     "areas": "Areas",
     "portafolio": "Portfolio",
+    "medicos": "Physicians",
     "nosotros": "About",
     "ecosistema": "Ecosystem",
     "socios": "Partners",
@@ -245,6 +250,45 @@
     "close": "Close",
     "updatedLabel": "Last updated",
     "pendingNotice": "Preliminary text. The definitive privacy notice is pending delivery and legal validation by the client."
+  },
+  "medicos": {
+    "kicker": "Healthcare professionals",
+    "title": "Physicians",
+    "subtitle": "A direct channel between your practice and our team.",
+    "gateEyebrow": "Professional access",
+    "gateTitle": "This space is exclusively for healthcare professionals",
+    "gateText": "The information and services in this section are intended for physicians and healthcare professionals holding a valid Mexican professional license (cédula profesional). Please confirm your profile to continue.",
+    "gateYes": "I am a healthcare professional",
+    "gateNo": "I am not a professional",
+    "whatTitle": "Your medical profile",
+    "whatText": "Register with your professional license and specialty. Our team validates every registration and from then on serves you through the channel you prefer.",
+    "benefit1": "Direct attention from our medical team and your local representative.",
+    "benefit2": "Scientific information and product data sheets as they become available.",
+    "benefit3": "Launch notices and support materials for your practice.",
+    "reviewNote": "Our team reviews every registration before activating it. If any detail does not match, we will write to you before continuing.",
+    "formTitle": "Medical profile registration"
+  },
+  "medicoForm": {
+    "name": "Full name",
+    "email": "Email",
+    "phone": "Phone",
+    "cedula": "Professional license (cédula)",
+    "specialty": "Specialty",
+    "institution": "Institution or practice",
+    "comment": "Comment",
+    "optional": "optional",
+    "submit": "Register my profile",
+    "sending": "Sending…",
+    "success": "We received your registration. We will validate your license and contact you by email to complete the process.",
+    "errorGeneric": "We could not send your registration. Please try again in a few minutes.",
+    "errorNotConfigured": "Sending is unavailable at the moment. Write to us at",
+    "errorRateLimit": "You have made several submissions in a row. Please wait a few minutes and try again.",
+    "errorValidation": "Check the highlighted fields.",
+    "invalidName": "Enter your full name.",
+    "invalidEmail": "Enter a valid email.",
+    "invalidCedula": "Enter your professional license: 7 or 8 digits, no letters.",
+    "invalidSpecialty": "Enter your specialty.",
+    "privacyNote": "By registering you accept our Privacy Notice."
   },
   "contactForm": {
     "name": "Name",
