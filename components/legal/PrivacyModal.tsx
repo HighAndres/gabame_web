@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useLocale, useTranslations } from 'next-intl';
-import { privacyNotice } from '@/content/legal';
+import { useTranslations } from 'next-intl';
 import { useFocusTrap } from '@/lib/focus-trap';
+import { PrivacyBody } from './PrivacyBody';
 
 /**
  * Aviso de privacidad en modal. El disparador es el propio componente, así el
@@ -30,8 +30,6 @@ export function PrivacyModal({
 }) {
   const t = useTranslations('legal');
   const tForm = useTranslations('contactForm');
-  const locale = useLocale() as 'es' | 'en';
-  const notice = privacyNotice[locale] ?? privacyNotice.es;
 
   const [open, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
@@ -91,32 +89,7 @@ export function PrivacyModal({
               aria-labelledby="privacy-title"
               tabIndex={-1}
             >
-              <h2 id="privacy-title">{notice.title}</h2>
-
-              {notice.pending && (
-                <p className="modal-notice">{t('pendingNotice')}</p>
-              )}
-
-              {notice.updated && (
-                <p style={{ fontSize: 14, marginBottom: 18 }}>
-                  {t('updatedLabel')}: {notice.updated}
-                </p>
-              )}
-
-              <p style={{ color: 'var(--on-white)', marginBottom: 24 }}>
-                {notice.intro}
-              </p>
-
-              {notice.sections.map((s) => (
-                <section key={s.heading} style={{ marginBottom: 22 }}>
-                  <h3 style={{ fontSize: 20, marginBottom: 8 }}>{s.heading}</h3>
-                  {s.body.map((p, i) => (
-                    <p key={i} style={{ color: 'var(--on-white)', marginTop: 6 }}>
-                      {p}
-                    </p>
-                  ))}
-                </section>
-              ))}
+              <PrivacyBody />
 
               <button
                 type="button"

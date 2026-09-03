@@ -1,0 +1,48 @@
+{
+  "_comment": "Promociones comerciales (junta sep 2026). Una entrada por dinámica. Texto bilingüe en {es, en}. PROHIBIDO aquí: precios, product shots, posología, listados tipo catálogo. Marcas y cadenas SOLO por nombre; los logos son placeholders hasta que GABAME entregue los archivos. Todo lo marcado [PENDIENTE] lo completa GABAME.",
+  "promos": [
+    {
+      "id": "3-mas-1",
+      "name": "3+1",
+      "mechanics": {
+        "es": "Por la compra de tres unidades de una marca participante, el punto de venta entrega una cuarta unidad del mismo producto. [PENDIENTE: redacción final de la dinámica aprobada por GABAME]",
+        "en": "For the purchase of three units of a participating brand, the point of sale provides a fourth unit of the same product. [PENDING: final wording of the mechanics approved by GABAME]"
+      },
+      "brands": [
+        { "name": "[PENDIENTE: marca participante]", "logo": null },
+        { "name": "[PENDIENTE: marca participante]", "logo": null }
+      ],
+      "chains": [
+        "Farmacias GABAME",
+        "[PENDIENTE: cadena participante]"
+      ],
+      "validFrom": "2026-09-01",
+      "validTo": "2026-12-31",
+      "legal": {
+        "es": "Válido únicamente en las cadenas participantes y hasta agotar existencias. No acumulable con otras promociones. [PENDIENTE: legales completos de la dinámica]",
+        "en": "Valid only at participating chains and while supplies last. Cannot be combined with other promotions. [PENDING: full legal terms of the mechanics]"
+      }
+    },
+    {
+      "id": "2-mas-1",
+      "name": "2+1",
+      "mechanics": {
+        "es": "Por la compra de dos unidades de una marca participante, el punto de venta entrega una tercera unidad del mismo producto. [PENDIENTE: redacción final de la dinámica aprobada por GABAME]",
+        "en": "For the purchase of two units of a participating brand, the point of sale provides a third unit of the same product. [PENDING: final wording of the mechanics approved by GABAME]"
+      },
+      "brands": [
+        { "name": "[PENDIENTE: marca participante]", "logo": null }
+      ],
+      "chains": [
+        "[PENDIENTE: cadena participante]",
+        "[PENDIENTE: cadena participante]"
+      ],
+      "validFrom": "2026-10-01",
+      "validTo": "2026-11-30",
+      "legal": {
+        "es": "Válido únicamente en las cadenas participantes y hasta agotar existencias. [PENDIENTE: legales completos de la dinámica]",
+        "en": "Valid only at participating chains and while supplies last. [PENDING: full legal terms of the mechanics]"
+      }
+    }
+  ]
+}

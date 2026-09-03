@@ -68,6 +68,43 @@ const nextConfig = {
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   },
+  /**
+   * Redirecciones permanentes de rutas que dejaron de existir tras la junta
+   * de sep 2026. Con y sin prefijo de idioma: sin él, el middleware de
+   * next-intl añadiría el idioma y ENTONCES caería aquí, que son dos saltos.
+   *
+   * `statusCode: 301` y no `permanent: true`: Next traduce `permanent` a 308,
+   * y lo acordado —y lo que miran las herramientas de SEO del cliente— es 301.
+   */
+  async redirects() {
+    return [
+      // El portafolio Rx pasó a ser el índice de áreas terapéuticas.
+      {
+        source: '/portafolio',
+        destination: '/es/areas-terapeuticas',
+        statusCode: 301,
+      },
+      {
+        source: '/:locale(es|en)/portafolio',
+        destination: '/:locale/areas-terapeuticas',
+        statusCode: 301,
+      },
+      // Fichas de producto: nunca llegaron a publicarse, pero si algún enlace
+      // viejo las busca, que caiga en el índice de áreas y no en un 404.
+      {
+        source: '/:locale(es|en)/productos/:path*',
+        destination: '/:locale/areas-terapeuticas',
+        statusCode: 301,
+      },
+      // /medicos era un alta de perfil médico; eso vive en el portal.
+      { source: '/medicos', destination: '/es/proximamente', statusCode: 301 },
+      {
+        source: '/:locale(es|en)/medicos',
+        destination: '/:locale/proximamente',
+        statusCode: 301,
+      },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);

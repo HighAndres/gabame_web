@@ -1,8 +1,9 @@
-import { Linkedin } from 'lucide-react';
+import { ArrowUpRight, Linkedin } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { NAV, CONTACT } from '@/lib/nav';
+import { NAV, CONTACT, EXTERNAL } from '@/lib/nav';
 import { PrivacyModal } from '@/components/legal/PrivacyModal';
+import { PortalLink } from '@/components/shared/PortalLink';
 import { Atmosphere } from '@/components/shared/Atmosphere';
 import { BrandLockup } from './BrandLockup';
 import { FooterMap } from './FooterMap';
@@ -17,6 +18,7 @@ import { FooterMap } from './FooterMap';
 export function Footer() {
   const t = useTranslations('footer');
   const tNav = useTranslations('nav');
+  const tA11y = useTranslations('a11y');
 
   return (
     <footer className="site-footer">
@@ -45,11 +47,25 @@ export function Footer() {
           <div>
             <h4>{t('linksTitle')}</h4>
             <div className="footer-list">
-              {NAV.filter((i) => !i.anchor).map((i) => (
+              {NAV.map((i) => (
                 <Link key={i.key} href={i.href}>
                   {tNav(i.key)}
                 </Link>
               ))}
+              {/* Farmacias GABAME: propiedad del grupo fuera de este sitio.
+                  Estuvo como botón en la cabecera hasta sep 2026; con los dos
+                  CTAs al portal no cabía, y aquí y en la franja de la Home
+                  sigue a un clic. */}
+              <a
+                className="footer-external"
+                href={EXTERNAL.farmacias}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {tNav('pharmacyFull')}
+                <ArrowUpRight size={14} aria-hidden="true" />
+                <span className="sr-only"> ({tA11y('newTab')})</span>
+              </a>
             </div>
           </div>
 
@@ -60,10 +76,13 @@ export function Footer() {
                 className="footer-privacy-link"
                 // El botón hereda el aspecto de enlace del pie
               />
-              <Link href="/farmacovigilancia">{t('pharmacovigilance')}</Link>
-              <span>
-                {t('clientPortal')} · {t('comingSoon')}
-              </span>
+              {/* Ya no hace falta repetir Farmacovigilancia: está en «Sitio». */}
+              <PortalLink className="footer-external">
+                {tNav('areaMedica')}
+              </PortalLink>
+              <PortalLink className="footer-external">
+                {tNav('portalClientes')}
+              </PortalLink>
             </div>
           </div>
         </div>

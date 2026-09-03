@@ -1,6 +1,8 @@
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { AutoVideo } from '@/components/shared/AutoVideo';
+import { mediaLibrary } from '@/content/media';
 
 /**
  * Portada, según la referencia del cliente: video a sangre con velo oscuro y
@@ -14,6 +16,12 @@ import { AutoVideo } from '@/components/shared/AutoVideo';
  * eso deja el texto blanco en 5,8:1, así que el contraste no depende del
  * fotograma. Sobre negro el blanco no cumple sobre azul, por eso el texto de
  * la portada NO va sobre la franja azul: va sobre el video oscurecido.
+ *
+ * Bajo el video hay una IMAGEN (sep 2026, `mediaLibrary.heroImage`): es lo
+ * que se ve con `prefers-reduced-motion` —donde el video no arranca—, en
+ * conexiones lentas y en el primer pintado. Va con `priority` porque es el
+ * LCP de la página. El degradado de legibilidad (`.hero-veil`) cubre a las
+ * dos capas por igual.
  */
 export function Hero() {
   const t = useTranslations('home.hero');
@@ -31,12 +39,21 @@ export function Hero() {
           su fondo real (negro + velo) es su ancestro, y en móvil el contenido
           puede fluir y crecer sin que la franja se le monte encima. */}
       <div className="hero-media">
-        <div className="hero-bg" aria-hidden="true">
+        {/* Capa base: imagen. Sobre ella el video (decorativo, `aria-hidden`
+            en `AutoVideo`) y el degradado. La imagen sí lleva `alt`. */}
+        <div className="hero-bg">
+          <Image
+            src={mediaLibrary.heroImage.src}
+            alt={t('imageAlt')}
+            fill
+            priority
+            sizes="100vw"
+          />
           <AutoVideo
             src="/media/vid_header.mp4"
             poster="/media/vid_header_poster.jpg"
           />
-          <div className="hero-veil" />
+          <div className="hero-veil" aria-hidden="true" />
         </div>
 
         <div className="container hero-content">
@@ -44,7 +61,7 @@ export function Hero() {
           <h1>{t('title')}</h1>
           <p className="lead">{t('subtitle')}</p>
           <div className="btn-row">
-            <Link href="/portafolio" className="btn btn-blue">
+            <Link href="/areas-terapeuticas" className="btn btn-blue">
               {t('ctaPrimary')}
             </Link>
             <Link href="/contacto" className="btn btn-outline-white">

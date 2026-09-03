@@ -4,10 +4,12 @@
 
 /* ============================================================================
    GABAME — SISTEMA DE DISEÑO (v9)
-   Esquinas rectas, sin sombras, filetes sólidos. Un solo tema.
+   Esquinas rectas, sin sombras, filetes sólidos.
 
    PALETA ESTRICTA: #3D89FD, negro y blanco. Cualquier gris o profundidad se
-   construye con rgba() de esos tres. Ningún hex nuevo.
+   construye con rgba() de esos tres. Ningún hex nuevo, con UNA excepción
+   acotada: el fondo inmersivo (`--immersive`), que tiene dos valores
+   conmutables con `data-theme` en <html>. Ver la nota de `:root`.
 
    TIPOGRAFÍA: Barlow Condensed (titulares, nav, etiquetas, cifras) + Inter
    (cuerpo). Aprobadas con el cliente.
@@ -15,6 +17,34 @@
 
 :root {
   --blue: #3D89FD;
+
+  /**
+   * FONDO INMERSIVO (sep 2026). El cliente pidió bajar la intensidad del azul
+   * a superficie sin tocar el diseño: las secciones que iban en `#3D89FD` puro
+   * pasan a un fondo apagado y el azul de marca se queda como ACENTO (cifras,
+   * botones, filetes, enlaces). Dos variantes para que el cliente elija, y
+   * este es el único sitio donde viven:
+   *
+   *   a · azul-noche    #0B1F3F  (por defecto)
+   *   b · gris azulado  #1B2433  (`<html data-theme="b">`)
+   *
+   * Consecuencia obligada: sobre estos fondos el texto va en BLANCO —el negro
+   * queda en 1,3:1—, así que la tinta de la superficie es también un token.
+   * Contraste medido (WCAG 2.x, fondo plano):
+   *
+   *   a  blanco 16,4:1 · blanco al 86 % 12,4:1 · #3D89FD 4,83:1 · AA en todo
+   *   b  blanco 15,6:1 · blanco al 86 % 11,8:1 · #3D89FD 4,60:1 · AA en todo
+   *
+   * El acento azul pasa AA también en texto pequeño (≥ 4,5:1), pero se usa
+   * casi solo en texto grande y botones. Sobre el pico de la aurora (ver
+   * `.atmo-blue`) baja a 3,6–3,7:1: sigue AA para texto grande, que es el
+   * único que va en azul ahí.
+   */
+  --immersive: #0B1F3F;
+  /* El mismo color en canales sueltos, para velos `rgba()` (cabecera). */
+  --immersive-rgb: 11, 31, 63;
+  --immersive-ink: #fff;
+  --immersive-ink-soft: rgba(255, 255, 255, 0.86);
 
   /* Derivados permitidos (solo opacidad de negro/blanco) */
   --on-white: rgba(0, 0, 0, 0.82);
@@ -51,6 +81,11 @@
    */
   --r-btn: 999px;
   --r-chip: 999px;
+}
+
+html[data-theme='b'] {
+  --immersive: #1B2433;
+  --immersive-rgb: 27, 36, 51;
 }
 
 @media (max-width: 760px) {
@@ -203,17 +238,26 @@ img {
   position: relative;
   z-index: 1;
 }
+/* La primera sección de cada página (cabecera de página, 404) empieza bajo
+   la barra translúcida: su relleno superior crece lo que mide la barra. */
+main > .section:first-child {
+  padding-top: calc(var(--section-y) + var(--header-h, 0px));
+}
 
-/* Superficies. Sobre azul el texto va SIEMPRE en negro (6.19:1).
+/* Superficies.
    El color del texto secundario se pasa por variable (`--ink-soft`) en vez de
    por selector descendente: así una superficie ANIDADA gana siempre sobre la
    que la contiene. Con reglas tipo `.surface-white .lead` un bloque negro
-   dentro de una sección blanca heredaba tinta negra y el texto desaparecía. */
+   dentro de una sección blanca heredaba tinta negra y el texto desaparecía.
+
+   `.surface-blue` conserva el nombre —lo usan ocho archivos— pero desde sep
+   2026 pinta el FONDO INMERSIVO (`--immersive`), no el azul de marca: el
+   cliente pidió bajar la intensidad sin cambiar el diseño. El azul puro sigue
+   siendo el acento de todo lo que va encima. Tinta blanca: ver `:root`. */
 .surface-blue {
-  background: var(--blue);
-  color: #000;
-  /* Sobre azul nunca alpha < .8: el negro va sólido. */
-  --ink-soft: #000;
+  background: var(--immersive);
+  color: var(--immersive-ink);
+  --ink-soft: var(--immersive-ink-soft);
 }
 .surface-black {
   background: #000;
@@ -369,22 +413,52 @@ img {
   top: 0;
   /* Por encima del panel móvil: así el botón de cerrar sigue accesible. */
   z-index: 90;
-  background: #000;
+  /**
+   * TRANSLÚCIDA (sep 2026): el cliente quería que la portada y la barra se
+   * leyeran como una sola pieza, no una franja negra cortando el video.
+   *
+   * El velo es del COLOR DEL FONDO INMERSIVO (`--immersive-rgb`, cambia con
+   * el tema), no negro: el video de la portada es negro en su franja
+   * superior y un velo negro, por transparente que fuera, seguía leyéndose
+   * como una barra negra. Con el tono del tema la barra continúa la franja
+   * de cifras y las cabeceras de página, y deja pasar lo que haya debajo.
+   *
+   * Dos densidades. ARRIBA DE LA PÁGINA (sin condensar), 0,72: sobre el
+   * negro del video da el navy del tema; sobre las cabeceras de página, que
+   * ya son de ese color, se funde. CONDENSADA, al bajar, puede ir sobre una
+   * sección blanca: 0,8 deja rgb(60, 76, 101) → texto blanco 8,7:1 (tema
+   * b: 8,1:1); sin condensar, 0,72 sobre blanco sigue en 6,6:1. No bajar
+   * de 0,65 ahí: los enlaces de 15px rozan AA cuando el desenfoque no está
+   * disponible (Firefox sin aceleración).
+   */
+  background: rgba(var(--immersive-rgb), 0.72);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
   color: #fff;
   border-bottom: 3px solid var(--blue);
-  transition: border-bottom-width 0.25s ease;
+  transition: border-bottom-width 0.25s ease, background 0.25s ease;
+  /**
+   * El contenido corre POR DEBAJO de la barra. `sticky` la deja en el flujo,
+   * así que se le quita su propio alto por abajo: la portada empieza en el
+   * borde superior de la ventana y la barra flota encima. La altura la mide
+   * `SiteHeader.tsx` (sin condensar) y la deja en `--header-h`; sin JS vale 0
+   * y la barra vuelve a ocupar su sitio, que es el lado seguro.
+   */
+  margin-bottom: calc(-1 * var(--header-h, 0px));
 }
-/* Al condensarse el filete se afina: la cabecera se percibe más ligera. */
+/* Al condensarse el filete se afina y el velo toma cuerpo: sobre el
+   contenido en movimiento la barra necesita fondo; sobre la portada, no. */
 .site-chrome.is-condensed {
   border-bottom-width: 2px;
+  background: rgba(var(--immersive-rgb), 0.8);
 }
 
 .site-header-inner {
   display: flex;
   align-items: center;
   gap: clamp(12px, 2vw, 28px);
-  padding-top: 14px;
-  padding-bottom: 14px;
+  padding-top: 16px;
+  padding-bottom: 16px;
   transition: padding 0.25s ease;
 }
 .site-chrome.is-condensed .site-header-inner {
@@ -423,42 +497,32 @@ img {
     );
 }
 
-/* Tono AZUL. Sobre el color de marca no se puede usar la aurora azul —azul
-   sobre azul no se ve— y la paleta prohíbe sacar un segundo azul. La
-   profundidad se hace con LUZ y SOMBRA del mismo sistema: blanco y negro.
+/* Tono `blue`: va sobre el FONDO INMERSIVO (`.surface-blue`). Mientras esa
+   superficie fue el azul de marca puro, aquí la profundidad se hacía con luz
+   blanca y sombra negra —azul sobre azul no se veía—. Sobre azul-noche o gris
+   azulado la aurora AZUL vuelve a leerse, y es la misma pieza que usa el resto
+   del sitio: un solo significado —luz de marca a la deriva— en todas partes.
 
-   El reparto no es simétrico y es a propósito: sobre azul el texto va en negro
-   (6,19:1), así que aclarar SUBE el contraste y oscurecer lo BAJA. Un velo del
-   18% ya deja el negro en 4,37:1 y rompe AA. Por eso la pieza grande que se
-   mueve es la blanca y la negra va corta: el punto más oscuro se mantiene
-   dentro de presupuesto en vez de depender de dónde coincidan dos capas. */
+   Presupuesto de contraste: el texto va en blanco, así que ACLARAR el fondo
+   baja el contraste. Con la aurora a 0,5 de alfa y 0,35 de opacidad, el pico
+   (centro de la mancha, antes del desenfoque) queda en #143260 (tema a) o
+   #213656 (tema b): blanco 12,2–12,7:1, azul 3,6–3,7:1. Subir la opacidad
+   por encima de 0,5 empieza a comerse el AA del azul en texto grande. */
 .atmo-blue {
   background: radial-gradient(
       900px 560px at 10% -8%,
-      rgba(255, 255, 255, 0.1),
+      rgba(61, 137, 253, 0.14),
       transparent 62%
     ),
     radial-gradient(
       1100px 680px at 94% 108%,
-      rgba(0, 0, 0, 0.06),
+      rgba(0, 0, 0, 0.18),
       transparent 66%
     );
 }
-/* La blanca es la que puede crecer: aclarar el azul SUBE el contraste con el
-   negro. Con el reparto inicial el movimiento medía 0,6/255 de media, por
-   debajo del umbral al que se percibe; la atmósfera clara del resto del sitio
-   trabaja alrededor de 3. */
-.atmo-blue .atmo-a1 {
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.38),
-    rgba(255, 255, 255, 0) 70%
-  );
-  opacity: 1;
-}
-.atmo-blue .atmo-a2 {
-  background: radial-gradient(circle, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0) 68%);
-  opacity: 0.55;
+.atmo-blue .atmo-aurora {
+  opacity: 0.35;
+  mix-blend-mode: screen;
 }
 
 .atmo-aurora {
@@ -614,11 +678,14 @@ img {
    izquierda —donde se alinea todo lo demás del sitio— y acciones al otro
    extremo, separadas por el hueco. */
 .site-nav {
-  margin-left: clamp(16px, 3vw, 56px);
+  margin-left: clamp(24px, 3.5vw, 64px);
   margin-right: auto;
   display: flex;
   align-items: center;
-  gap: clamp(10px, 1.6vw, 22px);
+  /* Aire entre enlaces (sep 2026): con seis enlaces y tres controles a la
+     derecha, a 22px de separación la barra se leía amontonada entre 1200 y
+     1300px. Sube a 26–34px y el enlace baja un punto para pagarlo. */
+  gap: clamp(26px, 2.4vw, 34px);
 }
 /* El subrayado no se enciende: se DIBUJA de izquierda a derecha, tanto al
    pasar el cursor como al entrar en la sección. Un borde que aparece de golpe
@@ -627,8 +694,8 @@ img {
   position: relative;
   font-family: var(--font-display), sans-serif;
   font-weight: 600;
-  font-size: clamp(16px, 1.25vw, 19px);
-  letter-spacing: 0.005em;
+  font-size: clamp(15px, 1.15vw, 17px);
+  letter-spacing: 0.01em;
   white-space: nowrap;
   padding: 4px 0 7px;
   transition: color 0.18s ease;
@@ -658,8 +725,9 @@ img {
 .header-tools {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   flex: 0 0 auto;
+  margin-left: clamp(24px, 3vw, 48px);
 }
 .lang-switch {
   border: 1px solid #fff;
@@ -681,94 +749,18 @@ img {
   color: #000;
   transform: translateY(-2px);
 }
+/* Los dos botones al portal. Secundarios y compactos: son dos, y con el
+   padding de los botones de contenido la barra no cerraba a 1200px. */
 .header-cta {
-  padding: 12px 24px;
-  font-size: 16px;
+  padding: 10px 18px;
+  font-size: 15px;
   white-space: nowrap;
 }
-/* Farmacias GABAME — la única acción que SALE del sitio.
-   Se distingue de los botones internos por la flecha diagonal, no por un
-   color nuevo: la paleta sigue siendo azul, negro y blanco. La flecha vive en
-   una caja de ancho fijo para que al desplazarse en hover no empuje el texto
-   ni cambie el ancho del botón (y con él, el de toda la barra). */
-.header-pharma {
+/* Enlaces del pie que salen del sitio o van al portal: flecha pegada al texto. */
+.footer-external {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-}
-.header-pharma-ic {
-  width: 18px;
-  height: 18px;
-  flex: 0 0 auto;
-  transition: transform 0.18s cubic-bezier(0.22, 0.7, 0.25, 1);
-}
-.header-pharma:hover .header-pharma-ic {
-  transform: translate(2px, -2px);
-}
-/* Latido. Dos recursos a la vez, con el MISMO ciclo de 2,6s:
-   - el halo, que es el `outline` animado que ya usan el lanzador del asistente
-     y el pin del mapa (el sistema no tiene sombras, así que el aura se dibuja
-     con trazo);
-   - y el pulso en dos tiempos —fuerte, flojo, reposo— que es lo que separa un
-     latido de un parpadeo.
-   El asistente respira a 2,8s de forma continua; este va a 2,6s y con pausa,
-   así los dos botones azules de la pantalla nunca laten al unísono, que es
-   justo lo que se leería como fallo. */
-.header-pharma {
-  animation: pharmaHalo 2.6s ease-out infinite,
-    pharmaLatido 2.6s cubic-bezier(0.22, 0.7, 0.25, 1) infinite;
-}
-/* El halo se abre y se apaga en 780ms — exactamente lo que dura el latido de
-   dos tiempos. Estirado al 55% del ciclo iba por detrás del pulso y se leían
-   como dos animaciones distintas encima del mismo botón. */
-@keyframes pharmaHalo {
-  0% {
-    outline: 0 solid rgba(61, 137, 253, 0.55);
-  }
-  30%,
-  100% {
-    outline: 12px solid rgba(61, 137, 253, 0);
-  }
-}
-@keyframes pharmaLatido {
-  0%,
-  30%,
-  100% {
-    transform: scale(1);
-  }
-  7% {
-    transform: scale(1.05);
-  }
-  14% {
-    transform: scale(1);
-  }
-  21% {
-    transform: scale(1.028);
-  }
-}
-/* En cuanto lo tocas o lo enfocas, deja de latir: ya cumplió su función, y el
-   `transform` del latido tiene que soltar el mando para que el hover pueda
-   subir el botón 2px como todos los demás del sistema. El foco de teclado, de
-   paso, necesita el `outline` libre. */
-.header-pharma:hover,
-.header-pharma:focus-visible {
-  animation: none;
-}
-@media (prefers-reduced-motion: reduce) {
-  .header-pharma {
-    animation: none;
-  }
-}
-/* El botón entero ya sube 2px en hover (.btn): si además se mueve la flecha,
-   son dos desplazamientos a la vez. Con reduced-motion se quedan los dos
-   quietos y el cambio de color hace todo el trabajo. */
-@media (prefers-reduced-motion: reduce) {
-  .header-pharma-ic {
-    transition: none;
-  }
-  .header-pharma:hover .header-pharma-ic {
-    transform: none;
-  }
+  gap: 4px;
 }
 .menu-toggle {
   display: none;
@@ -830,9 +822,11 @@ img {
   transform: rotate(-20deg) scale(1.06);
 }
 
-/* Por debajo de 1080 la fila de 7 enlaces ya no cabe sin apretarse:
-   pasa a panel. Antes envolvía a una tercera línea a ancho completo. */
-@media (max-width: 1080px) {
+/* Por debajo de 1200 la fila —cinco enlaces, idioma y los dos botones al
+   portal— ya no cabe sin apretarse: pasa a panel. El corte estaba en 1080
+   con un solo botón; `SiteHeader.tsx` lleva el mismo número en su
+   `matchMedia`, y los dos cambian juntos. */
+@media (max-width: 1200px) {
   .site-nav,
   .header-tools {
     display: none;
@@ -912,18 +906,12 @@ img {
   /* Después del octavo enlace (0.32s): el pie cierra la cascada. */
   animation: enlaceEntra 0.42s cubic-bezier(0.22, 0.7, 0.25, 1) 0.36s both;
 }
-/* En el panel el botón manda: es la acción de la barra y aquí tiene sitio para
-   el nombre completo. Conserva su ancho natural — estirándolo a todo el hueco
-   libre (tablet: 616px) la flecha quedaba a medio metro del texto, flotando. */
-.menu-panel-pharma {
+/* En el panel los dos botones al portal van a tamaño de botón de contenido:
+   hay sitio y son la acción de la barra. */
+.menu-panel-cta {
   flex: 0 0 auto;
-  gap: 12px;
-  padding: 16px 26px;
-  font-size: 18px;
-}
-.menu-panel-pharma .header-pharma-ic {
-  width: 22px;
-  height: 22px;
+  padding: 14px 24px;
+  font-size: 17px;
 }
 .menu-panel .lang-switch {
   border-color: #fff;
@@ -1186,7 +1174,9 @@ img {
   position: relative;
   display: grid;
   align-items: center;
-  min-height: clamp(560px, 80vh, 840px);
+  /* Más aire (sep 2026): la portada crece de 80vh a 88vh y todo lo que
+     contiene se separa un poco más; tipografía y layout no cambian. */
+  min-height: clamp(620px, 88vh, 920px);
   background: #000;
   color: #fff;
   overflow: hidden;
@@ -1204,14 +1194,21 @@ img {
   object-fit: cover;
   object-position: center;
 }
-/* Velo: 0,62 de negro. Sobre el fotograma más claro posible (blanco) deja el
-   texto blanco en 5,8:1, así que AA no depende de lo que salga en el video. */
+/* Velo: 0,62 de negro donde hay texto. Sobre el fotograma más claro posible
+   (blanco) deja el texto blanco en 5,8:1, así que AA no depende de lo que
+   salga en el video.
+
+   La franja superior (sep 2026) va más clara, a 0,3: ahí no hay texto de la
+   portada —el titular empieza pasado el 25 % del alto— y es lo que se ve a
+   través de la cabecera translúcida. Con el velo al 0,62 hasta arriba, la
+   barra seguía leyéndose como una franja negra por mucho que se aclarase. */
 .hero-veil {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.62) 0%,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.62) 22%,
     rgba(0, 0, 0, 0.62) 70%,
     rgba(0, 0, 0, 0.78) 100%
   );
@@ -1223,9 +1220,10 @@ img {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  /* Arriba, aire; abajo, sitio para la franja que monta. */
-  padding-top: 72px;
-  padding-bottom: calc(var(--strip-overlap) + 48px);
+  /* Arriba, aire —más la barra translúcida que flota encima—; abajo, sitio
+     para la franja que monta. */
+  padding-top: calc(96px + var(--header-h, 0px));
+  padding-bottom: calc(var(--strip-overlap) + 72px);
 }
 .hero-tag {
   display: inline-block;
@@ -1240,17 +1238,17 @@ img {
   padding: 9px 16px;
 }
 .hero-content h1 {
-  margin-top: 22px;
+  margin-top: 30px;
   max-width: 16ch;
   font-size: clamp(44px, 6.4vw, 96px);
 }
 .hero-content .lead {
-  margin-top: 20px;
+  margin-top: 28px;
   max-width: 58ch;
   color: rgba(255, 255, 255, 0.86);
 }
 .hero-content .btn-row {
-  margin-top: 32px;
+  margin-top: 44px;
   justify-content: center;
 }
 
@@ -1278,17 +1276,22 @@ img {
   margin: 0;
   font-size: clamp(36px, 3.6vw, 52px);
 }
+/* Las tarjetas son blancas aunque vivan en la franja inmersiva: la cifra va
+   en negro, no en el azul que `.surface-blue .stat-value` pone al resto. */
+.hero-strip .hero-stat .stat-value {
+  color: #000;
+}
 .hero-stat .stat-label {
   margin: 0;
 }
 @media (max-width: 760px) {
   .hero-media {
-    min-height: 540px;
+    min-height: 600px;
   }
   .hero-content {
     align-items: flex-start;
     text-align: left;
-    padding-top: 56px;
+    padding-top: calc(72px + var(--header-h, 0px));
   }
   .hero-content .btn-row {
     justify-content: flex-start;
@@ -1336,11 +1339,251 @@ img {
   margin-top: 6px;
 }
 .surface-blue .stat-value {
-  /* Sobre azul el azul desaparece: la cifra va en negro sólido. */
-  color: #000;
+  /* Sobre el fondo inmersivo la cifra vuelve al azul de marca: es texto
+     grande (≥ 38px) y pasa AA en los dos temas (4,6–4,8:1). */
+  color: var(--blue);
 }
 
 /* ------------------------------------------------------------------- ÁREAS */
+/* Vitrina: seis tarjetas (Home sobre el fondo inmersivo; índice sobre
+   blanco). Recto, filete de 2px en la tinta de la superficie, sin sombras:
+   las formas del sistema. El icono va en azul de marca en las dos. */
+.area-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.area-card {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  padding: 28px;
+  border: 2px solid currentColor;
+}
+.area-card-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  color: var(--blue);
+  border: 2px solid var(--blue);
+}
+.area-card h3 {
+  font-size: clamp(22px, 2vw, 28px);
+}
+.area-card-text {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink-soft, inherit);
+}
+.area-card-brands {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+/* El botón cierra la tarjeta abajo aunque el texto de al lado sea más largo. */
+.area-card-cta {
+  margin-top: auto;
+  justify-self: start;
+}
+@media (max-width: 1080px) {
+  .area-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .area-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Página de área: intro a un lado, puerta al portal al otro. */
+.area-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+}
+.hcp-card {
+  padding: clamp(24px, 2.6vw, 36px);
+  display: grid;
+  gap: 0;
+  justify-items: start;
+}
+.hcp-card .btn {
+  margin-top: 24px;
+}
+@media (max-width: 900px) {
+  .area-page {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Producto destacado dentro de una página de área. */
+.area-featured {
+  margin-top: 40px;
+  padding: 24px 0 32px;
+  border-top: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  display: grid;
+  justify-items: start;
+}
+.area-featured .btn {
+  margin-top: 20px;
+}
+
+/* ------------------------------------------------------------ HEALTHY EYES
+   Único producto con página pública (dispositivo médico). El visual reutiliza
+   el marco de media del sistema (`.pf-frame`); sobre blanco el filete y la
+   trama pasan a negro. */
+.he-frame {
+  aspect-ratio: 4 / 5;
+}
+.surface-white .he-frame {
+  border-color: #000;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.06) 0,
+    rgba(0, 0, 0, 0.06) 1px,
+    transparent 1px,
+    transparent 10px
+  );
+}
+.he-mark {
+  width: 88px;
+  height: 88px;
+}
+.he-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.4fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: start;
+}
+.he-visual {
+  position: sticky;
+  top: 112px;
+}
+.he-copy {
+  display: grid;
+  gap: 36px;
+}
+.he-retailers {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.he-retailer {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+/* Cadena aún sin enlace: se ve como botón apagado, no como algo pulsable. */
+.he-retailer.is-pending {
+  opacity: 0.55;
+  cursor: default;
+}
+.he-legend {
+  font-weight: 600;
+}
+@media (max-width: 900px) {
+  .he-layout {
+    grid-template-columns: 1fr;
+  }
+  .he-visual {
+    position: static;
+    max-width: 360px;
+  }
+}
+
+/* ------------------------------------------------------------ PROMOCIONES
+   Una tarjeta por dinámica. Recta, filete negro, el nombre de la dinámica
+   como cifra grande en negro: sobre el gris claro el azul no llega al 3:1 ni
+   en texto grande, así que el azul va en los filetes de las notas. */
+.promo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.promo-card {
+  border: 2px solid #000;
+  padding: clamp(24px, 2.6vw, 36px);
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+.promo-name {
+  font-size: clamp(44px, 5vw, 72px);
+  line-height: 1;
+}
+.promo-label {
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-top: 16px;
+  color: var(--ink-soft, inherit);
+}
+.promo-logos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+/* Caja de logotipo: 3:1, con la trama de «hueco de media» del sistema. */
+.promo-logo {
+  width: 150px;
+  aspect-ratio: 3 / 1;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  display: grid;
+  place-items: center;
+  padding: 8px;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--ink-soft, inherit);
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.05) 0,
+    rgba(0, 0, 0, 0.05) 1px,
+    transparent 1px,
+    transparent 10px
+  );
+}
+.promo-logo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.promo-dates {
+  font-weight: 600;
+}
+.promo-legal {
+  font-size: 14px;
+}
+.promo-legend {
+  font-weight: 600;
+}
+@media (max-width: 860px) {
+  .promo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Aviso de privacidad como página: ancho de lectura. */
+.legal-page {
+  max-width: 880px;
+}
+
 .section-head {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
@@ -1359,47 +1602,8 @@ img {
   }
 }
 
-.area-table {
-  border-top: 2px solid currentColor;
-}
-.area-row {
-  display: grid;
-  grid-template-columns: 70px minmax(0, 1fr) minmax(0, 1.2fr) auto;
-  gap: 20px 24px;
-  align-items: center;
-  padding: 22px 0;
-  border-bottom: 1px solid currentColor;
-}
-.area-num {
-  font-family: var(--font-display), sans-serif;
-  font-weight: 700;
-  font-size: 18px;
-  letter-spacing: 0.14em;
-}
-.area-desc {
-  font-size: 16px;
-  line-height: 1.5;
-  color: var(--ink-soft, inherit);
-}
-@media (max-width: 900px) {
-  .area-row {
-    grid-template-columns: 48px minmax(0, 1fr);
-    row-gap: 10px;
-  }
-  /* Los hijos que envuelven contenido deben poder encoger. */
-  .area-row > * {
-    min-width: 0;
-  }
-  .area-row .area-desc,
-  .area-row .chip {
-    grid-column: 2;
-  }
-  .area-row .chip {
-    justify-self: start;
-  }
-}
-
-/* -------------------------------------------------------------- PORTAFOLIO */
+/* ------------------------------------------------- HEALTHY EYES (HOME) --
+   Rejilla heredada de la sección Portafolio Rx, que vivió aquí hasta sep 2026. */
 /* El video es 9:16 y el texto de al lado mide un tercio de su alto. Con la
    columna a 0.62fr y `align-items: start` quedaban 409px de negro muerto bajo
    el texto. Columna más estrecha (marco más bajo) y contenido centrado: el aire
@@ -1743,51 +1947,6 @@ img {
   .eco-marquee {
     margin-left: calc(-1 * var(--pad-x));
     margin-right: calc(-1 * var(--pad-x));
-  }
-}
-
-/* ------------------------------------------------------------------ SOCIOS */
-.partners-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-}
-.partners-main {
-  padding: var(--section-y) clamp(24px, 4vw, 64px);
-  /* Mismo montaje que en las secciones: la atmósfera va detrás y el contenido
-     sube por encima. Aquí el contenido no vive en un `.container`, así que la
-     regla apunta a los hijos directos. */
-  position: relative;
-}
-.partners-main > *:not(.atmo) {
-  position: relative;
-  z-index: 1;
-}
-.partners-side {
-  padding: var(--section-y) clamp(24px, 4vw, 48px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 18px;
-  position: relative;
-}
-.partners-side > *:not(.atmo) {
-  position: relative;
-  z-index: 1;
-}
-.pv-block {
-  margin-top: 40px;
-  border-top: 1px solid var(--rule-light);
-  padding-top: 28px;
-}
-.pv-block h3 {
-  color: var(--blue);
-}
-.pv-block .lead {
-  margin: 12px 0 22px;
-}
-@media (max-width: 900px) {
-  .partners-grid {
-    grid-template-columns: 1fr;
   }
 }
 
@@ -2562,30 +2721,6 @@ img {
   width: 1px;
   height: 1px;
   overflow: hidden;
-}
-
-/* ------------------------------------------------------------ MÉDICOS -----
-   Puerta profesional: una sola tarjeta centrada a ancho de lectura; el resto
-   del apartado no existe hasta declararse profesional (ver HcpGate.tsx). */
-.hcp-gate {
-  max-width: 760px;
-  margin-inline: auto;
-}
-/* Compromisos del alta: filete azul por viñeta, como los filetes del sistema.
-   Sin viñetas de fábrica: el marcador es el borde. */
-.medicos-benefits {
-  margin-top: 24px;
-  display: grid;
-  gap: 14px;
-  list-style: none;
-  padding: 0;
-}
-.medicos-benefits li {
-  padding-left: 18px;
-  border-left: 2px solid var(--blue);
-  font-size: 17px;
-  line-height: 1.55;
-  color: rgba(255, 255, 255, 0.85);
 }
 
 @media (prefers-reduced-motion: reduce) {

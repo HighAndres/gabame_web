@@ -1,28 +1,31 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
-import { NAV, EXTERNAL } from '@/lib/nav';
+import { NAV, PORTAL_CTAS } from '@/lib/nav';
 import { useFocusTrap } from '@/lib/focus-trap';
+import { PortalLink } from '@/components/shared/PortalLink';
 import { LangSwitch } from './LangSwitch';
 import { BrandLockup } from './BrandLockup';
-
-/** Anclas de la Home que el marcador de sección debe seguir. */
-const SPY_IDS = ['areas', 'ecosistema', 'socios'];
 
 /**
  * Cabecera pegajosa.
  *
  * - Se condensa al bajar: el lockup baja de 46 a 36px y la barra se ciñe.
- * - Marca la sección activa también para las anclas de la Home
- *   (Áreas · Ecosistema · Socios), no solo para las páginas.
+ * - Marca la página activa.
  * - En móvil abre un panel a pantalla completa en vez de empujar el contenido.
  *
  * Negra, según la referencia del cliente (ago 2026): lockup a la izquierda,
- * navegación, y a la derecha el conmutador de idioma y el botón a Farmacias
- * GABAME. El lockup va en blanco con la etiqueta en azul, como en el pie.
+ * navegación, y a la derecha el conmutador de idioma y las acciones. Desde la
+ * junta de sep 2026 las acciones son DOS botones secundarios al portal
+ * («Área médica» y «Portal de clientes», vía `PortalLink`). El botón a
+ * Farmacias GABAME que vivía aquí se retiró: con tres botones la barra no
+ * cabía por debajo de 1300px, y la franja de la Home y el pie ya lo enlazan.
+ *
+ * El menú dejó de tener anclas a la Home (Áreas, Ecosistema y Socios eran
+ * secciones; Socios ya no existe y las otras dos tienen página), así que el
+ * marcador de sección por scroll se fue con ellas.
  *
  * Nota histórica: los datos de contacto han entrado y salido de aquí dos veces
  * —primero una franja superior, después un bloque de teléfono con icono— y las
@@ -36,7 +39,6 @@ export function SiteHeader() {
 
   const [open, setOpen] = useState(false);
   const [condensed, setCondensed] = useState(false);
-  const [section, setSection] = useState<string | null>(null);
 
   /**
    * Con el panel abierto el foco se queda entre el botón de cerrar y el propio
@@ -50,38 +52,34 @@ export function SiteHeader() {
   const panel = useRef<HTMLDivElement>(null);
   useFocusTrap(open, [toggle, panel]);
 
-  const isHome = pathname === '/';
-
   /**
-   * Un solo lector de scroll para las dos cosas que dependen de él: condensar
-   * la cabecera y marcar la sección activa.
-   *
-   * La sección activa es la ÚLTIMA cuyo borde superior ya pasó la línea de
-   * lectura (justo bajo la cabecera). Con «la que más área ocupa» fallaba:
-   * estando en Ecosistema marcaba Socios, porque ese bloque es más alto.
+   * La barra es translúcida y el contenido corre por debajo (sep 2026): su
+   * alto SIN condensar se publica en `--header-h` y el CSS se lo suma al
+   * relleno de la portada y de la primera sección de cada página. Se mide
+   * solo mientras no está condensada: si se midiera también condensada, el
+   * relleno cambiaría al hacer scroll y la página daría un salto.
    */
+  const chrome = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = chrome.current;
+    if (!el) return;
+    const publicar = () => {
+      if (el.classList.contains('is-condensed')) return;
+      document.documentElement.style.setProperty(
+        '--header-h',
+        `${el.getBoundingClientRect().height}px`,
+      );
+    };
+    publicar();
+    const ro = new ResizeObserver(publicar);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // Un solo lector de scroll: condensar la cabecera.
   useEffect(() => {
     let ticking = false;
-
-    const leer = () => {
-      const y = window.scrollY;
-      setCondensed(y > 80);
-
-      if (!isHome) {
-        setSection(null);
-        return;
-      }
-
-      // Línea de lectura: bajo la cabecera condensada, con holgura.
-      const linea = 140;
-      let activa: string | null = null;
-      for (const id of SPY_IDS) {
-        const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top <= linea) activa = id;
-      }
-      setSection(activa);
-    };
-
+    const leer = () => setCondensed(window.scrollY > 80);
     const onScroll = () => {
       if (ticking) return;
       ticking = true;
@@ -93,12 +91,8 @@ export function SiteHeader() {
 
     leer();
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-    };
-  }, [isHome]);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   // El panel móvil bloquea el scroll de fondo y cierra con Escape.
   useEffect(() => {
@@ -116,18 +110,19 @@ export function SiteHeader() {
   /**
    * Al pasar el punto de corte, el panel se cierra solo.
    *
-   * Por encima de 1080px el botón de menú desaparece (`.menu-toggle` va a
+   * Por encima del corte el botón de menú desaparece (`.menu-toggle` va a
    * `display: none` en `globals.css`) pero el panel seguía abierto: tapaba la
    * página entera, con el scroll bloqueado y sin botón de cerrar. Pasaba al
    * girar una tablet o al ensanchar la ventana con el menú desplegado, y solo
    * se salía con Escape o pulsando un enlace.
    *
-   * El 1080 de aquí es el mismo de la media query; si se cambia uno, hay que
-   * cambiar el otro.
+   * El 1200 de aquí es el mismo de la media query; si se cambia uno, hay que
+   * cambiar el otro. (Subió de 1080 con los dos botones al portal: la fila
+   * de cinco enlaces más tres controles no cabía por debajo.)
    */
   useEffect(() => {
     if (!open) return;
-    const mq = window.matchMedia('(min-width: 1081px)');
+    const mq = window.matchMedia('(min-width: 1201px)');
     const cerrarSiEsAncho = () => {
       if (mq.matches) setOpen(false);
     };
@@ -136,36 +131,8 @@ export function SiteHeader() {
     return () => mq.removeEventListener('change', cerrarSiEsAncho);
   }, [open]);
 
-  function isActive(item: (typeof NAV)[number]) {
-    if (item.anchor) {
-      return isHome && section === item.href.split('#')[1];
-    }
-    if (item.href === '/') return isHome && section === null;
-    return pathname === item.href;
-  }
-
-  /**
-   * Farmacias GABAME — sale del sitio, así que no usa el `Link` de next-intl:
-   * es un `<a>` a otro dominio, sin prefijo de idioma. La flecha diagonal es
-   * la que avisa de que se abre fuera; el texto oculto lo dice para quien no
-   * ve la flecha.
-   */
-  const pharmaLink = (className: string, labelKey: 'pharmacy' | 'pharmacyFull') => (
-    <a
-      className={`btn btn-blue header-pharma ${className}`}
-      href={EXTERNAL.farmacias}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={() => setOpen(false)}
-    >
-      <span className="header-pharma-tx">{t(labelKey)}</span>
-      <ArrowUpRight className="header-pharma-ic" size={18} aria-hidden="true" />
-      <span className="sr-only"> ({tA11y('newTab')})</span>
-    </a>
-  );
-
   const navLinks = NAV.map((item) => {
-    const active = isActive(item);
+    const active = pathname === item.href;
     return (
       <Link
         key={item.key}
@@ -179,13 +146,28 @@ export function SiteHeader() {
     );
   });
 
+  /** Los dos botones al portal. Secundarios: contorno blanco, sin latido. */
+  const portalLinks = (className: string) =>
+    PORTAL_CTAS.map((cta) => (
+      <PortalLink
+        key={cta.key}
+        className={`btn btn-outline-white ${className}`}
+        onClick={() => setOpen(false)}
+      >
+        {t(cta.key)}
+      </PortalLink>
+    ));
+
   return (
     <>
       <a className="skip-link" href="#contenido">
         {t('skipToContent')}
       </a>
 
-      <div className={`site-chrome${condensed ? ' is-condensed' : ''}`}>
+      <div
+        ref={chrome}
+        className={`site-chrome${condensed ? ' is-condensed' : ''}`}
+      >
         <header className="site-header">
           <div className="container site-header-inner">
             <Link href="/" className="brand" aria-label="GABAME Human Health">
@@ -198,7 +180,7 @@ export function SiteHeader() {
 
             <div className="header-tools">
               <LangSwitch />
-              {pharmaLink('header-cta', 'pharmacy')}
+              {portalLinks('header-cta')}
             </div>
 
             <button
@@ -232,7 +214,7 @@ export function SiteHeader() {
         </nav>
         <div className="menu-panel-foot">
           <LangSwitch />
-          {pharmaLink('menu-panel-pharma', 'pharmacyFull')}
+          {portalLinks('menu-panel-cta')}
         </div>
       </div>
     </>

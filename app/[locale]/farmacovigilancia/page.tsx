@@ -51,7 +51,7 @@ function PvBody() {
 
         <div className="container">
           {/* Aviso obligatorio: este no es un canal de urgencias. */}
-          <div className="surface-blue notice-card">
+          <div className="notice-card">
             <p className="eyebrow">{t('noticeLabel')}</p>
             <h2 style={{ fontSize: 'clamp(22px,2.4vw,32px)', marginTop: 10 }}>
               {t('emergencyTitle')}

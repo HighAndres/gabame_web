@@ -4,9 +4,9 @@
       "title": "GABAME Human Health · Mexican health group",
       "description": "A Mexican health group since 2013. We develop high-value Rx products and turn them into strong, relevant brands across Mexico."
     },
-    "productos": {
-      "title": "Rx Portfolio",
-      "description": "GABAME Human Health's Rx pharmaceutical portfolio, organized by therapeutic area: cardiometabolic, oncology, hospital, urology, central nervous system and ophthalmology."
+    "areas": {
+      "title": "Therapeutic areas",
+      "description": "The six therapeutic areas of GABAME Human Health: cardiometabolic, oncology, hospital, urology, central nervous system and ophthalmology."
     },
     "nosotros": {
       "title": "About us",
@@ -18,26 +18,35 @@
     },
     "contacto": {
       "title": "Contact",
-      "description": "Get in touch with GABAME Human Health: phone, email and a form for healthcare professionals, distributors, strategic partners and institutions in Mexico."
+      "description": "Contact GABAME Human Health: phone, email and contact form for general information, partners and distributors in Mexico."
     },
-    "medicos": {
-      "title": "Physicians",
-      "description": "A space exclusively for healthcare professionals: register your medical profile with your professional license and specialty to be served by the GABAME Human Health team."
+    "proximamente": {
+      "title": "Coming soon",
+      "description": "This section of GABAME Human Health is in preparation."
+    },
+    "aviso": {
+      "title": "Privacy notice",
+      "description": "GABAME Human Health privacy notice under Mexico’s LFPDPPP."
+    },
+    "healthyEyes": {
+      "title": "Healthy Eyes",
+      "description": "Healthy Eyes, a GABAME Human Health medical device for visual health care: what it is, presentation and where to find it."
+    },
+    "promociones": {
+      "title": "Promotions",
+      "description": "Current point-of-sale promotions with GABAME Human Health brands: mechanics, participating chains and validity."
     }
   },
   "nav": {
     "skipToContent": "Skip to content",
     "inicio": "Home",
-    "sections": "Section navigation",
-    "areas": "Areas",
-    "portafolio": "Portfolio",
-    "medicos": "Physicians",
     "nosotros": "About",
-    "ecosistema": "Ecosystem",
-    "socios": "Partners",
+    "areas": "Therapeutic areas",
+    "promociones": "Promotions",
+    "farmacovigilancia": "Pharmacovigilance",
     "contacto": "Contact",
-    "cta": "Contact us",
-    "pharmacy": "Pharmacies",
+    "areaMedica": "Medical area",
+    "portalClientes": "Client portal",
     "pharmacyFull": "GABAME Pharmacies",
     "menu": "Menu",
     "openMenu": "Open menu",
@@ -60,10 +69,11 @@
       "kicker": "Mexican health group · Since 2013",
       "title": "Health that truly makes an impact",
       "subtitle": "We develop high-value products and turn them into strong, relevant brands across Mexico.",
-      "ctaPrimary": "See Rx portfolio",
+      "ctaPrimary": "Therapeutic areas",
       "ctaSecondary": "Contact us",
       "scrollCue": "Scroll",
-      "mediaSlot": "'{'CORPORATE VIDEO'}' — 16:9 · silent loop with poster"
+      "mediaSlot": "'{'CORPORATE VIDEO'}' — 16:9 · silent loop with poster",
+      "imageAlt": "GABAME Human Health facilities"
     },
     "farmacias": {
       "kicker": "[PENDING: one-line eyebrow, e.g. «Another property of the group»]",
@@ -75,31 +85,16 @@
       "kicker": "Portfolio · Therapeutic areas",
       "title": "Six areas, one mission",
       "subtitle": "We meet the needs of the Mexican health system with a specialized Rx portfolio.",
-      "list": {
-        "cardiometabolico": "Cardiometabolic",
-        "oncologia": "Oncology",
-        "hospitalario": "Hospital",
-        "urologia": "Urology",
-        "snc": "Central Nervous System",
-        "oftalmologia": "Ophthalmology"
-      },
-      "ctaPrimary": "See portfolio",
-      "ctaSecondary": "About us",
-      "mediaSlot": "'{'CORPORATE PHOTO PENDING'}' — 16:9 background, pharmaceutical"
+      "ctaPrimary": "See all areas",
+      "ctaSecondary": "About us"
     },
-    "portafolio": {
-      "kicker": "Featured Rx portfolio",
-      "title": "A specialized Rx portfolio",
-      "subtitle": "Each brand with its own positioning; the full data sheet lives on its own page.",
-      "brandsSlot": "'{'PORTFOLIO BRANDS'}' — populated from the product collection (by therapeutic area)",
-      "note": "Clinical data and dosing are added to each sheet after regulatory validation (COFEPRIS).",
-      "ctaPrimary": "Product sheets",
-      "ctaSecondary": "Request information",
-      "mediaSlot": "'{'PRODUCT PHOTO'}' — 16:9 background",
-      "videoSlot": "'{'VERTICAL VIDEO'}' — 9:16, muted MP4 loop",
-      "railHint": "Swipe to explore",
-      "prev": "Previous",
-      "next": "Next"
+    "healthyEyes": {
+      "kicker": "Ophthalmology · Medical device",
+      "title": "Healthy Eyes",
+      "subtitle": "Our medical device for visual health care, available in pharmacies. [SUBJECT TO REGULATORY VALIDATION]",
+      "legend": "Consult your doctor.",
+      "ctaPrimary": "Discover Healthy Eyes",
+      "ctaSecondary": "Medical area"
     },
     "nosotros": {
       "kicker": "About us",
@@ -128,24 +123,10 @@
       "statusLater": "Later phase",
       "note": "Medinter, Ordan and A7 are enabled in later phases."
     },
-    "socios": {
-      "kicker": "Commitment · Collaboration",
-      "title": "With you at every stage",
-      "subtitle": "Report a suspected adverse reaction or join our distribution and strategic partner network across Mexico.",
-      "ctaPrimary": "Pharmacovigilance",
-      "ctaSecondary": "Become a partner",
-      "mediaSlot": "'{'CORPORATE PHOTO PENDING'}' — collaboration / alliance, 16:9",
-      "pvTitle": "Pharmacovigilance",
-      "pvText": "Report any suspected adverse reaction related to a GABAME product.",
-      "pvCta": "Report",
-      "partnerTitle": "Become a partner",
-      "partnerText": "Join our distribution and strategic partner network across Mexico.",
-      "partnerCta": "Get in touch"
-    },
     "contacto": {
       "kicker": "Contact",
       "title": "Let's talk",
-      "subtitle": "Write to us and we'll reply within our business hours.",
+      "subtitle": "Send us your comments or your interest in becoming a partner or distributor, and we will reply during business hours.",
       "phoneLabel": "Phone",
       "phone": "+52 55 5548 7579",
       "emailLabel": "Email",
@@ -158,32 +139,88 @@
       "address": "Av. de la Palma 8, first floor, Villa de las Palmas, ZIP 52787, Huixquilucan, State of Mexico"
     }
   },
-  "productos": {
-    "kicker": "Portfolio · Therapeutic areas",
-    "title": "Rx Portfolio",
-    "subtitle": "A specialized portfolio organized by therapeutic area. Each brand with its own positioning; the full data sheet will live on its own page.",
-    "note": "Clinical data, active substance and dosing are added to each sheet after regulatory validation (COFEPRIS). For specific information, get in touch.",
-    "indexLabel": "Areas",
-    "emptyState": "Sheets in preparation",
-    "emptyHint": "We're preparing the sheets for this area. Request information and we'll share the available details.",
-    "comingSoon": "Coming soon",
-    "available": "Available",
-    "requestInfo": "Request information",
-    "moleculeLabel": "Molecule",
-    "presentationLabel": "Presentation",
-    "statusLabel": "Status",
-    "pendingValue": "— pending",
-    "close": "Close",
-    "ctaContact": "Request information",
+  "areas": {
+    "kicker": "Therapeutic areas",
+    "title": "Six areas, one mission",
+    "subtitle": "We serve the needs of the Mexican health system with a specialized Rx portfolio, organized by therapeutic area.",
+    "list": {
+      "cardiometabolico": {
+        "name": "Cardiometabolic",
+        "blurb": "Solutions for the management of cardiovascular and metabolic diseases.",
+        "intro": "[PENDING: medical affairs copy — general positioning intro for the area, 2–3 lines, no clinical data]"
+      },
+      "oncologia": {
+        "name": "Oncology",
+        "blurb": "Supportive therapies for cancer treatment.",
+        "intro": "[PENDING: medical affairs copy — general positioning intro for the area, 2–3 lines, no clinical data]"
+      },
+      "hospitalario": {
+        "name": "Hospital",
+        "blurb": "Products for the hospital and acute-care setting.",
+        "intro": "[PENDING: medical affairs copy — general positioning intro for the area, 2–3 lines, no clinical data]"
+      },
+      "urologia": {
+        "name": "Urology",
+        "blurb": "Treatments for urological health.",
+        "intro": "[PENDING: medical affairs copy — general positioning intro for the area, 2–3 lines, no clinical data]"
+      },
+      "snc": {
+        "name": "Central Nervous System",
+        "blurb": "Therapies for central nervous system disorders.",
+        "intro": "[PENDING: medical affairs copy — general positioning intro for the area, 2–3 lines, no clinical data]"
+      },
+      "oftalmologia": {
+        "name": "Ophthalmology",
+        "blurb": "Products for visual health care.",
+        "intro": "[PENDING: medical affairs copy — general positioning intro for the area, 2–3 lines, no clinical data]"
+      }
+    },
+    "cta": "Learn more",
+    "brandsLabel": "Brands",
+    "brandsNote": "Trade names of the brands in this area. Product information for healthcare professionals is available in the portal.",
+    "introTitle": "About the area",
+    "hcpKicker": "Healthcare professionals",
+    "hcpTitle": "Information for healthcare professionals",
+    "hcpText": "Product information is intended exclusively for healthcare professionals and is available in the medical area of the GABAME portal.",
+    "hcpCta": "Information for healthcare professionals",
+    "backIndex": "All areas",
     "backHome": "Back to home",
-    "areaBlurb": {
-      "cardiometabolico": "Solutions for the management of cardiovascular and metabolic conditions.",
-      "oncologia": "Supportive therapies for oncology treatment.",
-      "hospitalario": "Products for the hospital and acute-care setting.",
-      "urologia": "Treatments for urological health.",
-      "snc": "Therapies for central nervous system disorders.",
-      "oftalmologia": "Products for visual health care."
-    }
+    "featuredTitle": "Product with a public page",
+    "featuredText": "{name} is a medical device and has its own information page.",
+    "featuredCta": "Discover {name}"
+  },
+  "healthyEyes": {
+    "kicker": "Ophthalmology · Medical device",
+    "title": "Healthy Eyes",
+    "subtitle": "A GABAME Human Health medical device for visual health care. [SUBJECT TO REGULATORY VALIDATION]",
+    "whatIsTitle": "What it is",
+    "whatIsText": "[SUBJECT TO REGULATORY VALIDATION]: general description of the device, in plain language and without claims. Healthy Eyes is a medical device for eye care.",
+    "useTitle": "What it is used for",
+    "useText": "[SUBJECT TO REGULATORY VALIDATION]: intended use in plain language, as stated in its sanitary registration. No clinical indications or results.",
+    "presentationTitle": "Presentation",
+    "presentationText": "[SUBJECT TO REGULATORY VALIDATION]: commercial presentation (format and content) as shown on the packaging.",
+    "howToTitle": "How to use (summary)",
+    "howToText": "[SUBJECT TO REGULATORY VALIDATION]: summary of directions for use according to the product leaflet. The full leaflet comes with the product.",
+    "whereTitle": "Where to find it",
+    "whereText": "Available in pharmacies. Check availability directly at each point of sale.",
+    "legend": "Consult your doctor.",
+    "regulatoryNote": "[SUBJECT TO REGULATORY VALIDATION]: sanitary registration number and mandatory packaging legends.",
+    "backArea": "Back to Ophthalmology"
+  },
+  "promociones": {
+    "kicker": "Promotions",
+    "title": "Current promotions",
+    "subtitle": "Point-of-sale commercial mechanics with GABAME Human Health brands. Check conditions at each participating chain.",
+    "dynamic": "Mechanics",
+    "brands": "Participating brands",
+    "chains": "Participating chains",
+    "validity": "Validity",
+    "validityRange": "From {from} to {to}",
+    "legend": "Consult your doctor.",
+    "empty": "There are no current promotions at the moment.",
+    "pos": "Promotions are applied directly at the point of sale of participating chains. This site is informational and does not sell products.",
+    "ctaAreas": "Therapeutic areas",
+    "backHome": "Back to home"
   },
   "farmacovigilancia": {
     "kicker": "Patient safety",
@@ -249,51 +286,14 @@
   "legal": {
     "close": "Close",
     "updatedLabel": "Last updated",
-    "pendingNotice": "Preliminary text. The definitive privacy notice is pending delivery and legal validation by the client."
-  },
-  "medicos": {
-    "kicker": "Healthcare professionals",
-    "title": "Physicians",
-    "subtitle": "A direct channel between your practice and our team.",
-    "gateEyebrow": "Professional access",
-    "gateTitle": "This space is exclusively for healthcare professionals",
-    "gateText": "The information and services in this section are intended for physicians and healthcare professionals holding a valid Mexican professional license (cédula profesional). Please confirm your profile to continue.",
-    "gateYes": "I am a healthcare professional",
-    "gateNo": "I am not a professional",
-    "whatTitle": "Your medical profile",
-    "whatText": "Register with your professional license and specialty. Our team validates every registration and from then on serves you through the channel you prefer.",
-    "benefit1": "Direct attention from our medical team and your local representative.",
-    "benefit2": "Scientific information and product data sheets as they become available.",
-    "benefit3": "Launch notices and support materials for your practice.",
-    "reviewNote": "Our team reviews every registration before activating it. If any detail does not match, we will write to you before continuing.",
-    "formTitle": "Medical profile registration"
-  },
-  "medicoForm": {
-    "name": "Full name",
-    "email": "Email",
-    "phone": "Phone",
-    "cedula": "Professional license (cédula)",
-    "specialty": "Specialty",
-    "institution": "Institution or practice",
-    "comment": "Comment",
-    "optional": "optional",
-    "submit": "Register my profile",
-    "sending": "Sending…",
-    "success": "We received your registration. We will validate your license and contact you by email to complete the process.",
-    "errorGeneric": "We could not send your registration. Please try again in a few minutes.",
-    "errorNotConfigured": "Sending is unavailable at the moment. Write to us at",
-    "errorRateLimit": "You have made several submissions in a row. Please wait a few minutes and try again.",
-    "errorValidation": "Check the highlighted fields.",
-    "invalidName": "Enter your full name.",
-    "invalidEmail": "Enter a valid email.",
-    "invalidCedula": "Enter your professional license: 7 or 8 digits, no letters.",
-    "invalidSpecialty": "Enter your specialty.",
-    "privacyNote": "By registering you accept our Privacy Notice."
+    "pendingNotice": "Preliminary text. The definitive privacy notice is pending delivery and legal validation by the client.",
+    "kicker": "Legal",
+    "title": "Privacy notice"
   },
   "contactForm": {
     "name": "Name",
     "email": "Email",
-    "message": "Message",
+    "message": "Comments",
     "submit": "Send message",
     "sending": "Sending…",
     "success": "Thank you. We've received your message and will get back to you soon.",
@@ -302,17 +302,15 @@
     "errorValidation": "Please check the highlighted fields.",
     "invalidName": "Please enter your name.",
     "invalidEmail": "Please enter a valid email.",
-    "invalidMessage": "Please write your message.",
+    "invalidMessage": "Write your comments.",
     "privacyNote": "By submitting you agree to our Privacy Notice.",
     "privacyLink": "Privacy Notice",
     "org": "Institution or organisation",
     "orgOptional": "Optional",
-    "profile": "Profile",
-    "profileChoose": "Select an option",
-    "profileHcp": "Healthcare professional",
-    "profileDistributor": "Distributor",
-    "profilePartner": "Strategic partner",
-    "profileInstitution": "Institution",
+    "motivo": "Reason",
+    "motivoGeneral": "General information",
+    "motivoSocio": "I want to become a partner or distributor",
+    "motivoOtro": "Other",
     "pvRedirect": "Reporting a suspected adverse reaction? Use the pharmacovigilance channel.",
     "pvRedirectCta": "Report",
     "errorRateLimit": "Too many submissions from this connection. Please wait a few minutes and try again."
@@ -327,9 +325,6 @@
     "linksTitle": "Site",
     "legalTitle": "Legal",
     "privacy": "Privacy Notice",
-    "pharmacovigilance": "Pharmacovigilance",
-    "clientPortal": "Client portal",
-    "comingSoon": "coming soon",
     "socialTitle": "Follow us",
     "linkedin": "LinkedIn: GABAME Human Health",
     "socialPending": "WhatsApp and other networks: coming soon",
@@ -359,5 +354,13 @@
     "text": "The address you are looking for does not exist or has moved.",
     "cta": "Go to home",
     "ctaContact": "Contact us"
+  },
+  "proximamente": {
+    "kicker": "In preparation",
+    "title": "Coming soon",
+    "subtitle": "This section will be available very soon.",
+    "text": "We are preparing the portal for healthcare professionals and GABAME Human Health clients. In the meantime, our team is available through the usual contact channels.",
+    "backHome": "Back to home",
+    "contact": "Contact us"
   }
 }

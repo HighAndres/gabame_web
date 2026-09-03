@@ -1,9 +1,16 @@
 import { NextResponse } from 'next/server';
-import { contactSchema } from '@/lib/schemas';
+import { contactSchema, type Motivo } from '@/lib/schemas';
 import { sendMail } from '@/lib/mailer';
 import { devolverGolpe, ipDe, limitar } from '@/lib/rate-limit';
 
 /** 5 envíos por IP cada 10 minutos. De sobra para una persona; nada para un bot. */
+
+/** Etiqueta del motivo en el correo, en el idioma del equipo que lo lee. */
+const MOTIVO_LABEL: Record<Motivo, string> = {
+  general: 'Información general',
+  socio: 'Quiero ser socio o distribuidor',
+  otro: 'Otro',
+};
 const LIMITE = { maximo: 5, ventanaMs: 10 * 60 * 1000 };
 
 export async function POST(request: Request) {
@@ -29,13 +36,13 @@ export async function POST(request: Request) {
   const d = parsed.data;
   const result = await sendMail({
     to: process.env.MAIL_TO_CONTACT,
-    subject: `[Web] Contacto — ${d.name}`,
+    subject: `[Web] Contacto · ${MOTIVO_LABEL[d.motivo]} — ${d.name}`,
     replyTo: d.email,
     text: [
       `Nombre: ${d.name}`,
       `Correo: ${d.email}`,
       `Institución: ${d.org || '—'}`,
-      `Perfil: ${d.profile || '—'}`,
+      `Motivo: ${MOTIVO_LABEL[d.motivo]}`,
       '',
       d.message,
     ].join('\n'),

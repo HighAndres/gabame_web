@@ -1,4 +1,6 @@
-/** Rutas y anclas del sitio. Fuente única para cabecera, pie y sitemap. */
+/** Rutas del sitio. Fuente única para cabecera, pie y sitemap. */
+
+import { AREA_ORDER } from '@/content/areas';
 
 export type NavItem = {
   /** Clave en `nav` del diccionario i18n. */
@@ -9,26 +11,43 @@ export type NavItem = {
   anchor?: boolean;
 };
 
+/**
+ * Menú acordado en la junta (sep 2026):
+ * Inicio · Nosotros · Áreas terapéuticas · Promociones · Farmacovigilancia ·
+ * Contacto, más los dos CTAs al portal (`PORTAL_CTAS`) y el idioma.
+ *
+ * Ningún enlace del menú se deja muerto entre commits.
+ */
 export const NAV: NavItem[] = [
   { key: 'inicio', href: '/' },
-  { key: 'areas', href: '/#areas', anchor: true },
-  { key: 'portafolio', href: '/portafolio' },
-  { key: 'medicos', href: '/medicos' },
   { key: 'nosotros', href: '/nosotros' },
-  { key: 'ecosistema', href: '/#ecosistema', anchor: true },
-  { key: 'socios', href: '/#socios', anchor: true },
+  { key: 'areas', href: '/areas-terapeuticas' },
+  { key: 'promociones', href: '/promociones' },
+  { key: 'farmacovigilancia', href: '/farmacovigilancia' },
   { key: 'contacto', href: '/contacto' },
 ];
 
+/**
+ * Los dos botones secundarios de la cabecera. Los dos van a `PORTAL_URL`:
+ * el portal decide, por su cuenta, qué ve un médico y qué ve un cliente.
+ */
+export const PORTAL_CTAS = [
+  { key: 'areaMedica' },
+  { key: 'portalClientes' },
+] as const;
+
 /** Rutas reales (sin anclas) — para sitemap y comprobaciones. */
-export const ROUTES = [
+export const ROUTES: readonly string[] = [
   '/',
-  '/portafolio',
-  '/medicos',
   '/nosotros',
+  '/areas-terapeuticas',
+  ...AREA_ORDER.map((slug) => `/areas-terapeuticas/${slug}`),
+  '/areas-terapeuticas/oftalmologia/healthy-eyes',
+  '/promociones',
   '/farmacovigilancia',
   '/contacto',
-] as const;
+  '/aviso-de-privacidad',
+];
 
 /** Datos de contacto, en un solo lugar. */
 export const CONTACT = {
@@ -64,3 +83,18 @@ export const CONTACT = {
 export const EXTERNAL = {
   farmacias: 'https://farmaciasgabame.mirmiapps.com',
 } as const;
+
+/**
+ * Portal de GABAME (área médica y portal de clientes). ÚNICO sitio donde se
+ * cambia: todos los CTAs «Área médica» y «Portal de clientes» pasan por
+ * `PortalLink`, que lee esta constante.
+ *
+ * Mientras el portal no exista apunta a `/proximamente`, dentro del sitio.
+ * El día que exista, sustituir por `PORTAL_URL_DEFINITIVA` y nada más:
+ * `PortalLink` detecta que es externa y la abre en pestaña nueva.
+ */
+export const PORTAL_URL_DEFINITIVA = 'https://portal.gabame.com/?m=gabame';
+export const PORTAL_URL: string = '/proximamente';
+
+/** ¿Sale del sitio? Decide entre `Link` con idioma y `<a>` externo. */
+export const isExternal = (href: string) => /^https?:\/\//i.test(href);
