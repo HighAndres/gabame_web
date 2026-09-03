@@ -42,7 +42,7 @@ export function Portfolio() {
           </p>
 
           <div className="btn-row" style={{ marginTop: 32 }}>
-            <Link href="/portafolio" className="btn btn-blue">
+            <Link href="/areas-terapeuticas" className="btn btn-blue">
               {t('ctaPrimary')}
             </Link>
             <Link href="/contacto" className="btn btn-outline-white">

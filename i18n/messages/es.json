@@ -4,9 +4,9 @@
       "title": "GABAME Human Health · Grupo mexicano de salud",
       "description": "Grupo mexicano de salud desde 2013. Desarrollamos productos Rx de alto valor y los convertimos en marcas sólidas y relevantes en todo México."
     },
-    "productos": {
-      "title": "Portafolio Rx",
-      "description": "Portafolio farmacéutico Rx de GABAME Human Health, organizado por área terapéutica: cardiometabólico, oncología, hospitalario, urología, sistema nervioso central y oftalmología."
+    "areas": {
+      "title": "Áreas terapéuticas",
+      "description": "Las seis áreas terapéuticas de GABAME Human Health: cardiometabólico, oncología, hospitalario, urología, sistema nervioso central y oftalmología."
     },
     "nosotros": {
       "title": "Nosotros",
@@ -23,6 +23,10 @@
     "proximamente": {
       "title": "Próximamente",
       "description": "Este apartado de GABAME Human Health está en preparación."
+    },
+    "aviso": {
+      "title": "Aviso de privacidad",
+      "description": "Aviso de privacidad de GABAME Human Health conforme a la LFPDPPP."
     }
   },
   "nav": {
@@ -72,17 +76,8 @@
       "kicker": "Portafolio · Áreas terapéuticas",
       "title": "Seis áreas, una misión",
       "subtitle": "Cubrimos las necesidades del sistema de salud mexicano con un portafolio Rx especializado.",
-      "list": {
-        "cardiometabolico": "Cardiometabólico",
-        "oncologia": "Oncología",
-        "hospitalario": "Hospitalario",
-        "urologia": "Urología",
-        "snc": "Sistema Nervioso Central",
-        "oftalmologia": "Oftalmología"
-      },
       "ctaPrimary": "Ver portafolio",
-      "ctaSecondary": "Conócenos",
-      "mediaSlot": "'{'FOTO CORPORATIVA PENDIENTE'}' — fondo 16:9, área farmacéutica"
+      "ctaSecondary": "Conócenos"
     },
     "portafolio": {
       "kicker": "Portafolio Rx destacado",
@@ -141,32 +136,52 @@
       "address": "Av. de la Palma 8, primer piso, Villa de las Palmas, CP 52787, Huixquilucan, Estado de México"
     }
   },
-  "productos": {
-    "kicker": "Portafolio · Áreas terapéuticas",
-    "title": "Portafolio Rx",
-    "subtitle": "Un portafolio especializado organizado por área terapéutica. Cada marca con su posicionamiento; la ficha completa vivirá en su propia página.",
-    "note": "Datos clínicos, molécula y posología se incorporan a cada ficha tras validación regulatoria (COFEPRIS). Para información específica, escríbenos.",
-    "indexLabel": "Áreas",
-    "emptyState": "Fichas en preparación",
-    "emptyHint": "Estamos preparando las fichas de esta área. Solicita información y te compartimos el detalle disponible.",
-    "comingSoon": "Próximamente",
-    "available": "Disponible",
-    "requestInfo": "Solicitar información",
-    "moleculeLabel": "Molécula",
-    "presentationLabel": "Presentación",
-    "statusLabel": "Estado",
-    "pendingValue": "— pendiente",
-    "close": "Cerrar",
-    "ctaContact": "Solicitar información",
-    "backHome": "Volver al inicio",
-    "areaBlurb": {
-      "cardiometabolico": "Soluciones para el manejo de enfermedades cardiovasculares y metabólicas.",
-      "oncologia": "Terapias de apoyo al tratamiento oncológico.",
-      "hospitalario": "Productos para el entorno hospitalario y de cuidado agudo.",
-      "urologia": "Tratamientos para la salud urológica.",
-      "snc": "Terapias para trastornos del sistema nervioso central.",
-      "oftalmologia": "Productos para el cuidado de la salud visual."
-    }
+  "areas": {
+    "kicker": "Áreas terapéuticas",
+    "title": "Seis áreas, una misión",
+    "subtitle": "Cubrimos las necesidades del sistema de salud mexicano con un portafolio Rx especializado, organizado por área terapéutica.",
+    "list": {
+      "cardiometabolico": {
+        "name": "Cardiometabólico",
+        "blurb": "Soluciones para el manejo de enfermedades cardiovasculares y metabólicas.",
+        "intro": "[PENDIENTE: copy área médica — intro de posicionamiento general del área, 2–3 líneas, sin datos clínicos]"
+      },
+      "oncologia": {
+        "name": "Oncología",
+        "blurb": "Terapias de apoyo al tratamiento oncológico.",
+        "intro": "[PENDIENTE: copy área médica — intro de posicionamiento general del área, 2–3 líneas, sin datos clínicos]"
+      },
+      "hospitalario": {
+        "name": "Hospitalario",
+        "blurb": "Productos para el entorno hospitalario y de cuidado agudo.",
+        "intro": "[PENDIENTE: copy área médica — intro de posicionamiento general del área, 2–3 líneas, sin datos clínicos]"
+      },
+      "urologia": {
+        "name": "Urología",
+        "blurb": "Tratamientos para la salud urológica.",
+        "intro": "[PENDIENTE: copy área médica — intro de posicionamiento general del área, 2–3 líneas, sin datos clínicos]"
+      },
+      "snc": {
+        "name": "Sistema Nervioso Central",
+        "blurb": "Terapias para trastornos del sistema nervioso central.",
+        "intro": "[PENDIENTE: copy área médica — intro de posicionamiento general del área, 2–3 líneas, sin datos clínicos]"
+      },
+      "oftalmologia": {
+        "name": "Oftalmología",
+        "blurb": "Productos para el cuidado de la salud visual.",
+        "intro": "[PENDIENTE: copy área médica — intro de posicionamiento general del área, 2–3 líneas, sin datos clínicos]"
+      }
+    },
+    "cta": "Conocer más",
+    "brandsLabel": "Marcas",
+    "brandsNote": "Nombres comerciales de las marcas del área. La información de producto para profesionales de la salud está en el portal.",
+    "introTitle": "Sobre el área",
+    "hcpKicker": "Profesionales de la salud",
+    "hcpTitle": "Información para profesionales de la salud",
+    "hcpText": "La información de producto está dirigida exclusivamente a profesionales de la salud y se consulta en el área médica del portal de GABAME.",
+    "hcpCta": "Información para profesionales de la salud",
+    "backIndex": "Todas las áreas",
+    "backHome": "Volver al inicio"
   },
   "farmacovigilancia": {
     "kicker": "Seguridad del paciente",
@@ -232,7 +247,9 @@
   "legal": {
     "close": "Cerrar",
     "updatedLabel": "Última actualización",
-    "pendingNotice": "Texto preliminar. El aviso de privacidad definitivo está pendiente de entrega y validación legal por el cliente."
+    "pendingNotice": "Texto preliminar. El aviso de privacidad definitivo está pendiente de entrega y validación legal por el cliente.",
+    "kicker": "Legal",
+    "title": "Aviso de privacidad"
   },
   "contactForm": {
     "name": "Nombre",

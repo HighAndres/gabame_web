@@ -1,5 +1,7 @@
 /** Rutas del sitio. Fuente única para cabecera, pie y sitemap. */
 
+import { AREA_ORDER } from '@/content/areas';
+
 export type NavItem = {
   /** Clave en `nav` del diccionario i18n. */
   key: string;
@@ -14,14 +16,12 @@ export type NavItem = {
  * Inicio · Nosotros · Áreas terapéuticas · Promociones · Farmacovigilancia ·
  * Contacto, más los dos CTAs al portal (`PORTAL_CTAS`) y el idioma.
  *
- * `areas` apunta a `/portafolio` hasta que esa página se convierta en
- * `/areas-terapeuticas` (mismo bloque, commit siguiente): ningún enlace del
- * menú se deja muerto entre commits. Promociones entra con su página.
+ * Promociones entra con su página; ningún enlace del menú se deja muerto.
  */
 export const NAV: NavItem[] = [
   { key: 'inicio', href: '/' },
   { key: 'nosotros', href: '/nosotros' },
-  { key: 'areas', href: '/portafolio' },
+  { key: 'areas', href: '/areas-terapeuticas' },
   { key: 'farmacovigilancia', href: '/farmacovigilancia' },
   { key: 'contacto', href: '/contacto' },
 ];
@@ -36,13 +36,15 @@ export const PORTAL_CTAS = [
 ] as const;
 
 /** Rutas reales (sin anclas) — para sitemap y comprobaciones. */
-export const ROUTES = [
+export const ROUTES: readonly string[] = [
   '/',
-  '/portafolio',
   '/nosotros',
+  '/areas-terapeuticas',
+  ...AREA_ORDER.map((slug) => `/areas-terapeuticas/${slug}`),
   '/farmacovigilancia',
   '/contacto',
-] as const;
+  '/aviso-de-privacidad',
+];
 
 /** Datos de contacto, en un solo lugar. */
 export const CONTACT = {

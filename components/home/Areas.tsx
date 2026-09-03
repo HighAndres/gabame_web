@@ -30,12 +30,12 @@ export function Areas() {
         </Reveal>
 
         <Reveal delay={80}>
-          <AreaRows variant="full" />
+          <AreaRows />
         </Reveal>
 
         <Reveal delay={160}>
           <div className="btn-row" style={{ marginTop: 48 }}>
-            <Link href="/portafolio" className="btn btn-blue">
+            <Link href="/areas-terapeuticas" className="btn btn-blue">
               {t('ctaPrimary')}
             </Link>
             <Link href="/nosotros" className="btn btn-outline-white">

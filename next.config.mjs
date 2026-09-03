@@ -75,6 +75,24 @@ const nextConfig = {
    */
   async redirects() {
     return [
+      // El portafolio Rx pasó a ser el índice de áreas terapéuticas.
+      {
+        source: '/portafolio',
+        destination: '/es/areas-terapeuticas',
+        permanent: true,
+      },
+      {
+        source: '/:locale(es|en)/portafolio',
+        destination: '/:locale/areas-terapeuticas',
+        permanent: true,
+      },
+      // Fichas de producto: nunca llegaron a publicarse, pero si algún enlace
+      // viejo las busca, que caiga en el índice de áreas y no en un 404.
+      {
+        source: '/:locale(es|en)/productos/:path*',
+        destination: '/:locale/areas-terapeuticas',
+        permanent: true,
+      },
       // /medicos era un alta de perfil médico; eso vive en el portal.
       { source: '/medicos', destination: '/es/proximamente', permanent: true },
       {

@@ -61,7 +61,7 @@ export function Hero() {
           <h1>{t('title')}</h1>
           <p className="lead">{t('subtitle')}</p>
           <div className="btn-row">
-            <Link href="/portafolio" className="btn btn-blue">
+            <Link href="/areas-terapeuticas" className="btn btn-blue">
               {t('ctaPrimary')}
             </Link>
             <Link href="/contacto" className="btn btn-outline-white">

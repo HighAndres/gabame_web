@@ -4,9 +4,9 @@
       "title": "GABAME Human Health · Mexican health group",
       "description": "A Mexican health group since 2013. We develop high-value Rx products and turn them into strong, relevant brands across Mexico."
     },
-    "productos": {
-      "title": "Rx Portfolio",
-      "description": "GABAME Human Health's Rx pharmaceutical portfolio, organized by therapeutic area: cardiometabolic, oncology, hospital, urology, central nervous system and ophthalmology."
+    "areas": {
+      "title": "Therapeutic areas",
+      "description": "The six therapeutic areas of GABAME Human Health: cardiometabolic, oncology, hospital, urology, central nervous system and ophthalmology."
     },
     "nosotros": {
       "title": "About us",
@@ -23,6 +23,10 @@
     "proximamente": {
       "title": "Coming soon",
       "description": "This section of GABAME Human Health is in preparation."
+    },
+    "aviso": {
+      "title": "Privacy notice",
+      "description": "GABAME Human Health privacy notice under Mexico’s LFPDPPP."
     }
   },
   "nav": {
@@ -72,17 +76,8 @@
       "kicker": "Portfolio · Therapeutic areas",
       "title": "Six areas, one mission",
       "subtitle": "We meet the needs of the Mexican health system with a specialized Rx portfolio.",
-      "list": {
-        "cardiometabolico": "Cardiometabolic",
-        "oncologia": "Oncology",
-        "hospitalario": "Hospital",
-        "urologia": "Urology",
-        "snc": "Central Nervous System",
-        "oftalmologia": "Ophthalmology"
-      },
       "ctaPrimary": "See portfolio",
-      "ctaSecondary": "About us",
-      "mediaSlot": "'{'CORPORATE PHOTO PENDING'}' — 16:9 background, pharmaceutical"
+      "ctaSecondary": "About us"
     },
     "portafolio": {
       "kicker": "Featured Rx portfolio",
@@ -141,32 +136,52 @@
       "address": "Av. de la Palma 8, first floor, Villa de las Palmas, ZIP 52787, Huixquilucan, State of Mexico"
     }
   },
-  "productos": {
-    "kicker": "Portfolio · Therapeutic areas",
-    "title": "Rx Portfolio",
-    "subtitle": "A specialized portfolio organized by therapeutic area. Each brand with its own positioning; the full data sheet will live on its own page.",
-    "note": "Clinical data, active substance and dosing are added to each sheet after regulatory validation (COFEPRIS). For specific information, get in touch.",
-    "indexLabel": "Areas",
-    "emptyState": "Sheets in preparation",
-    "emptyHint": "We're preparing the sheets for this area. Request information and we'll share the available details.",
-    "comingSoon": "Coming soon",
-    "available": "Available",
-    "requestInfo": "Request information",
-    "moleculeLabel": "Molecule",
-    "presentationLabel": "Presentation",
-    "statusLabel": "Status",
-    "pendingValue": "— pending",
-    "close": "Close",
-    "ctaContact": "Request information",
-    "backHome": "Back to home",
-    "areaBlurb": {
-      "cardiometabolico": "Solutions for the management of cardiovascular and metabolic conditions.",
-      "oncologia": "Supportive therapies for oncology treatment.",
-      "hospitalario": "Products for the hospital and acute-care setting.",
-      "urologia": "Treatments for urological health.",
-      "snc": "Therapies for central nervous system disorders.",
-      "oftalmologia": "Products for visual health care."
-    }
+  "areas": {
+    "kicker": "Therapeutic areas",
+    "title": "Six areas, one mission",
+    "subtitle": "We serve the needs of the Mexican health system with a specialized Rx portfolio, organized by therapeutic area.",
+    "list": {
+      "cardiometabolico": {
+        "name": "Cardiometabolic",
+        "blurb": "Solutions for the management of cardiovascular and metabolic diseases.",
+        "intro": "[PENDING: medical affairs copy — general positioning intro for the area, 2–3 lines, no clinical data]"
+      },
+      "oncologia": {
+        "name": "Oncology",
+        "blurb": "Supportive therapies for cancer treatment.",
+        "intro": "[PENDING: medical affairs copy — general positioning intro for the area, 2–3 lines, no clinical data]"
+      },
+      "hospitalario": {
+        "name": "Hospital",
+        "blurb": "Products for the hospital and acute-care setting.",
+        "intro": "[PENDING: medical affairs copy — general positioning intro for the area, 2–3 lines, no clinical data]"
+      },
+      "urologia": {
+        "name": "Urology",
+        "blurb": "Treatments for urological health.",
+        "intro": "[PENDING: medical affairs copy — general positioning intro for the area, 2–3 lines, no clinical data]"
+      },
+      "snc": {
+        "name": "Central Nervous System",
+        "blurb": "Therapies for central nervous system disorders.",
+        "intro": "[PENDING: medical affairs copy — general positioning intro for the area, 2–3 lines, no clinical data]"
+      },
+      "oftalmologia": {
+        "name": "Ophthalmology",
+        "blurb": "Products for visual health care.",
+        "intro": "[PENDING: medical affairs copy — general positioning intro for the area, 2–3 lines, no clinical data]"
+      }
+    },
+    "cta": "Learn more",
+    "brandsLabel": "Brands",
+    "brandsNote": "Trade names of the brands in this area. Product information for healthcare professionals is available in the portal.",
+    "introTitle": "About the area",
+    "hcpKicker": "Healthcare professionals",
+    "hcpTitle": "Information for healthcare professionals",
+    "hcpText": "Product information is intended exclusively for healthcare professionals and is available in the medical area of the GABAME portal.",
+    "hcpCta": "Information for healthcare professionals",
+    "backIndex": "All areas",
+    "backHome": "Back to home"
   },
   "farmacovigilancia": {
     "kicker": "Patient safety",
@@ -232,7 +247,9 @@
   "legal": {
     "close": "Close",
     "updatedLabel": "Last updated",
-    "pendingNotice": "Preliminary text. The definitive privacy notice is pending delivery and legal validation by the client."
+    "pendingNotice": "Preliminary text. The definitive privacy notice is pending delivery and legal validation by the client.",
+    "kicker": "Legal",
+    "title": "Privacy notice"
   },
   "contactForm": {
     "name": "Name",

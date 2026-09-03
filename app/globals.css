@@ -1293,6 +1293,89 @@ img {
 }
 
 /* ------------------------------------------------------------------- ÁREAS */
+/* Vitrina: seis tarjetas (Home sobre el fondo inmersivo; índice sobre
+   blanco). Recto, filete de 2px en la tinta de la superficie, sin sombras:
+   las formas del sistema. El icono va en azul de marca en las dos. */
+.area-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.area-card {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  padding: 28px;
+  border: 2px solid currentColor;
+}
+.area-card-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  color: var(--blue);
+  border: 2px solid var(--blue);
+}
+.area-card h3 {
+  font-size: clamp(22px, 2vw, 28px);
+}
+.area-card-text {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink-soft, inherit);
+}
+.area-card-brands {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+/* El botón cierra la tarjeta abajo aunque el texto de al lado sea más largo. */
+.area-card-cta {
+  margin-top: auto;
+  justify-self: start;
+}
+@media (max-width: 1080px) {
+  .area-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .area-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Página de área: intro a un lado, puerta al portal al otro. */
+.area-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+}
+.hcp-card {
+  padding: clamp(24px, 2.6vw, 36px);
+  display: grid;
+  gap: 0;
+  justify-items: start;
+}
+.hcp-card .btn {
+  margin-top: 24px;
+}
+@media (max-width: 900px) {
+  .area-page {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Aviso de privacidad como página: ancho de lectura. */
+.legal-page {
+  max-width: 880px;
+}
+
 .section-head {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);

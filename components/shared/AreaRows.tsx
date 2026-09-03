@@ -1,41 +1,13 @@
 import { useTranslations } from 'next-intl';
-import { AREA_ORDER } from '@/content/products';
+import { AREA_ORDER } from '@/content/areas';
 
 /**
- * Las seis áreas terapéuticas como tabla (no tarjetas).
- *
- * `variant`:
- *  - `full`   → numeral + nombre + descriptor + chip de estado
- *  - `compact` → nombre + chip (para bloques secundarios)
- *
- * El chip sale de `productos.emptyState`: mientras la colección de productos
- * esté vacía, el estado honesto es «Fichas en preparación».
+ * Las seis áreas terapéuticas como tabla (no tarjetas): numeral + nombre +
+ * descriptor. Sin chip de estado desde sep 2026: «Fichas en preparación»
+ * hablaba de fichas de producto, que ya no existen en el sitio público.
  */
-export function AreaRows({
-  variant = 'full',
-  showChip = true,
-}: {
-  variant?: 'full' | 'compact';
-  showChip?: boolean;
-}) {
-  const t = useTranslations('home.areas.list');
-  const tBlurb = useTranslations('productos.areaBlurb');
-  const tProd = useTranslations('productos');
-
-  if (variant === 'compact') {
-    return (
-      <div className="pf-rows">
-        {AREA_ORDER.map((area) => (
-          <div key={area} className="pf-row">
-            <h3>{t(area)}</h3>
-            {showChip && (
-              <span className="chip chip-blue">{tProd('emptyState')}</span>
-            )}
-          </div>
-        ))}
-      </div>
-    );
-  }
+export function AreaRows() {
+  const t = useTranslations('areas.list');
 
   return (
     <div className="area-table">
@@ -44,11 +16,8 @@ export function AreaRows({
           <span className="area-num">
             {String(i + 1).padStart(2, '0')}
           </span>
-          <h3>{t(area)}</h3>
-          <p className="area-desc">{tBlurb(area)}</p>
-          {showChip && (
-            <span className="chip chip-outline">{tProd('emptyState')}</span>
-          )}
+          <h3>{t(`${area}.name`)}</h3>
+          <p className="area-desc">{t(`${area}.blurb`)}</p>
         </div>
       ))}
     </div>
