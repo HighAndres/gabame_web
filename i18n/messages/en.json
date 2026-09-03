@@ -23,6 +23,10 @@
     "medicos": {
       "title": "Physicians",
       "description": "A space exclusively for healthcare professionals: register your medical profile with your professional license and specialty to be served by the GABAME Human Health team."
+    },
+    "proximamente": {
+      "title": "Coming soon",
+      "description": "This section of GABAME Human Health is in preparation."
     }
   },
   "nav": {
@@ -359,5 +363,13 @@
     "text": "The address you are looking for does not exist or has moved.",
     "cta": "Go to home",
     "ctaContact": "Contact us"
+  },
+  "proximamente": {
+    "kicker": "In preparation",
+    "title": "Coming soon",
+    "subtitle": "This section will be available very soon.",
+    "text": "We are preparing the portal for healthcare professionals and GABAME Human Health clients. In the meantime, our team is available through the usual contact channels.",
+    "backHome": "Back to home",
+    "contact": "Contact us"
   }
 }

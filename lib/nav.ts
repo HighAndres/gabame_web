@@ -64,3 +64,18 @@ export const CONTACT = {
 export const EXTERNAL = {
   farmacias: 'https://farmaciasgabame.mirmiapps.com',
 } as const;
+
+/**
+ * Portal de GABAME (área médica y portal de clientes). ÚNICO sitio donde se
+ * cambia: todos los CTAs «Área médica» y «Portal de clientes» pasan por
+ * `PortalLink`, que lee esta constante.
+ *
+ * Mientras el portal no exista apunta a `/proximamente`, dentro del sitio.
+ * El día que exista, sustituir por `PORTAL_URL_DEFINITIVA` y nada más:
+ * `PortalLink` detecta que es externa y la abre en pestaña nueva.
+ */
+export const PORTAL_URL_DEFINITIVA = 'https://portal.gabame.com/?m=gabame';
+export const PORTAL_URL: string = '/proximamente';
+
+/** ¿Sale del sitio? Decide entre `Link` con idioma y `<a>` externo. */
+export const isExternal = (href: string) => /^https?:\/\//i.test(href);

@@ -23,6 +23,10 @@
     "medicos": {
       "title": "Médicos",
       "description": "Espacio exclusivo para profesionales de la salud: registra tu perfil médico con cédula y especialidad para recibir atención del equipo de GABAME Human Health."
+    },
+    "proximamente": {
+      "title": "Próximamente",
+      "description": "Este apartado de GABAME Human Health está en preparación."
     }
   },
   "nav": {
@@ -359,5 +363,13 @@
     "text": "La dirección que buscas no existe o cambió de sitio.",
     "cta": "Ir al inicio",
     "ctaContact": "Contáctanos"
+  },
+  "proximamente": {
+    "kicker": "En preparación",
+    "title": "Próximamente",
+    "subtitle": "Este apartado estará disponible muy pronto.",
+    "text": "Estamos preparando el portal para profesionales de la salud y clientes de GABAME Human Health. Mientras tanto, nuestro equipo te atiende por los canales de contacto habituales.",
+    "backHome": "Volver al inicio",
+    "contact": "Contáctanos"
   }
 }
