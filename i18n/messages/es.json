@@ -18,7 +18,7 @@
     },
     "contacto": {
       "title": "Contacto",
-      "description": "Contacta con GABAME Human Health: teléfono, correo y formulario para profesionales de la salud, distribuidores, socios estratégicos e instituciones en México."
+      "description": "Contacta con GABAME Human Health: teléfono, correo y formulario de contacto para información general, socios y distribuidores en México."
     },
     "proximamente": {
       "title": "Próximamente",
@@ -126,7 +126,7 @@
     "contacto": {
       "kicker": "Contacto",
       "title": "Hablemos",
-      "subtitle": "Escríbenos y te responderemos dentro de nuestro horario de atención.",
+      "subtitle": "Escríbenos tus comentarios o tu interés en ser socio o distribuidor, y te responderemos dentro de nuestro horario de atención.",
       "phoneLabel": "Teléfono",
       "phone": "55 5548 7579",
       "emailLabel": "Correo",
@@ -293,7 +293,7 @@
   "contactForm": {
     "name": "Nombre",
     "email": "Correo",
-    "message": "Mensaje",
+    "message": "Comentarios",
     "submit": "Enviar mensaje",
     "sending": "Enviando…",
     "success": "Gracias. Hemos recibido tu mensaje y te contactaremos pronto.",
@@ -302,17 +302,15 @@
     "errorValidation": "Revisa los campos marcados.",
     "invalidName": "Ingresa tu nombre.",
     "invalidEmail": "Ingresa un correo válido.",
-    "invalidMessage": "Escribe tu mensaje.",
+    "invalidMessage": "Escribe tus comentarios.",
     "privacyNote": "Al enviar aceptas nuestro Aviso de privacidad.",
     "privacyLink": "Aviso de privacidad",
     "org": "Institución u organización",
     "orgOptional": "Opcional",
-    "profile": "Perfil",
-    "profileChoose": "Selecciona una opción",
-    "profileHcp": "Profesional de la salud",
-    "profileDistributor": "Distribuidor",
-    "profilePartner": "Socio estratégico",
-    "profileInstitution": "Institución",
+    "motivo": "Motivo",
+    "motivoGeneral": "Información general",
+    "motivoSocio": "Quiero ser socio o distribuidor",
+    "motivoOtro": "Otro",
     "pvRedirect": "¿Vas a notificar una sospecha de reacción adversa? Usa el canal de farmacovigilancia.",
     "pvRedirectCta": "Reportar",
     "errorRateLimit": "Demasiados envíos desde esta conexión. Espera unos minutos e inténtalo de nuevo."

@@ -189,14 +189,16 @@ export function ContactForm() {
                       />
         </label>
 
+        {/* Motivo (junta sep 2026): tres opciones, con «Información general»
+            por defecto para que el envío nunca falle por dejarlo sin tocar.
+            «Quiero ser socio o distribuidor» es la vía de socios del sitio:
+            no hay registro aparte. */}
         <label className="field">
-          <span className="field-label">{t('profile')}</span>
-          <select name="profile" defaultValue="">
-            <option value="">{t('profileChoose')}</option>
-            <option value="hcp">{t('profileHcp')}</option>
-            <option value="distributor">{t('profileDistributor')}</option>
-            <option value="partner">{t('profilePartner')}</option>
-            <option value="institution">{t('profileInstitution')}</option>
+          <span className="field-label">{t('motivo')}</span>
+          <select name="motivo" defaultValue="general" required>
+            <option value="general">{t('motivoGeneral')}</option>
+            <option value="socio">{t('motivoSocio')}</option>
+            <option value="otro">{t('motivoOtro')}</option>
           </select>
         </label>
       </div>

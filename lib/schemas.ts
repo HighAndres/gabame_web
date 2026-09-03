@@ -24,13 +24,13 @@ export const LIMITES = {
 /** Correo, con la misma forma en cliente y servidor. */
 export const RE_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/** Perfiles del formulario de contacto (segmentan la solicitud entrante). */
-export const PROFILES = [
-  'hcp',
-  'distributor',
-  'partner',
-  'institution',
-] as const;
+/**
+ * Motivo del formulario de contacto (junta sep 2026). Tres y no más: aquí
+ * viven las observaciones generales y la vía de socios/distribuidores; lo
+ * que antes era «perfil» (profesional, institución…) lo decide el portal.
+ */
+export const MOTIVOS = ['general', 'socio', 'otro'] as const;
+export type Motivo = (typeof MOTIVOS)[number];
 
 /** Quién notifica una sospecha de reacción adversa. */
 export const REPORTER_TYPES = ['paciente', 'profesional', 'otro'] as const;
@@ -39,7 +39,7 @@ export const contactSchema = z.object({
   name: z.string().trim().min(LIMITES.name.min).max(LIMITES.name.max),
   email: z.string().trim().email().max(LIMITES.email.max),
   org: z.string().trim().max(LIMITES.org.max).optional().or(z.literal('')),
-  profile: z.enum(PROFILES).optional().or(z.literal('')),
+  motivo: z.enum(MOTIVOS),
   message: z.string().trim().min(LIMITES.message.min).max(LIMITES.message.max),
   /** Trampa anti-spam: si viene con contenido, es un bot. */
   website: z.string().max(0).optional(),

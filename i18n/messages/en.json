@@ -18,7 +18,7 @@
     },
     "contacto": {
       "title": "Contact",
-      "description": "Get in touch with GABAME Human Health: phone, email and a form for healthcare professionals, distributors, strategic partners and institutions in Mexico."
+      "description": "Contact GABAME Human Health: phone, email and contact form for general information, partners and distributors in Mexico."
     },
     "proximamente": {
       "title": "Coming soon",
@@ -126,7 +126,7 @@
     "contacto": {
       "kicker": "Contact",
       "title": "Let's talk",
-      "subtitle": "Write to us and we'll reply within our business hours.",
+      "subtitle": "Send us your comments or your interest in becoming a partner or distributor, and we will reply during business hours.",
       "phoneLabel": "Phone",
       "phone": "+52 55 5548 7579",
       "emailLabel": "Email",
@@ -293,7 +293,7 @@
   "contactForm": {
     "name": "Name",
     "email": "Email",
-    "message": "Message",
+    "message": "Comments",
     "submit": "Send message",
     "sending": "Sending…",
     "success": "Thank you. We've received your message and will get back to you soon.",
@@ -302,17 +302,15 @@
     "errorValidation": "Please check the highlighted fields.",
     "invalidName": "Please enter your name.",
     "invalidEmail": "Please enter a valid email.",
-    "invalidMessage": "Please write your message.",
+    "invalidMessage": "Write your comments.",
     "privacyNote": "By submitting you agree to our Privacy Notice.",
     "privacyLink": "Privacy Notice",
     "org": "Institution or organisation",
     "orgOptional": "Optional",
-    "profile": "Profile",
-    "profileChoose": "Select an option",
-    "profileHcp": "Healthcare professional",
-    "profileDistributor": "Distributor",
-    "profilePartner": "Strategic partner",
-    "profileInstitution": "Institution",
+    "motivo": "Reason",
+    "motivoGeneral": "General information",
+    "motivoSocio": "I want to become a partner or distributor",
+    "motivoOtro": "Other",
     "pvRedirect": "Reporting a suspected adverse reaction? Use the pharmacovigilance channel.",
     "pvRedirectCta": "Report",
     "errorRateLimit": "Too many submissions from this connection. Please wait a few minutes and try again."
