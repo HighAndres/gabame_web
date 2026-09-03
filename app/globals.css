@@ -1174,7 +1174,9 @@ main > .section:first-child {
   position: relative;
   display: grid;
   align-items: center;
-  min-height: clamp(560px, 80vh, 840px);
+  /* Más aire (sep 2026): la portada crece de 80vh a 88vh y todo lo que
+     contiene se separa un poco más; tipografía y layout no cambian. */
+  min-height: clamp(620px, 88vh, 920px);
   background: #000;
   color: #fff;
   overflow: hidden;
@@ -1220,8 +1222,8 @@ main > .section:first-child {
   text-align: center;
   /* Arriba, aire —más la barra translúcida que flota encima—; abajo, sitio
      para la franja que monta. */
-  padding-top: calc(72px + var(--header-h, 0px));
-  padding-bottom: calc(var(--strip-overlap) + 48px);
+  padding-top: calc(96px + var(--header-h, 0px));
+  padding-bottom: calc(var(--strip-overlap) + 72px);
 }
 .hero-tag {
   display: inline-block;
@@ -1236,17 +1238,17 @@ main > .section:first-child {
   padding: 9px 16px;
 }
 .hero-content h1 {
-  margin-top: 22px;
+  margin-top: 30px;
   max-width: 16ch;
   font-size: clamp(44px, 6.4vw, 96px);
 }
 .hero-content .lead {
-  margin-top: 20px;
+  margin-top: 28px;
   max-width: 58ch;
   color: rgba(255, 255, 255, 0.86);
 }
 .hero-content .btn-row {
-  margin-top: 32px;
+  margin-top: 44px;
   justify-content: center;
 }
 
@@ -1284,12 +1286,12 @@ main > .section:first-child {
 }
 @media (max-width: 760px) {
   .hero-media {
-    min-height: 540px;
+    min-height: 600px;
   }
   .hero-content {
     align-items: flex-start;
     text-align: left;
-    padding-top: calc(56px + var(--header-h, 0px));
+    padding-top: calc(72px + var(--header-h, 0px));
   }
   .hero-content .btn-row {
     justify-content: flex-start;
