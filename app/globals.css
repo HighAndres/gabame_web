@@ -707,94 +707,18 @@ img {
   color: #000;
   transform: translateY(-2px);
 }
+/* Los dos botones al portal. Secundarios y compactos: son dos, y con el
+   padding de los botones de contenido la barra no cerraba a 1200px. */
 .header-cta {
-  padding: 12px 24px;
-  font-size: 16px;
+  padding: 10px 18px;
+  font-size: 15px;
   white-space: nowrap;
 }
-/* Farmacias GABAME — la única acción que SALE del sitio.
-   Se distingue de los botones internos por la flecha diagonal, no por un
-   color nuevo: la paleta sigue siendo azul, negro y blanco. La flecha vive en
-   una caja de ancho fijo para que al desplazarse en hover no empuje el texto
-   ni cambie el ancho del botón (y con él, el de toda la barra). */
-.header-pharma {
+/* Enlaces del pie que salen del sitio o van al portal: flecha pegada al texto. */
+.footer-external {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-}
-.header-pharma-ic {
-  width: 18px;
-  height: 18px;
-  flex: 0 0 auto;
-  transition: transform 0.18s cubic-bezier(0.22, 0.7, 0.25, 1);
-}
-.header-pharma:hover .header-pharma-ic {
-  transform: translate(2px, -2px);
-}
-/* Latido. Dos recursos a la vez, con el MISMO ciclo de 2,6s:
-   - el halo, que es el `outline` animado que ya usan el lanzador del asistente
-     y el pin del mapa (el sistema no tiene sombras, así que el aura se dibuja
-     con trazo);
-   - y el pulso en dos tiempos —fuerte, flojo, reposo— que es lo que separa un
-     latido de un parpadeo.
-   El asistente respira a 2,8s de forma continua; este va a 2,6s y con pausa,
-   así los dos botones azules de la pantalla nunca laten al unísono, que es
-   justo lo que se leería como fallo. */
-.header-pharma {
-  animation: pharmaHalo 2.6s ease-out infinite,
-    pharmaLatido 2.6s cubic-bezier(0.22, 0.7, 0.25, 1) infinite;
-}
-/* El halo se abre y se apaga en 780ms — exactamente lo que dura el latido de
-   dos tiempos. Estirado al 55% del ciclo iba por detrás del pulso y se leían
-   como dos animaciones distintas encima del mismo botón. */
-@keyframes pharmaHalo {
-  0% {
-    outline: 0 solid rgba(61, 137, 253, 0.55);
-  }
-  30%,
-  100% {
-    outline: 12px solid rgba(61, 137, 253, 0);
-  }
-}
-@keyframes pharmaLatido {
-  0%,
-  30%,
-  100% {
-    transform: scale(1);
-  }
-  7% {
-    transform: scale(1.05);
-  }
-  14% {
-    transform: scale(1);
-  }
-  21% {
-    transform: scale(1.028);
-  }
-}
-/* En cuanto lo tocas o lo enfocas, deja de latir: ya cumplió su función, y el
-   `transform` del latido tiene que soltar el mando para que el hover pueda
-   subir el botón 2px como todos los demás del sistema. El foco de teclado, de
-   paso, necesita el `outline` libre. */
-.header-pharma:hover,
-.header-pharma:focus-visible {
-  animation: none;
-}
-@media (prefers-reduced-motion: reduce) {
-  .header-pharma {
-    animation: none;
-  }
-}
-/* El botón entero ya sube 2px en hover (.btn): si además se mueve la flecha,
-   son dos desplazamientos a la vez. Con reduced-motion se quedan los dos
-   quietos y el cambio de color hace todo el trabajo. */
-@media (prefers-reduced-motion: reduce) {
-  .header-pharma-ic {
-    transition: none;
-  }
-  .header-pharma:hover .header-pharma-ic {
-    transform: none;
-  }
+  gap: 4px;
 }
 .menu-toggle {
   display: none;
@@ -856,9 +780,11 @@ img {
   transform: rotate(-20deg) scale(1.06);
 }
 
-/* Por debajo de 1080 la fila de 7 enlaces ya no cabe sin apretarse:
-   pasa a panel. Antes envolvía a una tercera línea a ancho completo. */
-@media (max-width: 1080px) {
+/* Por debajo de 1200 la fila —cinco enlaces, idioma y los dos botones al
+   portal— ya no cabe sin apretarse: pasa a panel. El corte estaba en 1080
+   con un solo botón; `SiteHeader.tsx` lleva el mismo número en su
+   `matchMedia`, y los dos cambian juntos. */
+@media (max-width: 1200px) {
   .site-nav,
   .header-tools {
     display: none;
@@ -938,18 +864,12 @@ img {
   /* Después del octavo enlace (0.32s): el pie cierra la cascada. */
   animation: enlaceEntra 0.42s cubic-bezier(0.22, 0.7, 0.25, 1) 0.36s both;
 }
-/* En el panel el botón manda: es la acción de la barra y aquí tiene sitio para
-   el nombre completo. Conserva su ancho natural — estirándolo a todo el hueco
-   libre (tablet: 616px) la flecha quedaba a medio metro del texto, flotando. */
-.menu-panel-pharma {
+/* En el panel los dos botones al portal van a tamaño de botón de contenido:
+   hay sitio y son la acción de la barra. */
+.menu-panel-cta {
   flex: 0 0 auto;
-  gap: 12px;
-  padding: 16px 26px;
-  font-size: 18px;
-}
-.menu-panel-pharma .header-pharma-ic {
-  width: 22px;
-  height: 22px;
+  padding: 14px 24px;
+  font-size: 17px;
 }
 .menu-panel .lang-switch {
   border-color: #fff;
@@ -1778,51 +1698,6 @@ img {
   }
 }
 
-/* ------------------------------------------------------------------ SOCIOS */
-.partners-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-}
-.partners-main {
-  padding: var(--section-y) clamp(24px, 4vw, 64px);
-  /* Mismo montaje que en las secciones: la atmósfera va detrás y el contenido
-     sube por encima. Aquí el contenido no vive en un `.container`, así que la
-     regla apunta a los hijos directos. */
-  position: relative;
-}
-.partners-main > *:not(.atmo) {
-  position: relative;
-  z-index: 1;
-}
-.partners-side {
-  padding: var(--section-y) clamp(24px, 4vw, 48px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 18px;
-  position: relative;
-}
-.partners-side > *:not(.atmo) {
-  position: relative;
-  z-index: 1;
-}
-.pv-block {
-  margin-top: 40px;
-  border-top: 1px solid var(--rule-light);
-  padding-top: 28px;
-}
-.pv-block h3 {
-  color: var(--blue);
-}
-.pv-block .lead {
-  margin: 12px 0 22px;
-}
-@media (max-width: 900px) {
-  .partners-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* ------------------------------------------------------------------- PIE */
 .site-footer {
   background: #000;
@@ -2594,30 +2469,6 @@ img {
   width: 1px;
   height: 1px;
   overflow: hidden;
-}
-
-/* ------------------------------------------------------------ MÉDICOS -----
-   Puerta profesional: una sola tarjeta centrada a ancho de lectura; el resto
-   del apartado no existe hasta declararse profesional (ver HcpGate.tsx). */
-.hcp-gate {
-  max-width: 760px;
-  margin-inline: auto;
-}
-/* Compromisos del alta: filete azul por viñeta, como los filetes del sistema.
-   Sin viñetas de fábrica: el marcador es el borde. */
-.medicos-benefits {
-  margin-top: 24px;
-  display: grid;
-  gap: 14px;
-  list-style: none;
-  padding: 0;
-}
-.medicos-benefits li {
-  padding-left: 18px;
-  border-left: 2px solid var(--blue);
-  font-size: 17px;
-  line-height: 1.55;
-  color: rgba(255, 255, 255, 0.85);
 }
 
 @media (prefers-reduced-motion: reduce) {

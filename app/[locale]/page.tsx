@@ -5,7 +5,6 @@ import { Areas } from '@/components/home/Areas';
 import { Portfolio } from '@/components/home/Portfolio';
 import { About } from '@/components/home/About';
 import { Ecosystem } from '@/components/home/Ecosystem';
-import { Partners } from '@/components/home/Partners';
 
 export default function Home({ params }: { params: { locale: string } }) {
   setRequestLocale(params.locale);
@@ -18,7 +17,6 @@ export default function Home({ params }: { params: { locale: string } }) {
       <Portfolio />
       <About />
       <Ecosystem />
-      <Partners />
     </>
   );
 }

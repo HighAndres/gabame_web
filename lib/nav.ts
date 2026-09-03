@@ -1,4 +1,4 @@
-/** Rutas y anclas del sitio. Fuente única para cabecera, pie y sitemap. */
+/** Rutas del sitio. Fuente única para cabecera, pie y sitemap. */
 
 export type NavItem = {
   /** Clave en `nav` del diccionario i18n. */
@@ -9,22 +9,36 @@ export type NavItem = {
   anchor?: boolean;
 };
 
+/**
+ * Menú acordado en la junta (sep 2026):
+ * Inicio · Nosotros · Áreas terapéuticas · Promociones · Farmacovigilancia ·
+ * Contacto, más los dos CTAs al portal (`PORTAL_CTAS`) y el idioma.
+ *
+ * `areas` apunta a `/portafolio` hasta que esa página se convierta en
+ * `/areas-terapeuticas` (mismo bloque, commit siguiente): ningún enlace del
+ * menú se deja muerto entre commits. Promociones entra con su página.
+ */
 export const NAV: NavItem[] = [
   { key: 'inicio', href: '/' },
-  { key: 'areas', href: '/#areas', anchor: true },
-  { key: 'portafolio', href: '/portafolio' },
-  { key: 'medicos', href: '/medicos' },
   { key: 'nosotros', href: '/nosotros' },
-  { key: 'ecosistema', href: '/#ecosistema', anchor: true },
-  { key: 'socios', href: '/#socios', anchor: true },
+  { key: 'areas', href: '/portafolio' },
+  { key: 'farmacovigilancia', href: '/farmacovigilancia' },
   { key: 'contacto', href: '/contacto' },
 ];
+
+/**
+ * Los dos botones secundarios de la cabecera. Los dos van a `PORTAL_URL`:
+ * el portal decide, por su cuenta, qué ve un médico y qué ve un cliente.
+ */
+export const PORTAL_CTAS = [
+  { key: 'areaMedica' },
+  { key: 'portalClientes' },
+] as const;
 
 /** Rutas reales (sin anclas) — para sitemap y comprobaciones. */
 export const ROUTES = [
   '/',
   '/portafolio',
-  '/medicos',
   '/nosotros',
   '/farmacovigilancia',
   '/contacto',

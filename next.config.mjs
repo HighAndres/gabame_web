@@ -68,6 +68,22 @@ const nextConfig = {
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   },
+  /**
+   * Redirecciones permanentes de rutas que dejaron de existir tras la junta
+   * de sep 2026. Con y sin prefijo de idioma: sin él, el middleware de
+   * next-intl añadiría el idioma y ENTONCES caería aquí, que son dos saltos.
+   */
+  async redirects() {
+    return [
+      // /medicos era un alta de perfil médico; eso vive en el portal.
+      { source: '/medicos', destination: '/es/proximamente', permanent: true },
+      {
+        source: '/:locale(es|en)/medicos',
+        destination: '/:locale/proximamente',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);

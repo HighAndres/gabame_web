@@ -20,10 +20,6 @@
       "title": "Contact",
       "description": "Get in touch with GABAME Human Health: phone, email and a form for healthcare professionals, distributors, strategic partners and institutions in Mexico."
     },
-    "medicos": {
-      "title": "Physicians",
-      "description": "A space exclusively for healthcare professionals: register your medical profile with your professional license and specialty to be served by the GABAME Human Health team."
-    },
     "proximamente": {
       "title": "Coming soon",
       "description": "This section of GABAME Human Health is in preparation."
@@ -32,16 +28,12 @@
   "nav": {
     "skipToContent": "Skip to content",
     "inicio": "Home",
-    "sections": "Section navigation",
-    "areas": "Areas",
-    "portafolio": "Portfolio",
-    "medicos": "Physicians",
     "nosotros": "About",
-    "ecosistema": "Ecosystem",
-    "socios": "Partners",
+    "areas": "Therapeutic areas",
+    "farmacovigilancia": "Pharmacovigilance",
     "contacto": "Contact",
-    "cta": "Contact us",
-    "pharmacy": "Pharmacies",
+    "areaMedica": "Medical area",
+    "portalClientes": "Client portal",
     "pharmacyFull": "GABAME Pharmacies",
     "menu": "Menu",
     "openMenu": "Open menu",
@@ -132,20 +124,6 @@
       "statusActive": "Active",
       "statusLater": "Later phase",
       "note": "Medinter, Ordan and A7 are enabled in later phases."
-    },
-    "socios": {
-      "kicker": "Commitment · Collaboration",
-      "title": "With you at every stage",
-      "subtitle": "Report a suspected adverse reaction or join our distribution and strategic partner network across Mexico.",
-      "ctaPrimary": "Pharmacovigilance",
-      "ctaSecondary": "Become a partner",
-      "mediaSlot": "'{'CORPORATE PHOTO PENDING'}' — collaboration / alliance, 16:9",
-      "pvTitle": "Pharmacovigilance",
-      "pvText": "Report any suspected adverse reaction related to a GABAME product.",
-      "pvCta": "Report",
-      "partnerTitle": "Become a partner",
-      "partnerText": "Join our distribution and strategic partner network across Mexico.",
-      "partnerCta": "Get in touch"
     },
     "contacto": {
       "kicker": "Contact",
@@ -256,45 +234,6 @@
     "updatedLabel": "Last updated",
     "pendingNotice": "Preliminary text. The definitive privacy notice is pending delivery and legal validation by the client."
   },
-  "medicos": {
-    "kicker": "Healthcare professionals",
-    "title": "Physicians",
-    "subtitle": "A direct channel between your practice and our team.",
-    "gateEyebrow": "Professional access",
-    "gateTitle": "This space is exclusively for healthcare professionals",
-    "gateText": "The information and services in this section are intended for physicians and healthcare professionals holding a valid Mexican professional license (cédula profesional). Please confirm your profile to continue.",
-    "gateYes": "I am a healthcare professional",
-    "gateNo": "I am not a professional",
-    "whatTitle": "Your medical profile",
-    "whatText": "Register with your professional license and specialty. Our team validates every registration and from then on serves you through the channel you prefer.",
-    "benefit1": "Direct attention from our medical team and your local representative.",
-    "benefit2": "Scientific information and product data sheets as they become available.",
-    "benefit3": "Launch notices and support materials for your practice.",
-    "reviewNote": "Our team reviews every registration before activating it. If any detail does not match, we will write to you before continuing.",
-    "formTitle": "Medical profile registration"
-  },
-  "medicoForm": {
-    "name": "Full name",
-    "email": "Email",
-    "phone": "Phone",
-    "cedula": "Professional license (cédula)",
-    "specialty": "Specialty",
-    "institution": "Institution or practice",
-    "comment": "Comment",
-    "optional": "optional",
-    "submit": "Register my profile",
-    "sending": "Sending…",
-    "success": "We received your registration. We will validate your license and contact you by email to complete the process.",
-    "errorGeneric": "We could not send your registration. Please try again in a few minutes.",
-    "errorNotConfigured": "Sending is unavailable at the moment. Write to us at",
-    "errorRateLimit": "You have made several submissions in a row. Please wait a few minutes and try again.",
-    "errorValidation": "Check the highlighted fields.",
-    "invalidName": "Enter your full name.",
-    "invalidEmail": "Enter a valid email.",
-    "invalidCedula": "Enter your professional license: 7 or 8 digits, no letters.",
-    "invalidSpecialty": "Enter your specialty.",
-    "privacyNote": "By registering you accept our Privacy Notice."
-  },
   "contactForm": {
     "name": "Name",
     "email": "Email",
@@ -332,9 +271,6 @@
     "linksTitle": "Site",
     "legalTitle": "Legal",
     "privacy": "Privacy Notice",
-    "pharmacovigilance": "Pharmacovigilance",
-    "clientPortal": "Client portal",
-    "comingSoon": "coming soon",
     "socialTitle": "Follow us",
     "linkedin": "LinkedIn: GABAME Human Health",
     "socialPending": "WhatsApp and other networks: coming soon",
