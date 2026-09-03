@@ -16,3 +16,7 @@ _assets_originales/
 
 # Configuracion local del agente (puerto de dev, etc.)
 .claude/
+
+# Capturas de QA (se regeneran con scripts/qa-screenshots.mjs)
+docs/qa/screenshots/
+docs/qa/*.png

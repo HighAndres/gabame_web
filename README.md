@@ -1,8 +1,15 @@
 # GABAME Human Health — sitio (gabame_v2)
 
-Implementación del diseño v9 sobre Next 14. Estructura completa en local: 5
-páginas × 2 idiomas, cabecera y pie globales, dos formularios con su API,
-sitemap y robots.
+Implementación del diseño v9 sobre Next 14. Estructura completa en local:
+diez rutas × 2 idiomas (más una página por área terapéutica), cabecera y pie
+globales, dos formularios con su API, sitemap y robots.
+
+> **Junta sep 2026.** El sitio se adaptó a las decisiones del cliente en la
+> rama `feat/ajustes-junta`: fondo inmersivo en dos temas, vitrina de áreas
+> en vez de portafolio, Healthy Eyes como único producto público,
+> Promociones, CTAs al portal y aislamiento de farmacovigilancia. Resumen en
+> la sección [Junta sep 2026](#junta-sep-2026) al final; pendientes en
+> `docs/qa/PENDIENTES.md`.
 
 ## Comandos
 
@@ -32,11 +39,10 @@ dos versiones del sitio.
 |---|---|---|
 | Portada (video + panel azul + cifras) | `components/home/Hero.tsx` | `home.hero`, `home.nosotros.stats` |
 | Franja Farmacias GABAME | `components/home/Pharmacies.tsx` | `home.farmacias` |
-| Áreas terapéuticas | `components/home/Areas.tsx` | `home.areas`, `productos.areaBlurb` |
-| Portafolio Rx | `components/home/Portfolio.tsx` | `home.portafolio` |
+| Áreas terapéuticas (vitrina de tarjetas) | `components/home/Areas.tsx` → `components/shared/AreaCards.tsx` | `home.areas`, `areas.list` |
+| Healthy Eyes (bloque destacado) | `components/home/HealthyEyes.tsx` | `home.healthyEyes` |
 | Nosotros | `components/home/About.tsx` | `home.nosotros` |
 | Ecosistema | `components/home/Ecosystem.tsx` | `home.ecosistema` |
-| Socios + farmacovigilancia | `components/home/Partners.tsx` | `home.socios` |
 
 Para reordenar las secciones, cambia el orden en `app/[locale]/page.tsx`.
 
@@ -44,24 +50,33 @@ Para reordenar las secciones, cambia el orden en `app/[locale]/page.tsx`.
 
 | Ruta | Archivo | Claves i18n |
 |---|---|---|
-| `/[locale]/portafolio` | `app/[locale]/portafolio/page.tsx` | `productos` |
-| `/[locale]/medicos` | `app/[locale]/medicos/page.tsx` | `medicos`, `medicoForm` |
 | `/[locale]/nosotros` | `app/[locale]/nosotros/page.tsx` | `nosotros` |
+| `/[locale]/areas-terapeuticas` | `app/[locale]/areas-terapeuticas/page.tsx` | `areas` |
+| `/[locale]/areas-terapeuticas/[slug]` | `app/[locale]/areas-terapeuticas/[slug]/page.tsx` | `areas.list.<slug>` |
+| `/[locale]/areas-terapeuticas/oftalmologia/healthy-eyes` | `…/oftalmologia/healthy-eyes/page.tsx` | `healthyEyes` |
+| `/[locale]/promociones` | `app/[locale]/promociones/page.tsx` | `promociones` + `content/promociones.json` |
 | `/[locale]/farmacovigilancia` | `app/[locale]/farmacovigilancia/page.tsx` | `farmacovigilancia` |
 | `/[locale]/contacto` | `app/[locale]/contacto/page.tsx` | `home.contacto`, `contactForm` |
+| `/[locale]/aviso-de-privacidad` | `app/[locale]/aviso-de-privacidad/page.tsx` | `legal` + `content/legal.ts` |
+| `/[locale]/proximamente` | `app/[locale]/proximamente/page.tsx` | `proximamente` |
+
+Redirecciones 301 (`next.config.mjs`): `/portafolio` → `/areas-terapeuticas`,
+`/productos/*` → `/areas-terapeuticas`, `/medicos` → `/proximamente`.
 
 ### Globales
 
 - Cabecera: `components/layout/SiteHeader.tsx` · menú en `lib/nav.ts`
-  A la derecha van el conmutador de idioma y el botón a **Farmacias
-  GABAME** (`EXTERNAL.farmacias` en `lib/nav.ts`, hoy el preview tras
-  autenticación básica). El botón late: halo con `outline` + pulso en dos
-  tiempos, que se detiene al pasar el cursor, al enfocar y con
-  `prefers-reduced-motion`. El teléfono ya NO está en la cabecera; vive en el
-  pie y en `/contacto`.
+  A la derecha van el conmutador de idioma y los dos botones secundarios al
+  portal, **Área médica** y **Portal de clientes** (`PORTAL_CTAS`, vía
+  `components/shared/PortalLink.tsx` → `PORTAL_URL`). El botón latiendo a
+  Farmacias GABAME que vivió aquí hasta sep 2026 se retiró (no cabían tres);
+  Farmacias sigue en la franja de la Home y en el pie (`EXTERNAL.farmacias`,
+  hoy el preview tras autenticación básica). El teléfono ya NO está en la
+  cabecera; vive en el pie y en `/contacto`.
 - Pie: `components/layout/Footer.tsx`
-- Aviso de privacidad (modal): `components/legal/PrivacyModal.tsx`, texto en
-  `content/legal.ts`
+- Aviso de privacidad: modal `components/legal/PrivacyModal.tsx` y página
+  `/aviso-de-privacidad`, los dos pintan `components/legal/PrivacyBody.tsx`;
+  texto en `content/legal.ts`
 - Asistente (placeholder): `components/assistant/AssistantButton.tsx`
 - Sistema visual completo: `app/globals.css`
 
@@ -99,40 +114,31 @@ exacto del `div` al que sustituye, así ninguna rejilla gana envoltorios. Lo que
 ya está en pantalla al cargar entra puesto, y todo se apaga con
 `prefers-reduced-motion`.
 
-### Médicos (`/medicos`)
-
-Espacio exclusivo para profesionales de la salud. Dos piezas:
-
-- **Puerta profesional** (`components/medicos/HcpGate.tsx`): declaración «soy
-  profesional de la salud» antes de enseñar el apartado (estándar del sector).
-  Dura la visita (`sessionStorage`); sin JS queda cerrada, que es el lado
-  seguro.
-- **Perfil médico** (`components/forms/MedicoForm.tsx` → `/api/medicos`):
-  alta con cédula profesional (7-8 dígitos, `RE_CEDULA`) y especialidad. El
-  sitio no tiene BD por diseño, así que el perfil viaja por correo
-  (`MAIL_TO_CONTACT`, asunto «Alta de médico») y el equipo valida a mano.
-
-**Pensado como base de la futura app de GABAME**: el contrato del perfil vive
-tipado en `lib/schemas.ts` (`medicoSchema` / `MedicoInput`) y lo comparten
-cliente y servidor. El día que haya cuentas de verdad, la app consume ese
-mismo esquema y `/api/medicos` cambia el correo por la BD sin tocar el
-formulario ni la página.
-
-- `content/products.ts` — portafolio. **Vacío a propósito**: sin validación
-  COFEPRIS no se publican marcas, moléculas ni posología. Al llenarlo, las
-  fichas aparecen solas en `/portafolio` y desaparece el estado «en preparación».
+- `content/areas.ts` — las seis áreas terapéuticas: slug, icono, marcas
+  SOLO por nombre (chips visibles solo con `NEXT_PUBLIC_SHOW_BRAND_NAMES=true`)
+  y producto destacado. El copy está en `areas.list.<slug>` de `i18n`.
+- `content/healthy-eyes.ts` — puntos de venta e imagen de Healthy Eyes.
+- `content/promociones.json` — dinámicas comerciales (fuente editable);
+  `content/promociones.ts` la tipa y filtra las vencidas.
 - `content/media.ts` — inventario de la media del cliente.
-- `lib/nav.ts` — rutas, menú y datos de contacto.
+- `lib/nav.ts` — rutas, menú, `PORTAL_URL` y datos de contacto.
+- `lib/flags.ts` — `SHOW_BRAND_NAMES` y `THEME`, leídos en el build.
 
 ## Sistema visual
 
 - **Paleta de tres valores**: `#3D89FD`, negro, blanco. Todo gris o profundidad
   sale de `rgba()` de esos tres. El gris por defecto de Tailwind está anulado en
-  `tailwind.config.ts` para que ningún borde se escape de la paleta.
-- **El azul domina**: 37,7% de la superficie de la Home, contra 42,5% de negro y
-  19,7% de blanco.
-- **Sobre azul, el texto va en negro** (6,19:1, AA a cualquier tamaño). Blanco
-  sobre azul es 2,6:1 y no pasa: no usarlo para texto.
+  `tailwind.config.ts` para que ningún borde se escape de la paleta. La única
+  excepción es el **fondo inmersivo** (abajo).
+- **Fondo inmersivo en dos temas** (sep 2026). El cliente pidió bajar la
+  intensidad del azul sin cambiar el diseño: las superficies que iban en
+  `#3D89FD` puro (`.surface-blue`) pintan ahora `--immersive`, y el azul de
+  marca queda como acento. Dos valores conmutables con `<html data-theme>`
+  (`NEXT_PUBLIC_THEME`): **a** azul-noche `#0B1F3F` (por defecto) y **b** gris
+  azulado `#1B2433`. Sobre los dos el texto va en **blanco**; el negro queda en
+  1,3:1. Contraste medido: blanco 16,4 / 15,6; blanco al 86 % 12,4 / 11,8;
+  `#3D89FD` 4,83 / 4,60 (AA también en texto pequeño). Sobre el pico de la
+  aurora el azul baja a 3,6–3,7 y solo se usa en texto grande.
 - **Tipografías**: Barlow Condensed (titulares, nav, etiquetas, cifras) + Inter
   (cuerpo). Son las aprobadas con el cliente. Cinzel se usa SOLO en el lockup
   de marca (es la serif del logotipo definitivo de ago-2026; máster en
@@ -151,25 +157,22 @@ formulario ni la página.
   otro sistema. Los tokens locales (`--r-eco`, `--r-card`, `--r-field`,
   `--r-tile`) siguen existiendo, valen 0, y devolverles 14/18/10/12px revierte
   el cambio en una línea.
-- Sin sombras, filetes de 2 y 6px. Un solo tema.
+- Sin sombras, filetes de 2 y 6px.
 - **Atmósfera** (`components/shared/Atmosphere.tsx`): dos manchas a la deriva,
   heredadas del v1, en tres tonos. `light` y `dark` son auroras **azules**
-  sobre claro y sobre negro. `blue` va sobre el propio color de marca, donde el
-  azul no se vería: ahí la profundidad se hace con **luz blanca y sombra
-  negra**.
-  El tono `blue` tiene un presupuesto de contraste que hay que respetar al
-  tocarlo: sobre azul el texto va en negro, así que **aclarar sube el contraste
-  y oscurecer lo baja**, y un velo del 18% ya rompe AA (4,37:1). Por eso la
-  mancha grande que se mueve es la blanca. Medido en lo pintado, no en lo
-  declarado: el azul recorre de 5,12:1 a 9,64:1 en las cinco superficies.
-  La sección que la aloje necesita `position: relative`; para
-  `.section > .container` ya está resuelto en `globals.css`.
+  sobre claro y sobre negro; `blue` va sobre el fondo inmersivo y desde sep
+  2026 es también aurora azul (a 0,35: el presupuesto de contraste está en la
+  nota de `.atmo-blue` en `globals.css`). La sección que la aloje necesita
+  `position: relative`; para `.section > .container` ya está resuelto.
 
 Comprobación de paleta antes de cada entrega:
 
 ```bash
-grep -rnEi "#(?!3d89fd\b|fff\b|ffffff\b|000\b|000000\b)[0-9a-f]{3,8}\b" app components lib
+grep -rnoiE '#[0-9a-f]{3,8}\b' app components lib content --include='*.ts' --include='*.tsx' --include='*.css' | grep -viE '#(3d89fd|fff|ffffff|000|000000|0b1f3f|1b2433)\b'
 ```
+
+(Los dos últimos son los temas del fondo inmersivo. Hoy solo devuelve
+comentarios.)
 
 La versión anterior de este grep marcaba `#fff` y `#000` como violaciones
 cuando son dos de los tres valores de la paleta: devolvía decenas de falsos
@@ -200,7 +203,8 @@ pin está en el centro de la zona. Sustituir por las exactas del cliente.
 
 ## Formularios
 
-Dos canales **separados**, cada uno con su destino:
+Dos canales **separados**, cada uno con su destino (la verificación del
+aislamiento está en `docs/FARMACOVIGILANCIA.md`):
 
 - `/api/contacto` → `MAIL_TO_CONTACT`
 - `/api/farmacovigilancia` → `MAIL_TO_PV`
@@ -374,9 +378,9 @@ La Home pesaba 6,0 MB, de los cuales 5,7 eran los dos videos. Ahora pesa 2,7 MB
   los dos videos. Respeta `prefers-reduced-motion` y **no descarga el MP4 si no
   se va a reproducir** (`preload="metadata"` no basta: con `autoPlay` el
   navegador se lo baja entero igual).
-- El video del portafolio va `lazy`: son 3 MB muy por debajo del pliegue que se
-  descargaban aunque nadie bajara hasta ahí. Mientras no carga se ve la trama
-  diagonal de `.pf-frame`, que en este sistema ya significa «hueco de media».
+- El video del portafolio (`portafoliorx.mp4`) ya no se usa en ninguna ruta
+  pública desde sep 2026: su hueco lo ocupa el bloque de Healthy Eyes, con la
+  trama diagonal de `.pf-frame` mientras no haya foto del producto.
 - `sizes` en el símbolo del ecosistema y en el sello de Nosotros: se pintan a
   ~200px y Next servía la variante de 1200.
 
@@ -394,18 +398,6 @@ del proyecto **compilada para linux/x64** (el build se hace en local), o se
 asume y se pone `images: { unoptimized: true }` en `next.config.mjs`, que para
 este sitio —cuatro imágenes, ya comprimidas, servidas por nginx— es defendible.
 Hay que decidirlo antes de publicar.
-
-**⚠ `portafoliorx.mp4` no tiene póster.** Con `prefers-reduced-motion` el video
-no se reproduce nunca, y sin póster el marco se queda vacío de forma
-permanente: medio metro de negro en la Home para quien navegue con esa
-preferencia. Se arregla con un fotograma:
-
-```bash
-ffmpeg -ss 1.5 -i public/media/portafoliorx.mp4 -frames:v 1 -q:v 4 \
-  public/media/portafoliorx_poster.jpg
-```
-
-y pasándoselo al componente: `<AutoVideo src="…" poster="/media/portafoliorx_poster.jpg" lazy />`.
 
 ## Accesibilidad
 
@@ -448,3 +440,35 @@ y pasándoselo al componente: `<AutoVideo src="…" poster="/media/portafoliorx_
 - `docs/design-v9/` — prototipo original de Claude Design.
 - `docs/REVISION-DISENO-V9.md` — revisión del prototipo y qué se corrigió.
 - `docs/PROMPT-CLAUDE-DESIGN.md` — brief que lo generó.
+
+## Junta sep 2026
+
+Rama `feat/ajustes-junta`, un commit por sección. Reglas duras del cliente
+(sitio regulado por COFEPRIS):
+
+1. **Cero datos clínicos y cero precios** en rutas públicas. Comprobación:
+   `grep -rniE 'mg\b|HbA1c|dosis|posolog|eficacia|<principios activos>'` y
+   `grep -rnE '\$[0-9]|MXN|precio'` sobre `app components content lib i18n`
+   solo devuelven comentarios de código que dicen que eso está prohibido.
+2. **Farmacovigilancia aislada**: `docs/FARMACOVIGILANCIA.md`.
+3. **CTAs al portal** («Área médica», «Portal de clientes»): `PORTAL_URL` en
+   `lib/nav.ts`, único sitio a cambiar. Hoy `/proximamente`; definitivo
+   `PORTAL_URL_DEFINITIVA`.
+4. **Chips de marca** solo con `NEXT_PUBLIC_SHOW_BRAND_NAMES=true`; solo el
+   nombre, nunca claims.
+5. **Fondo inmersivo** en dos temas (`NEXT_PUBLIC_THEME=a|b`), ver Sistema
+   visual.
+6. **Bilingüe**: todo copy nuevo entró en `i18n/messages/{es,en}.json`.
+
+Se eliminaron `/medicos` (alta de perfil: eso es del portal), la sección
+Socios de la Home (mezclaba farmacovigilancia con lo comercial; socios vive
+en el «Motivo» de Contacto) y el modelo de fichas de producto.
+
+### QA
+
+- `scripts/qa-screenshots.mjs` (Playwright, `npm i` ya lo trae): capturas de
+  Home, un área, Healthy Eyes, Promociones, Farmacovigilancia y Contacto en
+  los dos temas, escritorio y móvil, contra un build (`BASE=http://…`). Deja
+  los PNG en `docs/qa/screenshots/` (ignorado) y dos hojas de contacto en
+  `docs/qa/`.
+- Pendientes de copy y datos, por archivo: `docs/qa/PENDIENTES.md`.

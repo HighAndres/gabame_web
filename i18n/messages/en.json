@@ -218,7 +218,7 @@
     "validityRange": "From {from} to {to}",
     "legend": "Consult your doctor.",
     "empty": "There are no current promotions at the moment.",
-    "pos": "Promotions are applied directly at the point of sale of participating chains. This site does not sell products or publish prices.",
+    "pos": "Promotions are applied directly at the point of sale of participating chains. This site is informational and does not sell products.",
     "ctaAreas": "Therapeutic areas",
     "backHome": "Back to home"
   },
