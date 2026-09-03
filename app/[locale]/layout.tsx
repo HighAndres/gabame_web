@@ -5,6 +5,7 @@ import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server
 import { Barlow_Condensed, Cinzel, Inter } from 'next/font/google';
 import { routing, type Locale } from '@/i18n/routing';
 import { pageMetadata, SITE_URL } from '@/lib/seo';
+import { THEME } from '@/lib/flags';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { Footer } from '@/components/layout/Footer';
 import { AssistantButton } from '@/components/assistant/AssistantButton';
@@ -85,6 +86,8 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       className={`${display.variable} ${body.variable} ${brand.variable}`}
+      /* Variante del fondo inmersivo (a | b): ver `THEME` y `:root`. */
+      data-theme={THEME}
       suppressHydrationWarning
     >
       <body>

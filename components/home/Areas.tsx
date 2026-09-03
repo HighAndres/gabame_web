@@ -5,9 +5,11 @@ import { Atmosphere } from '@/components/shared/Atmosphere';
 import { Reveal } from '@/components/shared/Reveal';
 
 /**
- * Áreas terapéuticas. Va sobre AZUL: es el bloque de superficie más grande de
- * la Home y es lo que hace que el azul domine, como pidió el cliente.
- * Sobre azul todo el texto va en negro sólido (6.19:1).
+ * Áreas terapéuticas. Va sobre el FONDO INMERSIVO (`.surface-blue`): es el
+ * bloque de superficie más grande de la Home. Desde sep 2026 ese fondo es
+ * azul-noche o gris azulado (ver `:root` en `globals.css`) y el texto va en
+ * blanco; los botones negros que había aquí no se veían sobre él y pasan al
+ * acento azul y al contorno blanco.
  */
 export function Areas() {
   const t = useTranslations('home.areas');
@@ -33,10 +35,10 @@ export function Areas() {
 
         <Reveal delay={160}>
           <div className="btn-row" style={{ marginTop: 48 }}>
-            <Link href="/portafolio" className="btn btn-black">
+            <Link href="/portafolio" className="btn btn-blue">
               {t('ctaPrimary')}
             </Link>
-            <Link href="/nosotros" className="btn btn-outline-black">
+            <Link href="/nosotros" className="btn btn-outline-white">
               {t('ctaSecondary')}
             </Link>
           </div>

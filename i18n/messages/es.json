@@ -67,7 +67,8 @@
       "ctaPrimary": "Ver portafolio Rx",
       "ctaSecondary": "Contáctanos",
       "scrollCue": "Desliza",
-      "mediaSlot": "'{'VIDEO CORPORATIVO'}' — 16:9 · loop silencioso con poster"
+      "mediaSlot": "'{'VIDEO CORPORATIVO'}' — 16:9 · loop silencioso con poster",
+      "imageAlt": "Instalaciones de GABAME Human Health"
     },
     "farmacias": {
       "kicker": "[PENDIENTE: bajada de una línea, p. ej. «Otra propiedad del grupo»]",

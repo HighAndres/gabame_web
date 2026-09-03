@@ -52,7 +52,7 @@ export function Partners() {
             <p className="lead">{t('partnerText')}</p>
           </Reveal>
           <Reveal delay={180}>
-            <Link href="/contacto" className="btn btn-black">
+            <Link href="/contacto" className="btn btn-blue">
               {t('partnerCta')}
             </Link>
           </Reveal>

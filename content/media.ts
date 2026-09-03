@@ -48,6 +48,20 @@ export const mediaLibrary = {
     poster: '/media/vid_header_poster.jpg',
     note: 'Póster sacado del segundo 1,5 con el navegador (no hay ffmpeg en la máquina).',
   },
+  /**
+   * IMAGEN DE PORTADA (sep 2026): capa base bajo el video, 16:9. Es lo que se
+   * ve con `prefers-reduced-motion`, en conexiones lentas y antes de que el
+   * video arranque; el degradado de legibilidad va encima de las dos capas.
+   *
+   * ⚠ PLACEHOLDER: hoy reutiliza el fotograma del video. Sustituir por la
+   * fotografía definitiva del cliente (misma proporción) sin tocar `Hero`.
+   */
+  heroImage: {
+    type: 'image',
+    src: '/media/vid_header_poster.jpg',
+    alt: 'Laboratorio de GABAME Human Health',
+    note: '[PENDIENTE: fotografía definitiva de portada, 16:9]',
+  },
   /** Video de portada ANTERIOR. Ya no se usa; se conserva por si se recupera. */
   headerLegacy: {
     type: 'video',

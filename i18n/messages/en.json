@@ -67,7 +67,8 @@
       "ctaPrimary": "See Rx portfolio",
       "ctaSecondary": "Contact us",
       "scrollCue": "Scroll",
-      "mediaSlot": "'{'CORPORATE VIDEO'}' — 16:9 · silent loop with poster"
+      "mediaSlot": "'{'CORPORATE VIDEO'}' — 16:9 · silent loop with poster",
+      "imageAlt": "GABAME Human Health facilities"
     },
     "farmacias": {
       "kicker": "[PENDING: one-line eyebrow, e.g. «Another property of the group»]",

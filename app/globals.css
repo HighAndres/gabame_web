@@ -4,10 +4,12 @@
 
 /* ============================================================================
    GABAME — SISTEMA DE DISEÑO (v9)
-   Esquinas rectas, sin sombras, filetes sólidos. Un solo tema.
+   Esquinas rectas, sin sombras, filetes sólidos.
 
    PALETA ESTRICTA: #3D89FD, negro y blanco. Cualquier gris o profundidad se
-   construye con rgba() de esos tres. Ningún hex nuevo.
+   construye con rgba() de esos tres. Ningún hex nuevo, con UNA excepción
+   acotada: el fondo inmersivo (`--immersive`), que tiene dos valores
+   conmutables con `data-theme` en <html>. Ver la nota de `:root`.
 
    TIPOGRAFÍA: Barlow Condensed (titulares, nav, etiquetas, cifras) + Inter
    (cuerpo). Aprobadas con el cliente.
@@ -15,6 +17,32 @@
 
 :root {
   --blue: #3D89FD;
+
+  /**
+   * FONDO INMERSIVO (sep 2026). El cliente pidió bajar la intensidad del azul
+   * a superficie sin tocar el diseño: las secciones que iban en `#3D89FD` puro
+   * pasan a un fondo apagado y el azul de marca se queda como ACENTO (cifras,
+   * botones, filetes, enlaces). Dos variantes para que el cliente elija, y
+   * este es el único sitio donde viven:
+   *
+   *   a · azul-noche    #0B1F3F  (por defecto)
+   *   b · gris azulado  #1B2433  (`<html data-theme="b">`)
+   *
+   * Consecuencia obligada: sobre estos fondos el texto va en BLANCO —el negro
+   * queda en 1,3:1—, así que la tinta de la superficie es también un token.
+   * Contraste medido (WCAG 2.x, fondo plano):
+   *
+   *   a  blanco 16,4:1 · blanco al 86 % 12,4:1 · #3D89FD 4,83:1 · AA en todo
+   *   b  blanco 15,6:1 · blanco al 86 % 11,8:1 · #3D89FD 4,60:1 · AA en todo
+   *
+   * El acento azul pasa AA también en texto pequeño (≥ 4,5:1), pero se usa
+   * casi solo en texto grande y botones. Sobre el pico de la aurora (ver
+   * `.atmo-blue`) baja a 3,6–3,7:1: sigue AA para texto grande, que es el
+   * único que va en azul ahí.
+   */
+  --immersive: #0B1F3F;
+  --immersive-ink: #fff;
+  --immersive-ink-soft: rgba(255, 255, 255, 0.86);
 
   /* Derivados permitidos (solo opacidad de negro/blanco) */
   --on-white: rgba(0, 0, 0, 0.82);
@@ -51,6 +79,10 @@
    */
   --r-btn: 999px;
   --r-chip: 999px;
+}
+
+html[data-theme='b'] {
+  --immersive: #1B2433;
 }
 
 @media (max-width: 760px) {
@@ -204,16 +236,20 @@ img {
   z-index: 1;
 }
 
-/* Superficies. Sobre azul el texto va SIEMPRE en negro (6.19:1).
+/* Superficies.
    El color del texto secundario se pasa por variable (`--ink-soft`) en vez de
    por selector descendente: así una superficie ANIDADA gana siempre sobre la
    que la contiene. Con reglas tipo `.surface-white .lead` un bloque negro
-   dentro de una sección blanca heredaba tinta negra y el texto desaparecía. */
+   dentro de una sección blanca heredaba tinta negra y el texto desaparecía.
+
+   `.surface-blue` conserva el nombre —lo usan ocho archivos— pero desde sep
+   2026 pinta el FONDO INMERSIVO (`--immersive`), no el azul de marca: el
+   cliente pidió bajar la intensidad sin cambiar el diseño. El azul puro sigue
+   siendo el acento de todo lo que va encima. Tinta blanca: ver `:root`. */
 .surface-blue {
-  background: var(--blue);
-  color: #000;
-  /* Sobre azul nunca alpha < .8: el negro va sólido. */
-  --ink-soft: #000;
+  background: var(--immersive);
+  color: var(--immersive-ink);
+  --ink-soft: var(--immersive-ink-soft);
 }
 .surface-black {
   background: #000;
@@ -423,42 +459,32 @@ img {
     );
 }
 
-/* Tono AZUL. Sobre el color de marca no se puede usar la aurora azul —azul
-   sobre azul no se ve— y la paleta prohíbe sacar un segundo azul. La
-   profundidad se hace con LUZ y SOMBRA del mismo sistema: blanco y negro.
+/* Tono `blue`: va sobre el FONDO INMERSIVO (`.surface-blue`). Mientras esa
+   superficie fue el azul de marca puro, aquí la profundidad se hacía con luz
+   blanca y sombra negra —azul sobre azul no se veía—. Sobre azul-noche o gris
+   azulado la aurora AZUL vuelve a leerse, y es la misma pieza que usa el resto
+   del sitio: un solo significado —luz de marca a la deriva— en todas partes.
 
-   El reparto no es simétrico y es a propósito: sobre azul el texto va en negro
-   (6,19:1), así que aclarar SUBE el contraste y oscurecer lo BAJA. Un velo del
-   18% ya deja el negro en 4,37:1 y rompe AA. Por eso la pieza grande que se
-   mueve es la blanca y la negra va corta: el punto más oscuro se mantiene
-   dentro de presupuesto en vez de depender de dónde coincidan dos capas. */
+   Presupuesto de contraste: el texto va en blanco, así que ACLARAR el fondo
+   baja el contraste. Con la aurora a 0,5 de alfa y 0,35 de opacidad, el pico
+   (centro de la mancha, antes del desenfoque) queda en #143260 (tema a) o
+   #213656 (tema b): blanco 12,2–12,7:1, azul 3,6–3,7:1. Subir la opacidad
+   por encima de 0,5 empieza a comerse el AA del azul en texto grande. */
 .atmo-blue {
   background: radial-gradient(
       900px 560px at 10% -8%,
-      rgba(255, 255, 255, 0.1),
+      rgba(61, 137, 253, 0.14),
       transparent 62%
     ),
     radial-gradient(
       1100px 680px at 94% 108%,
-      rgba(0, 0, 0, 0.06),
+      rgba(0, 0, 0, 0.18),
       transparent 66%
     );
 }
-/* La blanca es la que puede crecer: aclarar el azul SUBE el contraste con el
-   negro. Con el reparto inicial el movimiento medía 0,6/255 de media, por
-   debajo del umbral al que se percibe; la atmósfera clara del resto del sitio
-   trabaja alrededor de 3. */
-.atmo-blue .atmo-a1 {
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.38),
-    rgba(255, 255, 255, 0) 70%
-  );
-  opacity: 1;
-}
-.atmo-blue .atmo-a2 {
-  background: radial-gradient(circle, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0) 68%);
-  opacity: 0.55;
+.atmo-blue .atmo-aurora {
+  opacity: 0.35;
+  mix-blend-mode: screen;
 }
 
 .atmo-aurora {
@@ -1278,6 +1304,11 @@ img {
   margin: 0;
   font-size: clamp(36px, 3.6vw, 52px);
 }
+/* Las tarjetas son blancas aunque vivan en la franja inmersiva: la cifra va
+   en negro, no en el azul que `.surface-blue .stat-value` pone al resto. */
+.hero-strip .hero-stat .stat-value {
+  color: #000;
+}
 .hero-stat .stat-label {
   margin: 0;
 }
@@ -1336,8 +1367,9 @@ img {
   margin-top: 6px;
 }
 .surface-blue .stat-value {
-  /* Sobre azul el azul desaparece: la cifra va en negro sólido. */
-  color: #000;
+  /* Sobre el fondo inmersivo la cifra vuelve al azul de marca: es texto
+     grande (≥ 38px) y pasa AA en los dos temas (4,6–4,8:1). */
+  color: var(--blue);
 }
 
 /* ------------------------------------------------------------------- ÁREAS */

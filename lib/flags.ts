@@ -14,3 +14,11 @@
  */
 export const SHOW_BRAND_NAMES =
   process.env.NEXT_PUBLIC_SHOW_BRAND_NAMES === 'true';
+
+/**
+ * Variante del FONDO INMERSIVO, mientras el cliente elige (`a` azul-noche,
+ * `b` gris azulado). Va a `<html data-theme>`; los valores viven en `:root`
+ * de `globals.css`. Cualquier cosa que no sea `b` es `a`.
+ */
+export const THEME: 'a' | 'b' =
+  process.env.NEXT_PUBLIC_THEME === 'b' ? 'b' : 'a';

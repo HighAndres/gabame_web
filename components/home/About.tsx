@@ -59,10 +59,10 @@ export function About() {
           <Stats />
 
           <div className="btn-row">
-            <Link href="/contacto" className="btn btn-black">
+            <Link href="/contacto" className="btn btn-blue">
               {t('ctaPrimary')}
             </Link>
-            <Link href="/nosotros" className="btn btn-outline-black">
+            <Link href="/nosotros" className="btn btn-outline-white">
               {t('ctaSecondary')}
             </Link>
           </div>
