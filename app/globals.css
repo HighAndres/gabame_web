@@ -41,6 +41,8 @@
    * único que va en azul ahí.
    */
   --immersive: #0B1F3F;
+  /* El mismo color en canales sueltos, para velos `rgba()` (cabecera). */
+  --immersive-rgb: 11, 31, 63;
   --immersive-ink: #fff;
   --immersive-ink-soft: rgba(255, 255, 255, 0.86);
 
@@ -83,6 +85,7 @@
 
 html[data-theme='b'] {
   --immersive: #1B2433;
+  --immersive-rgb: 27, 36, 51;
 }
 
 @media (max-width: 760px) {
@@ -412,18 +415,23 @@ main > .section:first-child {
   z-index: 90;
   /**
    * TRANSLÚCIDA (sep 2026): el cliente quería que la portada y la barra se
-   * leyeran como una sola pieza, no una franja negra cortando el video. Velo
-   * de negro con desenfoque; es el mismo recurso que el velo de la portada,
-   * así que el negro con alfa sigue dentro de la paleta.
+   * leyeran como una sola pieza, no una franja negra cortando el video.
    *
-   * Presupuesto de contraste del texto blanco de la barra, en el peor caso
-   * (la barra sobre una superficie BLANCA, al bajar por una sección clara):
-   * negro al 0,72 sobre blanco deja rgb(71) → blanco 9,7:1. Sobre la portada
-   * y las cabeceras de página, que son oscuras, sobra. No bajar de 0,6: a
-   * 0,5 el texto sobre blanco cae a 5,3:1 y los enlaces de 16px rozan AA
-   * cuando el desenfoque no está disponible (Firefox sin aceleración).
+   * El velo es del COLOR DEL FONDO INMERSIVO (`--immersive-rgb`, cambia con
+   * el tema), no negro: el video de la portada es negro en su franja
+   * superior y un velo negro, por transparente que fuera, seguía leyéndose
+   * como una barra negra. Con el tono del tema la barra continúa la franja
+   * de cifras y las cabeceras de página, y deja pasar lo que haya debajo.
+   *
+   * Dos densidades. ARRIBA DE LA PÁGINA (sin condensar), 0,72: sobre el
+   * negro del video da el navy del tema; sobre las cabeceras de página, que
+   * ya son de ese color, se funde. CONDENSADA, al bajar, puede ir sobre una
+   * sección blanca: 0,8 deja rgb(60, 76, 101) → texto blanco 8,7:1 (tema
+   * b: 8,1:1); sin condensar, 0,72 sobre blanco sigue en 6,6:1. No bajar
+   * de 0,65 ahí: los enlaces de 15px rozan AA cuando el desenfoque no está
+   * disponible (Firefox sin aceleración).
    */
-  background: rgba(0, 0, 0, 0.72);
+  background: rgba(var(--immersive-rgb), 0.72);
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
   color: #fff;
@@ -438,11 +446,11 @@ main > .section:first-child {
    */
   margin-bottom: calc(-1 * var(--header-h, 0px));
 }
-/* Al condensarse el filete se afina y el velo se cierra un poco: sobre el
-   contenido en movimiento la barra pide más cuerpo que sobre la portada. */
+/* Al condensarse el filete se afina y el velo toma cuerpo: sobre el
+   contenido en movimiento la barra necesita fondo; sobre la portada, no. */
 .site-chrome.is-condensed {
   border-bottom-width: 2px;
-  background: rgba(0, 0, 0, 0.82);
+  background: rgba(var(--immersive-rgb), 0.8);
 }
 
 .site-header-inner {
@@ -1184,14 +1192,21 @@ main > .section:first-child {
   object-fit: cover;
   object-position: center;
 }
-/* Velo: 0,62 de negro. Sobre el fotograma más claro posible (blanco) deja el
-   texto blanco en 5,8:1, así que AA no depende de lo que salga en el video. */
+/* Velo: 0,62 de negro donde hay texto. Sobre el fotograma más claro posible
+   (blanco) deja el texto blanco en 5,8:1, así que AA no depende de lo que
+   salga en el video.
+
+   La franja superior (sep 2026) va más clara, a 0,3: ahí no hay texto de la
+   portada —el titular empieza pasado el 25 % del alto— y es lo que se ve a
+   través de la cabecera translúcida. Con el velo al 0,62 hasta arriba, la
+   barra seguía leyéndose como una franja negra por mucho que se aclarase. */
 .hero-veil {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.62) 0%,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.62) 22%,
     rgba(0, 0, 0, 0.62) 70%,
     rgba(0, 0, 0, 0.78) 100%
   );
