@@ -235,6 +235,11 @@ img {
   position: relative;
   z-index: 1;
 }
+/* La primera sección de cada página (cabecera de página, 404) empieza bajo
+   la barra translúcida: su relleno superior crece lo que mide la barra. */
+main > .section:first-child {
+  padding-top: calc(var(--section-y) + var(--header-h, 0px));
+}
 
 /* Superficies.
    El color del texto secundario se pasa por variable (`--ink-soft`) en vez de
@@ -405,14 +410,39 @@ img {
   top: 0;
   /* Por encima del panel móvil: así el botón de cerrar sigue accesible. */
   z-index: 90;
-  background: #000;
+  /**
+   * TRANSLÚCIDA (sep 2026): el cliente quería que la portada y la barra se
+   * leyeran como una sola pieza, no una franja negra cortando el video. Velo
+   * de negro con desenfoque; es el mismo recurso que el velo de la portada,
+   * así que el negro con alfa sigue dentro de la paleta.
+   *
+   * Presupuesto de contraste del texto blanco de la barra, en el peor caso
+   * (la barra sobre una superficie BLANCA, al bajar por una sección clara):
+   * negro al 0,72 sobre blanco deja rgb(71) → blanco 9,7:1. Sobre la portada
+   * y las cabeceras de página, que son oscuras, sobra. No bajar de 0,6: a
+   * 0,5 el texto sobre blanco cae a 5,3:1 y los enlaces de 16px rozan AA
+   * cuando el desenfoque no está disponible (Firefox sin aceleración).
+   */
+  background: rgba(0, 0, 0, 0.72);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
   color: #fff;
   border-bottom: 3px solid var(--blue);
-  transition: border-bottom-width 0.25s ease;
+  transition: border-bottom-width 0.25s ease, background 0.25s ease;
+  /**
+   * El contenido corre POR DEBAJO de la barra. `sticky` la deja en el flujo,
+   * así que se le quita su propio alto por abajo: la portada empieza en el
+   * borde superior de la ventana y la barra flota encima. La altura la mide
+   * `SiteHeader.tsx` (sin condensar) y la deja en `--header-h`; sin JS vale 0
+   * y la barra vuelve a ocupar su sitio, que es el lado seguro.
+   */
+  margin-bottom: calc(-1 * var(--header-h, 0px));
 }
-/* Al condensarse el filete se afina: la cabecera se percibe más ligera. */
+/* Al condensarse el filete se afina y el velo se cierra un poco: sobre el
+   contenido en movimiento la barra pide más cuerpo que sobre la portada. */
 .site-chrome.is-condensed {
   border-bottom-width: 2px;
+  background: rgba(0, 0, 0, 0.82);
 }
 
 .site-header-inner {
@@ -1169,8 +1199,9 @@ img {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  /* Arriba, aire; abajo, sitio para la franja que monta. */
-  padding-top: 72px;
+  /* Arriba, aire —más la barra translúcida que flota encima—; abajo, sitio
+     para la franja que monta. */
+  padding-top: calc(72px + var(--header-h, 0px));
   padding-bottom: calc(var(--strip-overlap) + 48px);
 }
 .hero-tag {
@@ -1239,7 +1270,7 @@ img {
   .hero-content {
     align-items: flex-start;
     text-align: left;
-    padding-top: 56px;
+    padding-top: calc(56px + var(--header-h, 0px));
   }
   .hero-content .btn-row {
     justify-content: flex-start;

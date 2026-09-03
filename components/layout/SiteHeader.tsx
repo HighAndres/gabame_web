@@ -52,6 +52,30 @@ export function SiteHeader() {
   const panel = useRef<HTMLDivElement>(null);
   useFocusTrap(open, [toggle, panel]);
 
+  /**
+   * La barra es translúcida y el contenido corre por debajo (sep 2026): su
+   * alto SIN condensar se publica en `--header-h` y el CSS se lo suma al
+   * relleno de la portada y de la primera sección de cada página. Se mide
+   * solo mientras no está condensada: si se midiera también condensada, el
+   * relleno cambiaría al hacer scroll y la página daría un salto.
+   */
+  const chrome = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = chrome.current;
+    if (!el) return;
+    const publicar = () => {
+      if (el.classList.contains('is-condensed')) return;
+      document.documentElement.style.setProperty(
+        '--header-h',
+        `${el.getBoundingClientRect().height}px`,
+      );
+    };
+    publicar();
+    const ro = new ResizeObserver(publicar);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   // Un solo lector de scroll: condensar la cabecera.
   useEffect(() => {
     let ticking = false;
@@ -140,7 +164,10 @@ export function SiteHeader() {
         {t('skipToContent')}
       </a>
 
-      <div className={`site-chrome${condensed ? ' is-condensed' : ''}`}>
+      <div
+        ref={chrome}
+        className={`site-chrome${condensed ? ' is-condensed' : ''}`}
+      >
         <header className="site-header">
           <div className="container site-header-inner">
             <Link href="/" className="brand" aria-label="GABAME Human Health">
