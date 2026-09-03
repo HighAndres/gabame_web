@@ -4,6 +4,7 @@ import { Link } from '@/i18n/navigation';
 import { Atmosphere } from '@/components/shared/Atmosphere';
 import { Reveal } from '@/components/shared/Reveal';
 import { Stats } from '@/components/shared/Stats';
+import { BrandLockup } from '@/components/layout/BrandLockup';
 import { mediaLibrary } from '@/content/media';
 
 /**
@@ -37,17 +38,14 @@ export function About() {
               sizes="(max-width: 900px) 100vw, 46vw"
             />
           </div>
-          {/* Sello: el símbolo sobre negro, montado en la esquina del marco. */}
+          {/* Sello: el símbolo en azul sobre el disco negro, montado en la
+              esquina del marco. Misma pieza que el logotipo de la cabecera
+              (máscara del PNG + tinta de marca), no una imagen: el PNG del
+              símbolo cambió en ago-2026 —ya viene sin aire— y el recorte al
+              190 % que había aquí dejaba un manchón blanco. Gira despacio y
+              respira (ver `.about-seal` en globals.css). */}
           <div className="about-seal" aria-hidden="true">
-            <Image
-              src={mediaLibrary.mark.src}
-              alt=""
-              width={600}
-              height={600}
-              /* Se pinta hasta 228px; sin esto pedía la de 1200. */
-              sizes="240px"
-              className="about-seal-mark"
-            />
+            <BrandLockup variant="mark" className="about-seal-lockup" />
           </div>
         </Reveal>
 

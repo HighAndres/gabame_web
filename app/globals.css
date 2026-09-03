@@ -1725,15 +1725,58 @@ main > .section:first-child {
   place-items: center;
   overflow: hidden;
 }
-/* El PNG trae un 72% de aire alrededor del hexágono: hay que pasarse del
-   100% para que el símbolo llene el disco. */
-.about-seal-mark {
-  width: 190%;
-  max-width: none;
-  height: auto;
-  /* El PNG es azul acero: se pasa a blanco y se tiñe de azul con la mezcla. */
-  filter: brightness(0) invert(1);
-  opacity: 0.95;
+/* El símbolo del sello: el lockup en modo `mark`, a la mitad del disco. La
+   animación es doble y lenta —una vuelta completa cada 36s y una respiración
+   de 4,2s—, con la misma familia de tiempos que el resto de latidos del
+   sitio (2,6 / 2,8 / 3,4s), sin coincidir con ninguno. Todo se apaga con
+   `prefers-reduced-motion`. */
+.about-seal-lockup {
+  display: block;
+  /* Ancho relativo al disco; el alto lo da la proporción real del hexágono
+     (567 × 718). El `.lockup-mark` de dentro llena esta caja. */
+  width: 46%;
+  aspect-ratio: 567 / 718;
+  animation: selloGira 36s linear infinite, selloRespira 4.2s ease-in-out infinite;
+  will-change: transform;
+}
+.about-seal-lockup .lockup-mark {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+/* El halo del anillo late con la respiración: el `outline` animado es el
+   único «brillo» que tiene el sistema, que no usa sombras. */
+.about-seal {
+  animation: selloHalo 4.2s ease-out infinite;
+}
+@keyframes selloGira {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes selloRespira {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.08;
+  }
+}
+@keyframes selloHalo {
+  0% {
+    outline: 0 solid rgba(61, 137, 253, 0.5);
+  }
+  60%,
+  100% {
+    outline: 14px solid rgba(61, 137, 253, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-seal,
+  .about-seal-lockup {
+    animation: none;
+  }
 }
 .about-copy {
   display: grid;
