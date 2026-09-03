@@ -27,6 +27,10 @@
     "aviso": {
       "title": "Privacy notice",
       "description": "GABAME Human Health privacy notice under Mexico’s LFPDPPP."
+    },
+    "healthyEyes": {
+      "title": "Healthy Eyes",
+      "description": "Healthy Eyes, a GABAME Human Health medical device for visual health care: what it is, presentation and where to find it."
     }
   },
   "nav": {
@@ -79,19 +83,13 @@
       "ctaPrimary": "See portfolio",
       "ctaSecondary": "About us"
     },
-    "portafolio": {
-      "kicker": "Featured Rx portfolio",
-      "title": "A specialized Rx portfolio",
-      "subtitle": "Each brand with its own positioning; the full data sheet lives on its own page.",
-      "brandsSlot": "'{'PORTFOLIO BRANDS'}' — populated from the product collection (by therapeutic area)",
-      "note": "Clinical data and dosing are added to each sheet after regulatory validation (COFEPRIS).",
-      "ctaPrimary": "Product sheets",
-      "ctaSecondary": "Request information",
-      "mediaSlot": "'{'PRODUCT PHOTO'}' — 16:9 background",
-      "videoSlot": "'{'VERTICAL VIDEO'}' — 9:16, muted MP4 loop",
-      "railHint": "Swipe to explore",
-      "prev": "Previous",
-      "next": "Next"
+    "healthyEyes": {
+      "kicker": "Ophthalmology · Medical device",
+      "title": "Healthy Eyes",
+      "subtitle": "Our medical device for visual health care, available in pharmacies. [SUBJECT TO REGULATORY VALIDATION]",
+      "legend": "Consult your doctor.",
+      "ctaPrimary": "Discover Healthy Eyes",
+      "ctaSecondary": "Medical area"
     },
     "nosotros": {
       "kicker": "About us",
@@ -181,7 +179,28 @@
     "hcpText": "Product information is intended exclusively for healthcare professionals and is available in the medical area of the GABAME portal.",
     "hcpCta": "Information for healthcare professionals",
     "backIndex": "All areas",
-    "backHome": "Back to home"
+    "backHome": "Back to home",
+    "featuredTitle": "Product with a public page",
+    "featuredText": "{name} is a medical device and has its own information page.",
+    "featuredCta": "Discover {name}"
+  },
+  "healthyEyes": {
+    "kicker": "Ophthalmology · Medical device",
+    "title": "Healthy Eyes",
+    "subtitle": "A GABAME Human Health medical device for visual health care. [SUBJECT TO REGULATORY VALIDATION]",
+    "whatIsTitle": "What it is",
+    "whatIsText": "[SUBJECT TO REGULATORY VALIDATION]: general description of the device, in plain language and without claims. Healthy Eyes is a medical device for eye care.",
+    "useTitle": "What it is used for",
+    "useText": "[SUBJECT TO REGULATORY VALIDATION]: intended use in plain language, as stated in its sanitary registration. No clinical indications or results.",
+    "presentationTitle": "Presentation",
+    "presentationText": "[SUBJECT TO REGULATORY VALIDATION]: commercial presentation (format and content) as shown on the packaging.",
+    "howToTitle": "How to use (summary)",
+    "howToText": "[SUBJECT TO REGULATORY VALIDATION]: summary of directions for use according to the product leaflet. The full leaflet comes with the product.",
+    "whereTitle": "Where to find it",
+    "whereText": "Available in pharmacies. Check availability directly at each point of sale.",
+    "legend": "Consult your doctor.",
+    "regulatoryNote": "[SUBJECT TO REGULATORY VALIDATION]: sanitary registration number and mandatory packaging legends.",
+    "backArea": "Back to Ophthalmology"
   },
   "farmacovigilancia": {
     "kicker": "Patient safety",

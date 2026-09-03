@@ -1371,6 +1371,85 @@ img {
   }
 }
 
+/* Producto destacado dentro de una página de área. */
+.area-featured {
+  margin-top: 40px;
+  padding: 24px 0 32px;
+  border-top: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  display: grid;
+  justify-items: start;
+}
+.area-featured .btn {
+  margin-top: 20px;
+}
+
+/* ------------------------------------------------------------ HEALTHY EYES
+   Único producto con página pública (dispositivo médico). El visual reutiliza
+   el marco de media del sistema (`.pf-frame`); sobre blanco el filete y la
+   trama pasan a negro. */
+.he-frame {
+  aspect-ratio: 4 / 5;
+}
+.surface-white .he-frame {
+  border-color: #000;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.06) 0,
+    rgba(0, 0, 0, 0.06) 1px,
+    transparent 1px,
+    transparent 10px
+  );
+}
+.he-mark {
+  width: 88px;
+  height: 88px;
+}
+.he-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.4fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: start;
+}
+.he-visual {
+  position: sticky;
+  top: 112px;
+}
+.he-copy {
+  display: grid;
+  gap: 36px;
+}
+.he-retailers {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.he-retailer {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+/* Cadena aún sin enlace: se ve como botón apagado, no como algo pulsable. */
+.he-retailer.is-pending {
+  opacity: 0.55;
+  cursor: default;
+}
+.he-legend {
+  font-weight: 600;
+}
+@media (max-width: 900px) {
+  .he-layout {
+    grid-template-columns: 1fr;
+  }
+  .he-visual {
+    position: static;
+    max-width: 360px;
+  }
+}
+
 /* Aviso de privacidad como página: ancho de lectura. */
 .legal-page {
   max-width: 880px;

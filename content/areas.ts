@@ -24,6 +24,8 @@ export type AreaSlug =
 export type Area = {
   slug: AreaSlug;
   icon: LucideIcon;
+  /** Página pública propia dentro del área (hoy solo Healthy Eyes). */
+  featured?: { name: string; href: string };
   /**
    * Marcas del área, SOLO por nombre. Vacío hasta que el cliente entregue la
    * lista aprobada: [PENDIENTE: nombres de marca aprobados por GABAME].
@@ -39,7 +41,15 @@ export const AREAS: Area[] = [
   { slug: 'urologia', icon: Droplets, brands: [] },
   { slug: 'snc', icon: Brain, brands: [] },
   /* Healthy Eyes es dispositivo médico: el único producto con página pública. */
-  { slug: 'oftalmologia', icon: Eye, brands: ['Healthy Eyes'] },
+  {
+    slug: 'oftalmologia',
+    icon: Eye,
+    brands: ['Healthy Eyes'],
+    featured: {
+      name: 'Healthy Eyes',
+      href: '/areas-terapeuticas/oftalmologia/healthy-eyes',
+    },
+  },
 ];
 
 export const AREA_ORDER: AreaSlug[] = AREAS.map((a) => a.slug);

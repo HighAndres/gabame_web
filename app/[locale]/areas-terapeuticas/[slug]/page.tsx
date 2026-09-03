@@ -9,7 +9,7 @@ import { Atmosphere } from '@/components/shared/Atmosphere';
 import { Reveal } from '@/components/shared/Reveal';
 import { PortalLink } from '@/components/shared/PortalLink';
 import { pageMetadata, SITE_NAME } from '@/lib/seo';
-import { AREAS, areaBySlug, type AreaSlug } from '@/content/areas';
+import { AREAS, areaBySlug, type Area } from '@/content/areas';
 import { SHOW_BRAND_NAMES } from '@/lib/flags';
 
 type Params = { locale: string; slug: string };
@@ -55,10 +55,11 @@ export default function AreaPage({ params }: { params: Params }) {
   const area = areaBySlug(params.slug);
   if (!area) notFound();
   setRequestLocale(params.locale);
-  return <AreaBody slug={area.slug} brands={area.brands} />;
+  return <AreaBody area={area} />;
 }
 
-function AreaBody({ slug, brands }: { slug: AreaSlug; brands: string[] }) {
+function AreaBody({ area }: { area: Area }) {
+  const { slug, brands, featured } = area;
   const t = useTranslations('areas');
   const showBrands = SHOW_BRAND_NAMES && brands.length > 0;
 
@@ -81,6 +82,22 @@ function AreaBody({ slug, brands }: { slug: AreaSlug; brands: string[] }) {
             <p className="note" style={{ marginTop: 16 }}>
               {t(`list.${slug}.intro`)}
             </p>
+
+            {/* Producto con página pública propia (dispositivo médico):
+                se enlaza siempre, con o sin el flag de marcas. */}
+            {featured && (
+              <div className="area-featured">
+                <h2 style={{ fontSize: 'clamp(22px,2.4vw,32px)' }}>
+                  {t('featuredTitle')}
+                </h2>
+                <p className="lead" style={{ marginTop: 12 }}>
+                  {t('featuredText', { name: featured.name })}
+                </p>
+                <Link href={featured.href} className="btn btn-black">
+                  {t('featuredCta', { name: featured.name })}
+                </Link>
+              </div>
+            )}
 
             {showBrands && (
               <>
