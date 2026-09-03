@@ -1473,47 +1473,8 @@ img {
   }
 }
 
-.area-table {
-  border-top: 2px solid currentColor;
-}
-.area-row {
-  display: grid;
-  grid-template-columns: 70px minmax(0, 1fr) minmax(0, 1.2fr) auto;
-  gap: 20px 24px;
-  align-items: center;
-  padding: 22px 0;
-  border-bottom: 1px solid currentColor;
-}
-.area-num {
-  font-family: var(--font-display), sans-serif;
-  font-weight: 700;
-  font-size: 18px;
-  letter-spacing: 0.14em;
-}
-.area-desc {
-  font-size: 16px;
-  line-height: 1.5;
-  color: var(--ink-soft, inherit);
-}
-@media (max-width: 900px) {
-  .area-row {
-    grid-template-columns: 48px minmax(0, 1fr);
-    row-gap: 10px;
-  }
-  /* Los hijos que envuelven contenido deben poder encoger. */
-  .area-row > * {
-    min-width: 0;
-  }
-  .area-row .area-desc,
-  .area-row .chip {
-    grid-column: 2;
-  }
-  .area-row .chip {
-    justify-self: start;
-  }
-}
-
-/* -------------------------------------------------------------- PORTAFOLIO */
+/* ------------------------------------------------- HEALTHY EYES (HOME) --
+   Rejilla heredada de la sección Portafolio Rx, que vivió aquí hasta sep 2026. */
 /* El video es 9:16 y el texto de al lado mide un tercio de su alto. Con la
    columna a 0.62fr y `align-items: start` quedaban 409px de negro muerto bajo
    el texto. Columna más estrecha (marco más bajo) y contenido centrado: el aire
