@@ -31,6 +31,10 @@
     "healthyEyes": {
       "title": "Healthy Eyes",
       "description": "Healthy Eyes, dispositivo médico de GABAME Human Health para el cuidado de la salud visual: qué es, presentación y dónde encontrarlo."
+    },
+    "promociones": {
+      "title": "Promociones",
+      "description": "Promociones vigentes en punto de venta con marcas de GABAME Human Health: dinámica, cadenas participantes y vigencia."
     }
   },
   "nav": {
@@ -38,6 +42,7 @@
     "inicio": "Inicio",
     "nosotros": "Nosotros",
     "areas": "Áreas terapéuticas",
+    "promociones": "Promociones",
     "farmacovigilancia": "Farmacovigilancia",
     "contacto": "Contacto",
     "areaMedica": "Área médica",
@@ -201,6 +206,21 @@
     "legend": "Consulte a su médico.",
     "regulatoryNote": "[SUJETO A VALIDACIÓN REGULATORIA]: número de registro sanitario y leyendas obligatorias del empaque.",
     "backArea": "Volver a Oftalmología"
+  },
+  "promociones": {
+    "kicker": "Promociones",
+    "title": "Promociones vigentes",
+    "subtitle": "Dinámicas comerciales en punto de venta con marcas de GABAME Human Health. Consulta condiciones en cada cadena participante.",
+    "dynamic": "Dinámica",
+    "brands": "Marcas participantes",
+    "chains": "Cadenas participantes",
+    "validity": "Vigencia",
+    "validityRange": "Del {from} al {to}",
+    "legend": "Consulte a su médico.",
+    "empty": "Por el momento no hay promociones vigentes.",
+    "pos": "Las promociones se aplican directamente en el punto de venta de las cadenas participantes. Este sitio no vende productos ni publica precios.",
+    "ctaAreas": "Áreas terapéuticas",
+    "backHome": "Volver al inicio"
   },
   "farmacovigilancia": {
     "kicker": "Seguridad del paciente",

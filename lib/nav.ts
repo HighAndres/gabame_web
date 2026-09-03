@@ -16,12 +16,13 @@ export type NavItem = {
  * Inicio · Nosotros · Áreas terapéuticas · Promociones · Farmacovigilancia ·
  * Contacto, más los dos CTAs al portal (`PORTAL_CTAS`) y el idioma.
  *
- * Promociones entra con su página; ningún enlace del menú se deja muerto.
+ * Ningún enlace del menú se deja muerto entre commits.
  */
 export const NAV: NavItem[] = [
   { key: 'inicio', href: '/' },
   { key: 'nosotros', href: '/nosotros' },
   { key: 'areas', href: '/areas-terapeuticas' },
+  { key: 'promociones', href: '/promociones' },
   { key: 'farmacovigilancia', href: '/farmacovigilancia' },
   { key: 'contacto', href: '/contacto' },
 ];
@@ -41,6 +42,8 @@ export const ROUTES: readonly string[] = [
   '/nosotros',
   '/areas-terapeuticas',
   ...AREA_ORDER.map((slug) => `/areas-terapeuticas/${slug}`),
+  '/areas-terapeuticas/oftalmologia/healthy-eyes',
+  '/promociones',
   '/farmacovigilancia',
   '/contacto',
   '/aviso-de-privacidad',

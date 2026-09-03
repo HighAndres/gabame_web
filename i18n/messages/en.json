@@ -31,6 +31,10 @@
     "healthyEyes": {
       "title": "Healthy Eyes",
       "description": "Healthy Eyes, a GABAME Human Health medical device for visual health care: what it is, presentation and where to find it."
+    },
+    "promociones": {
+      "title": "Promotions",
+      "description": "Current point-of-sale promotions with GABAME Human Health brands: mechanics, participating chains and validity."
     }
   },
   "nav": {
@@ -38,6 +42,7 @@
     "inicio": "Home",
     "nosotros": "About",
     "areas": "Therapeutic areas",
+    "promociones": "Promotions",
     "farmacovigilancia": "Pharmacovigilance",
     "contacto": "Contact",
     "areaMedica": "Medical area",
@@ -201,6 +206,21 @@
     "legend": "Consult your doctor.",
     "regulatoryNote": "[SUBJECT TO REGULATORY VALIDATION]: sanitary registration number and mandatory packaging legends.",
     "backArea": "Back to Ophthalmology"
+  },
+  "promociones": {
+    "kicker": "Promotions",
+    "title": "Current promotions",
+    "subtitle": "Point-of-sale commercial mechanics with GABAME Human Health brands. Check conditions at each participating chain.",
+    "dynamic": "Mechanics",
+    "brands": "Participating brands",
+    "chains": "Participating chains",
+    "validity": "Validity",
+    "validityRange": "From {from} to {to}",
+    "legend": "Consult your doctor.",
+    "empty": "There are no current promotions at the moment.",
+    "pos": "Promotions are applied directly at the point of sale of participating chains. This site does not sell products or publish prices.",
+    "ctaAreas": "Therapeutic areas",
+    "backHome": "Back to home"
   },
   "farmacovigilancia": {
     "kicker": "Patient safety",
