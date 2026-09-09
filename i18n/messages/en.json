@@ -115,13 +115,11 @@
     "ecosistema": {
       "kicker": "Group ecosystem",
       "title": "Four brands, one standard",
-      "subtitle": "GABAME is the gateway to an ecosystem that will connect with Medinter, Ordan and A7.",
+      "subtitle": "GABAME is the gateway to an ecosystem that connects with MedInter, Ordan and A7.",
       "ctaPrimary": "Explore the ecosystem",
       "ctaSecondary": "Become a partner",
       "mediaSlot": "'{'CORPORATE PHOTO PENDING'}' — logistics / operations, 16:9",
-      "statusActive": "Active",
-      "statusLater": "Later phase",
-      "note": "Medinter, Ordan and A7 are enabled in later phases."
+      "statusVisit": "Visit site"
     },
     "contacto": {
       "kicker": "Contact",
@@ -278,7 +276,6 @@
     "statsTitle": "By the numbers",
     "missionTitle": "What we do",
     "ecosystemTitle": "Group ecosystem",
-    "ecosystemNote": "The connection with Medinter, Ordan and A7 will be enabled in later phases.",
     "ctaTitle": "Shall we work together?",
     "ctaContact": "Contact us",
     "backHome": "Back to home"

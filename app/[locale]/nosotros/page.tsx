@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { PageHero } from '@/components/shared/PageHero';
+import { BrandCard } from '@/components/shared/BrandCard';
 import { Reveal } from '@/components/shared/Reveal';
 import { Stats } from '@/components/shared/Stats';
 import { pageMetadata, SITE_NAME } from '@/lib/seo';
@@ -111,40 +111,9 @@ function AboutBody() {
               rejilla. Marcas y logotipos en `content/brands.ts`. */}
           <div className="eco-grid">
             {GROUP_BRANDS.map((brand, i) => (
-              <div
-                key={brand.name}
-                className={`eco-card ${brand.active ? 'eco-card-active' : 'eco-card-later'}`}
-              >
-                <div className="eco-media" aria-hidden="true">
-                  {brand.logo ? (
-                    <Image
-                      src={brand.logo.src}
-                      alt=""
-                      width={600}
-                      height={600}
-                      sizes="280px"
-                      className={brand.active ? 'eco-mark' : 'eco-logo'}
-                    />
-                  ) : (
-                    <span className="eco-num">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                  )}
-                </div>
-                <div className="eco-body">
-                  <h3>{brand.name}</h3>
-                  <span className="eco-status">
-                    <span className="eco-dot" aria-hidden="true" />
-                    {brand.active ? tEco('statusActive') : tEco('statusLater')}
-                  </span>
-                </div>
-              </div>
+              <BrandCard key={brand.name} brand={brand} index={i} sizes="340px" />
             ))}
           </div>
-
-          <p className="note" style={{ marginTop: 28 }}>
-            {t('ecosystemNote')}
-          </p>
         </Reveal>
       </section>
 

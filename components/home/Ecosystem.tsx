@@ -1,59 +1,12 @@
-import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Atmosphere } from '@/components/shared/Atmosphere';
 import { Reveal } from '@/components/shared/Reveal';
-import { GROUP_BRANDS, type GroupBrand } from '@/content/brands';
+import { BrandCard } from '@/components/shared/BrandCard';
+import { GROUP_BRANDS } from '@/content/brands';
 
 export function Ecosystem() {
   const t = useTranslations('home.ecosistema');
-
-  /* Una tarjeta. `decorativa` marca la copia que hace el bucle: existe solo
-     para que el desfile no tenga costura, así que no se anuncia dos veces. */
-  const Card = ({
-    brand,
-    index,
-    decorativa = false,
-  }: {
-    brand: GroupBrand;
-    index: number;
-    decorativa?: boolean;
-  }) => (
-    <div
-      className={`eco-card ${brand.active ? 'eco-card-active' : 'eco-card-later'}`}
-      aria-hidden={decorativa || undefined}
-    >
-      {/* Zona visual: la marca con logotipo lo lleva aquí (la activa sobre
-          azul, las demás sobre la trama de «todavía no»); sin logotipo, la
-          trama con el ordinal. Los archivos se declaran en
-          `content/brands.ts`. */}
-      <div className="eco-media" aria-hidden="true">
-        {brand.logo ? (
-          <Image
-            src={brand.logo.src}
-            alt=""
-            width={600}
-            height={600}
-            /* La tarjeta mide como mucho 236px y el símbolo el 92% de ella:
-               217px de tope. Sin `sizes`, Next servía la variante de 1200px
-               para pintarla a 190. */
-            sizes="240px"
-            className={brand.active ? 'eco-mark' : 'eco-logo'}
-          />
-        ) : (
-          <span className="eco-num">{String(index + 1).padStart(2, '0')}</span>
-        )}
-      </div>
-
-      <div className="eco-body">
-        <h3>{brand.name}</h3>
-        <span className="eco-status">
-          <span className="eco-dot" aria-hidden="true" />
-          {brand.active ? t('statusActive') : t('statusLater')}
-        </span>
-      </div>
-    </div>
-  );
 
   return (
     <section id="ecosistema" className="section surface-white">
@@ -71,7 +24,6 @@ export function Ecosystem() {
           <p className="eyebrow">{t('kicker')}</p>
           <h2>{t('title')}</h2>
           <p className="lead">{t('subtitle')}</p>
-          <p className="note">{t('note')}</p>
           <div className="btn-row">
             <Link href="/nosotros" className="btn btn-blue">
               {t('ctaPrimary')}
@@ -85,15 +37,16 @@ export function Ecosystem() {
         {/* Carrusel circular: la pista lleva el juego de tarjetas DOS veces y
             se desplaza exactamente la mitad de su ancho, así el final de la
             primera copia coincide con el principio de la segunda y el bucle
-            no tiene costura. Se detiene al pasar el cursor o al enfocar, y se
-            queda quieto con `prefers-reduced-motion`. */}
+            no tiene costura. Se detiene al pasar el cursor o al enfocar (las
+            tarjetas enlazadas reciben el foco), y se queda quieto con
+            `prefers-reduced-motion`. */}
         <Reveal className="eco-marquee" delay={120}>
           <div className="eco-track">
             {GROUP_BRANDS.map((b, i) => (
-              <Card key={b.name} brand={b} index={i} />
+              <BrandCard key={b.name} brand={b} index={i} />
             ))}
             {GROUP_BRANDS.map((b, i) => (
-              <Card key={`${b.name}-bis`} brand={b} index={i} decorativa />
+              <BrandCard key={`${b.name}-bis`} brand={b} index={i} decorativa />
             ))}
           </div>
         </Reveal>

@@ -1943,6 +1943,31 @@ main > .section:first-child {
   border: 2px solid #000;
   border-radius: var(--r-eco);
   overflow: hidden;
+  text-decoration: none;
+}
+/* Tarjeta enlazada (sitio propio de la marca, sep 2026): el filete pasa a
+   azul y la flecha se mueve al pasar el cursor; el foco usa el halo global. */
+a.eco-card:hover,
+a.eco-card:focus-visible {
+  border-color: var(--blue);
+}
+/* Solo la flecha se tiñe: el texto de 12px en azul sobre blanco no llega al
+   AA (3,4:1), el filete y el gesto ya dicen que es un enlace. */
+a.eco-card:hover .eco-arrow,
+a.eco-card:focus-visible .eco-arrow {
+  color: var(--blue);
+}
+.eco-arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+a.eco-card:hover .eco-arrow {
+  transform: translate(2px, -2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .eco-arrow {
+    transition: none;
+  }
 }
 /* Zona visual: proporción fija para que las cuatro midan lo mismo aunque una
    lleve símbolo y las otras la trama. */
@@ -1968,10 +1993,10 @@ main > .section:first-child {
   height: auto;
   user-select: none;
 }
-/* Logotipo de una marca en fase posterior, sobre la trama. Va A COLOR, tal
-   cual lo entregó cada marca (decisión del cliente, sep 2026): son marcas
-   ajenas y se respetan sus colores, aunque no estén en la paleta del sitio.
-   Exige archivo con fondo transparente (ver `content/brands.ts`). */
+/* Logotipo de otra marca del grupo. Va A COLOR, tal cual lo entregó cada
+   marca (decisión del cliente, sep 2026): son marcas ajenas y se respetan
+   sus colores, aunque no estén en la paleta del sitio. Exige archivo con
+   fondo transparente (ver `content/brands.ts`). */
 .eco-logo {
   /* Fuera del flujo: en la rejilla, la altura natural del archivo a este
      ancho empujaba la fila y la tarjeta salía 10px más alta que sus
@@ -1986,10 +2011,10 @@ main > .section:first-child {
   object-fit: contain;
   user-select: none;
 }
-/* Trama diagonal para las fases posteriores: es la misma que marca el hueco
-   del video en el portafolio, así que en este sistema ya significa
-   «todavía no». Cuando lleguen sus logotipos, entran aquí. */
-.eco-card-later .eco-media {
+/* Sin logotipo, la zona visual lleva la trama diagonal: es la misma que
+   marca el hueco del video en el portafolio, así que en este sistema ya
+   significa «todavía no». Con logotipo, va en blanco como la de GABAME. */
+.eco-media:has(.eco-num) {
   background-color: #fff;
   background-image: repeating-linear-gradient(
     45deg,
@@ -2027,18 +2052,6 @@ main > .section:first-child {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-soft, inherit);
-}
-.eco-dot {
-  flex: 0 0 auto;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-.eco-card-active .eco-dot {
-  background: var(--blue);
-}
-.eco-card-later .eco-dot {
-  background: #000;
 }
 @media (max-width: 1180px) {
   .eco-layout {

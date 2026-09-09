@@ -115,13 +115,11 @@
     "ecosistema": {
       "kicker": "Ecosistema del grupo",
       "title": "Cuatro marcas, un estándar",
-      "subtitle": "GABAME es la puerta de entrada a un ecosistema que se conectará con Medinter, Ordan y A7.",
+      "subtitle": "GABAME es la puerta de entrada a un ecosistema que conecta con MedInter, Ordan y A7.",
       "ctaPrimary": "Explorar ecosistema",
       "ctaSecondary": "Ser socio",
       "mediaSlot": "'{'FOTO CORPORATIVA PENDIENTE'}' — logística / operación, 16:9",
-      "statusActive": "Activo",
-      "statusLater": "Fase posterior",
-      "note": "Medinter, Ordan y A7 se habilitan en fases posteriores."
+      "statusVisit": "Visitar sitio"
     },
     "contacto": {
       "kicker": "Contacto",
@@ -278,7 +276,6 @@
     "statsTitle": "En cifras",
     "missionTitle": "Qué hacemos",
     "ecosystemTitle": "Ecosistema del grupo",
-    "ecosystemNote": "La conexión con Medinter, Ordan y A7 se habilitará en fases posteriores.",
     "ctaTitle": "¿Trabajamos juntos?",
     "ctaContact": "Contáctanos",
     "backHome": "Volver al inicio"

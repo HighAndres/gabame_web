@@ -119,10 +119,13 @@ ya está en pantalla al cargar entra puesto, y todo se apaga con
   y producto destacado. El copy está en `areas.list.<slug>` de `i18n`.
 - `content/healthy-eyes.ts` — puntos de venta e imagen de Healthy Eyes.
 - `content/brands.ts` — las cuatro marcas del grupo (Ecosistema de la Home y
-  `/nosotros`) con su logotipo o `null`. Con `null` la tarjeta pinta la trama
-  y el ordinal; al declarar la ruta, el logotipo entra en las dos páginas.
-  Archivos con fondo transparente en `public/media/`, a color tal cual los
-  entregó cada marca (`.eco-logo`).
+  `/nosotros`, tarjeta en `components/shared/BrandCard.tsx`) con su logotipo
+  o `null` y, si tiene sitio propio, su `url`: la tarjeta entera es entonces
+  un enlace externo en pestaña nueva («Visitar sitio»). GABAME no lleva
+  `url` ni etiqueta: es la anfitriona. Con `null` la
+  tarjeta pinta la trama y el ordinal; al declarar la ruta, el logotipo entra
+  en las dos páginas. Archivos con fondo transparente en `public/media/`, a
+  color tal cual los entregó cada marca (`.eco-logo`).
 - `content/promociones.json` — dinámicas comerciales (fuente editable);
   `content/promociones.ts` la tipa y filtra las vencidas.
 - `content/media.ts` — inventario de la media del cliente.
