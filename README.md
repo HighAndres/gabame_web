@@ -42,7 +42,7 @@ dos versiones del sitio.
 | Áreas terapéuticas (vitrina de tarjetas) | `components/home/Areas.tsx` → `components/shared/AreaCards.tsx` | `home.areas`, `areas.list` |
 | Healthy Eyes (bloque destacado) | `components/home/HealthyEyes.tsx` | `home.healthyEyes` |
 | Nosotros | `components/home/About.tsx` | `home.nosotros` |
-| Ecosistema | `components/home/Ecosystem.tsx` | `home.ecosistema` |
+| Ecosistema | `components/home/Ecosystem.tsx` · marcas y logotipos en `content/brands.ts` | `home.ecosistema` |
 
 Para reordenar las secciones, cambia el orden en `app/[locale]/page.tsx`.
 
@@ -118,6 +118,11 @@ ya está en pantalla al cargar entra puesto, y todo se apaga con
   SOLO por nombre (chips visibles solo con `NEXT_PUBLIC_SHOW_BRAND_NAMES=true`)
   y producto destacado. El copy está en `areas.list.<slug>` de `i18n`.
 - `content/healthy-eyes.ts` — puntos de venta e imagen de Healthy Eyes.
+- `content/brands.ts` — las cuatro marcas del grupo (Ecosistema de la Home y
+  `/nosotros`) con su logotipo o `null`. Con `null` la tarjeta pinta la trama
+  y el ordinal; al declarar la ruta, el logotipo entra en las dos páginas.
+  Archivos con fondo transparente en `public/media/`, a color tal cual los
+  entregó cada marca (`.eco-logo`).
 - `content/promociones.json` — dinámicas comerciales (fuente editable);
   `content/promociones.ts` la tipa y filtra las vencidas.
 - `content/media.ts` — inventario de la media del cliente.

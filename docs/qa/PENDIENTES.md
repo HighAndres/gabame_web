@@ -43,6 +43,7 @@ Se pintan en `/areas-terapeuticas/[slug]`, bajo «Sobre el área».
 | Archivo | Dónde | Qué falta |
 |---|---|---|
 | `content/areas.ts` | `AREAS[*].brands` | Nombres de marca aprobados por área (solo se enseñan con `NEXT_PUBLIC_SHOW_BRAND_NAMES=true`) |
+| `content/brands.ts` | `GROUP_BRANDS[1].logo` | MedInter en alta resolución o SVG (el archivo entregado mide 213×40) |
 | `content/healthy-eyes.ts` | `WHERE_TO_FIND` | Cadenas participantes y sus enlaces (dos entradas placeholder) |
 | `content/healthy-eyes.ts` | `HEALTHY_EYES_IMAGE` | Fotografía de presentación aprobada (hoy `null` → marco vacío) |
 | `content/promociones.json` | `promos[*].mechanics` | Redacción final de cada dinámica (es/en) |

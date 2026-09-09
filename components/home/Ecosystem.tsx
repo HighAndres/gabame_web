@@ -3,14 +3,7 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Atmosphere } from '@/components/shared/Atmosphere';
 import { Reveal } from '@/components/shared/Reveal';
-
-/** Las cuatro marcas del grupo. GABAME activa; el resto, fase posterior. */
-const BRANDS = [
-  { name: 'GABAME', active: true },
-  { name: 'Medinter', active: false },
-  { name: 'Ordan', active: false },
-  { name: 'A7', active: false },
-] as const;
+import { GROUP_BRANDS, type GroupBrand } from '@/content/brands';
 
 export function Ecosystem() {
   const t = useTranslations('home.ecosistema');
@@ -22,7 +15,7 @@ export function Ecosystem() {
     index,
     decorativa = false,
   }: {
-    brand: (typeof BRANDS)[number];
+    brand: GroupBrand;
     index: number;
     decorativa?: boolean;
   }) => (
@@ -30,13 +23,14 @@ export function Ecosystem() {
       className={`eco-card ${brand.active ? 'eco-card-active' : 'eco-card-later'}`}
       aria-hidden={decorativa || undefined}
     >
-      {/* Zona visual: la marca activa lleva su símbolo; las demás, la trama de
-          «todavía no» con el ordinal. Cuando lleguen sus logotipos, entran
-          aquí. */}
+      {/* Zona visual: la marca con logotipo lo lleva aquí (la activa sobre
+          azul, las demás sobre la trama de «todavía no»); sin logotipo, la
+          trama con el ordinal. Los archivos se declaran en
+          `content/brands.ts`. */}
       <div className="eco-media" aria-hidden="true">
-        {brand.active ? (
+        {brand.logo ? (
           <Image
-            src="/media/logo_gabame_sf.png"
+            src={brand.logo.src}
             alt=""
             width={600}
             height={600}
@@ -44,7 +38,7 @@ export function Ecosystem() {
                217px de tope. Sin `sizes`, Next servía la variante de 1200px
                para pintarla a 190. */
             sizes="240px"
-            className="eco-mark"
+            className={brand.active ? 'eco-mark' : 'eco-logo'}
           />
         ) : (
           <span className="eco-num">{String(index + 1).padStart(2, '0')}</span>
@@ -95,10 +89,10 @@ export function Ecosystem() {
             queda quieto con `prefers-reduced-motion`. */}
         <Reveal className="eco-marquee" delay={120}>
           <div className="eco-track">
-            {BRANDS.map((b, i) => (
+            {GROUP_BRANDS.map((b, i) => (
               <Card key={b.name} brand={b} index={i} />
             ))}
-            {BRANDS.map((b, i) => (
+            {GROUP_BRANDS.map((b, i) => (
               <Card key={`${b.name}-bis`} brand={b} index={i} decorativa />
             ))}
           </div>

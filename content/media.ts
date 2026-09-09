@@ -75,6 +75,12 @@ export const mediaLibrary = {
     src: '/media/portafoliorx.mp4',
     note: 'Formato 9:16, mudo.',
   },
+  /**
+   * Logotipos de las otras marcas del grupo (sep 2026), en `content/brands.ts`.
+   * Los originales llegaron con fondo (blanco en MedInter y Ordan; render 3D
+   * sobre gris en A7): se recortaron a alfa por clave de blanco / saturación
+   * y a su caja. MedInter viene a 213×40, pendiente de alta resolución.
+   */
   /** Foto de laboratorio, ya sin marca de agua. */
   lab: {
     type: 'image',
