@@ -77,10 +77,10 @@ export function Footer() {
                 // El botón hereda el aspecto de enlace del pie
               />
               {/* Ya no hace falta repetir Farmacovigilancia: está en «Sitio». */}
-              <PortalLink className="footer-external">
+              <PortalLink destino="medicos" className="footer-external">
                 {tNav('areaMedica')}
               </PortalLink>
-              <PortalLink className="footer-external">
+              <PortalLink destino="clientes" className="footer-external">
                 {tNav('portalClientes')}
               </PortalLink>
             </div>

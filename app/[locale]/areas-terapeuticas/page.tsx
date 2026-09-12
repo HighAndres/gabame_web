@@ -54,7 +54,9 @@ function AreasBody() {
           <AreaCards tone="white" />
 
           <div className="btn-row" style={{ marginTop: 48 }}>
-            <PortalLink className="btn btn-blue">{t('hcpCta')}</PortalLink>
+            <PortalLink destino="medicos" className="btn btn-blue">
+              {t('hcpCta')}
+            </PortalLink>
             <Link href="/" className="btn btn-outline-black">
               {t('backHome')}
             </Link>

@@ -28,13 +28,13 @@ export const NAV: NavItem[] = [
 ];
 
 /**
- * Los dos botones secundarios de la cabecera. Los dos van a `PORTAL_URL`:
- * el portal decide, por su cuenta, qué ve un médico y qué ve un cliente.
+ * Los dos botones secundarios de la cabecera. Cada uno tiene su puerta en el
+ * portal (`PORTAL`), que no es la misma: el botón ya dice a quién atiende.
  */
 export const PORTAL_CTAS = [
-  { key: 'areaMedica' },
-  { key: 'portalClientes' },
-] as const;
+  { key: 'areaMedica', destino: 'medicos' },
+  { key: 'portalClientes', destino: 'clientes' },
+] as const satisfies readonly { key: string; destino: PortalDestino }[];
 
 /** Rutas reales (sin anclas) — para sitemap y comprobaciones. */
 export const ROUTES: readonly string[] = [
@@ -85,16 +85,27 @@ export const EXTERNAL = {
 } as const;
 
 /**
- * Portal de GABAME (área médica y portal de clientes). ÚNICO sitio donde se
- * cambia: todos los CTAs «Área médica» y «Portal de clientes» pasan por
- * `PortalLink`, que lee esta constante.
+ * Portal de GABAME. ÚNICO sitio donde se cambia: todos los CTAs pasan por
+ * `PortalLink`, que lee estas constantes.
  *
- * Mientras el portal no exista apunta a `/proximamente`, dentro del sitio.
- * El día que exista, sustituir por `PORTAL_URL_DEFINITIVA` y nada más:
- * `PortalLink` detecta que es externa y la abre en pestaña nueva.
+ * Son DOS destinos distintos, no uno: el portal no reparte por su cuenta según
+ * quién entra, cada público tiene su puerta. `?origen=gabame` es lo que le
+ * dice al portal que la visita llegó desde este sitio; va en la URL, no en el
+ * código, así que no hay nada que mantener aquí cuando cambie.
+ *
+ * `PortalLink` mira si la URL sale del sitio: externa → `<a>` a pestaña nueva;
+ * interna → `Link` con prefijo de idioma. Por eso volver a `/proximamente` —si
+ * el portal se cae o aún no atiende a un público— es cambiar la cadena y ya.
  */
-export const PORTAL_URL_DEFINITIVA = 'https://portal.gabame.com/?m=gabame';
-export const PORTAL_URL: string = '/proximamente';
+export const PORTAL = {
+  /** Profesionales de la salud. CTAs «Área médica» e «Información para
+      profesionales de la salud». */
+  medicos: 'https://clientes.gabame.com/medicos?origen=gabame',
+  /** Clientes y distribuidores. CTA «Portal de clientes». */
+  clientes: 'https://clientes.gabame.com/clientes?origen=gabame',
+} as const;
+
+export type PortalDestino = keyof typeof PORTAL;
 
 /** ¿Sale del sitio? Decide entre `Link` con idioma y `<a>` externo. */
 export const isExternal = (href: string) => /^https?:\/\//i.test(href);

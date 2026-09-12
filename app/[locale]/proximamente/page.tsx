@@ -30,10 +30,15 @@ export async function generateMetadata({
 }
 
 /**
- * Destino TEMPORAL de los CTAs «Área médica» y «Portal de clientes» mientras
- * el portal (`portal.gabame.com`) no existe. El día que exista, `PORTAL_URL`
- * en `lib/nav.ts` cambia a la URL definitiva y esta página deja de recibir
- * tráfico; se puede borrar entonces o dejar como red para enlaces viejos.
+ * Fue el destino TEMPORAL de los CTAs «Área médica» y «Portal de clientes»
+ * mientras el portal no existía. Desde sep 2026 esos CTAs van a
+ * `clientes.gabame.com` (ver `PORTAL` en `lib/nav.ts`), así que esta página
+ * ya no recibe tráfico de la navegación.
+ *
+ * Se queda, y a propósito: sigue siendo el destino del 301 de `/medicos`
+ * (`next.config.mjs`) y la red donde cae cualquier enlace viejo. También es
+ * adónde se vuelve —cambiando una cadena en `PORTAL`— si el portal se cae o
+ * aún no atiende a alguno de los dos públicos.
  */
 export default function ComingSoonPage({
   params,

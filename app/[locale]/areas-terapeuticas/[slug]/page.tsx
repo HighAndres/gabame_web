@@ -131,7 +131,7 @@ function AreaBody({ area }: { area: Area }) {
             <p className="lead" style={{ marginTop: 12 }}>
               {t('hcpText')}
             </p>
-            <PortalLink className="btn btn-blue" >
+            <PortalLink destino="medicos" className="btn btn-blue">
               {t('hcpCta')}
             </PortalLink>
           </Reveal>

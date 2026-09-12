@@ -68,7 +68,8 @@ Redirecciones 301 (`next.config.mjs`): `/portafolio` → `/areas-terapeuticas`,
 - Cabecera: `components/layout/SiteHeader.tsx` · menú en `lib/nav.ts`
   A la derecha van el conmutador de idioma y los dos botones secundarios al
   portal, **Área médica** y **Portal de clientes** (`PORTAL_CTAS`, vía
-  `components/shared/PortalLink.tsx` → `PORTAL_URL`). El botón latiendo a
+  `components/shared/PortalLink.tsx` → `PORTAL`). Cada uno tiene su puerta:
+  no es un destino con reparto interno, son dos URLs distintas. El botón latiendo a
   Farmacias GABAME que vivió aquí hasta sep 2026 se retiró (no cabían tres);
   Farmacias sigue en la franja de la Home y en el pie (`EXTERNAL.farmacias`,
   hoy el preview tras autenticación básica). El teléfono ya NO está en la
@@ -129,7 +130,7 @@ ya está en pantalla al cargar entra puesto, y todo se apaga con
 - `content/promociones.json` — dinámicas comerciales (fuente editable);
   `content/promociones.ts` la tipa y filtra las vencidas.
 - `content/media.ts` — inventario de la media del cliente.
-- `lib/nav.ts` — rutas, menú, `PORTAL_URL` y datos de contacto.
+- `lib/nav.ts` — rutas, menú, `PORTAL` y datos de contacto.
 - `lib/flags.ts` — `SHOW_BRAND_NAMES` y `THEME`, leídos en el build.
 
 ## Sistema visual
@@ -459,9 +460,20 @@ Rama `feat/ajustes-junta`, un commit por sección. Reglas duras del cliente
    `grep -rnE '\$[0-9]|MXN|precio'` sobre `app components content lib i18n`
    solo devuelven comentarios de código que dicen que eso está prohibido.
 2. **Farmacovigilancia aislada**: `docs/FARMACOVIGILANCIA.md`.
-3. **CTAs al portal** («Área médica», «Portal de clientes»): `PORTAL_URL` en
-   `lib/nav.ts`, único sitio a cambiar. Hoy `/proximamente`; definitivo
-   `PORTAL_URL_DEFINITIVA`.
+3. **CTAs al portal** («Área médica», «Portal de clientes»): `PORTAL` en
+   `lib/nav.ts`, único sitio a cambiar. Desde sep 2026 apuntan al portal de
+   verdad, y son DOS puertas distintas:
+
+   | CTA | Destino |
+   |---|---|
+   | «Área médica» e «Información para profesionales de la salud» | `https://clientes.gabame.com/medicos?origen=gabame` |
+   | «Portal de clientes» | `https://clientes.gabame.com/clientes?origen=gabame` |
+
+   `PortalLink` pide `destino` (`'medicos'` \| `'clientes'`) y no tiene valor
+   por defecto: un CTA sin destino no compila, que es justo lo que se quiere
+   cuando el error posible es mandar clientes al área médica. Salen en pestaña
+   nueva, como todo lo que abandona el sitio. `/proximamente` se queda como
+   destino del 301 de `/medicos` y como vuelta atrás si el portal se cae.
 4. **Chips de marca** solo con `NEXT_PUBLIC_SHOW_BRAND_NAMES=true`; solo el
    nombre, nunca claims.
 5. **Fondo inmersivo** en dos temas (`NEXT_PUBLIC_THEME=a|b`), ver Sistema

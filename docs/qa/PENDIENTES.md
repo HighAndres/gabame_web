@@ -59,8 +59,9 @@ Se pintan en `/areas-terapeuticas/[slug]`, bajo «Sobre el área».
 - **Tema del fondo inmersivo**: `a` (azul-noche) o `b` (gris azulado).
   `NEXT_PUBLIC_THEME` en el entorno; los valores viven en `:root` de
   `app/globals.css`.
-- **Portal**: cuando exista, `PORTAL_URL` en `lib/nav.ts` pasa de
-  `/proximamente` a `PORTAL_URL_DEFINITIVA`.
+- ~~**Portal**~~: resuelto (12 sep 2026). `PORTAL` en `lib/nav.ts` apunta a
+  `clientes.gabame.com/medicos` y `clientes.gabame.com/clientes`, los dos con
+  `?origen=gabame`.
 - **Farmacovigilancia**: campos de paciente, lote, fecha de inicio y desenlace
   (ver `docs/FARMACOVIGILANCIA.md`) y teléfono de reporte.
 - **Pin del mapa** del pie: coordenadas exactas (`CONTACT.map` en `lib/nav.ts`,

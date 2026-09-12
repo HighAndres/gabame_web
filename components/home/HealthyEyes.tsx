@@ -45,7 +45,7 @@ export function HealthyEyes() {
             <Link href={HEALTHY_EYES_PATH} className="btn btn-blue">
               {t('ctaPrimary')}
             </Link>
-            <PortalLink className="btn btn-outline-white">
+            <PortalLink destino="medicos" className="btn btn-outline-white">
               {t('ctaSecondary')}
             </PortalLink>
           </div>

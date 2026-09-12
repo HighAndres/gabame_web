@@ -151,6 +151,7 @@ export function SiteHeader() {
     PORTAL_CTAS.map((cta) => (
       <PortalLink
         key={cta.key}
+        destino={cta.destino}
         className={`btn btn-outline-white ${className}`}
         onClick={() => setOpen(false)}
       >
