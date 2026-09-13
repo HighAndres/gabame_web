@@ -96,13 +96,21 @@ export const EXTERNAL = {
  * `PortalLink` mira si la URL sale del sitio: externa → `<a>` a pestaña nueva;
  * interna → `Link` con prefijo de idioma. Por eso volver a `/proximamente` —si
  * el portal se cae o aún no atiende a un público— es cambiar la cadena y ya.
+ *
+ * ⚠ ES EL PREVIEW (`clientesgabame.mirmiapps.com`), igual que
+ * `EXTERNAL.farmacias`. Sustituir por el dominio definitivo al publicar.
+ *
+ * El dominio importa más de lo que parece: estuvo un rato apuntando a
+ * `clientes.gabame.com`, que NO RESUELVE, y los siete botones del sitio
+ * llevaban a un error de DNS sin que nada en el sitio lo delatara. Al cambiar
+ * esta constante, comprobar que el destino responde ANTES de desplegar.
  */
 export const PORTAL = {
   /** Profesionales de la salud. CTAs «Área médica» e «Información para
       profesionales de la salud». */
-  medicos: 'https://clientes.gabame.com/medicos?origen=gabame',
+  medicos: 'https://clientesgabame.mirmiapps.com/medicos?origen=gabame',
   /** Clientes y distribuidores. CTA «Portal de clientes». */
-  clientes: 'https://clientes.gabame.com/clientes?origen=gabame',
+  clientes: 'https://clientesgabame.mirmiapps.com/clientes?origen=gabame',
 } as const;
 
 export type PortalDestino = keyof typeof PORTAL;

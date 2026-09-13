@@ -466,8 +466,13 @@ Rama `feat/ajustes-junta`, un commit por sección. Reglas duras del cliente
 
    | CTA | Destino |
    |---|---|
-   | «Área médica» e «Información para profesionales de la salud» | `https://clientes.gabame.com/medicos?origen=gabame` |
-   | «Portal de clientes» | `https://clientes.gabame.com/clientes?origen=gabame` |
+   | «Área médica» e «Información para profesionales de la salud» | `https://clientesgabame.mirmiapps.com/medicos?origen=gabame` |
+   | «Portal de clientes» | `https://clientesgabame.mirmiapps.com/clientes?origen=gabame` |
+
+   Es el **preview** (`clientesgabame.mirmiapps.com`), como Farmacias: hay que
+   cambiarlo al publicar. Y comprobar que el destino responde antes de
+   desplegar — estuvo apuntando a `clientes.gabame.com`, que no resuelve, y los
+   siete botones llevaban a un error de DNS sin que el sitio lo delatara.
 
    `PortalLink` pide `destino` (`'medicos'` \| `'clientes'`) y no tiene valor
    por defecto: un CTA sin destino no compila, que es justo lo que se quiere

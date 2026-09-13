@@ -32,7 +32,7 @@ export async function generateMetadata({
 /**
  * Fue el destino TEMPORAL de los CTAs «Área médica» y «Portal de clientes»
  * mientras el portal no existía. Desde sep 2026 esos CTAs van a
- * `clientes.gabame.com` (ver `PORTAL` en `lib/nav.ts`), así que esta página
+ * `clientesgabame.mirmiapps.com` (ver `PORTAL` en `lib/nav.ts`), así que esta página
  * ya no recibe tráfico de la navegación.
  *
  * Se queda, y a propósito: sigue siendo el destino del 301 de `/medicos`

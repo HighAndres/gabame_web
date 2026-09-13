@@ -60,8 +60,9 @@ Se pintan en `/areas-terapeuticas/[slug]`, bajo «Sobre el área».
   `NEXT_PUBLIC_THEME` en el entorno; los valores viven en `:root` de
   `app/globals.css`.
 - ~~**Portal**~~: resuelto (12 sep 2026). `PORTAL` en `lib/nav.ts` apunta a
-  `clientes.gabame.com/medicos` y `clientes.gabame.com/clientes`, los dos con
-  `?origen=gabame`.
+  `clientesgabame.mirmiapps.com/medicos` y `…/clientes`, los dos con
+  `?origen=gabame`. Es el preview: cambiar al dominio definitivo al publicar,
+  como `EXTERNAL.farmacias`.
 - **Farmacovigilancia**: campos de paciente, lote, fecha de inicio y desenlace
   (ver `docs/FARMACOVIGILANCIA.md`) y teléfono de reporte.
 - **Pin del mapa** del pie: coordenadas exactas (`CONTACT.map` en `lib/nav.ts`,
